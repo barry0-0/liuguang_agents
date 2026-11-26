@@ -74,6 +74,7 @@ struct NativeCLICommandResolver: Sendable {
         }
 
         var environment = TerminalColorEnvironment.embeddedTerminalEnvironment(from: inheritedEnvironment)
+        environment = CLIProxyEnvironment.supportedProxyAddresses(in: environment)
         environment["PATH"] = pathEnvironmentValue
         let reporterLaunch = liveSessionReporting?.launchAdditions(for: provider, environment: environment)
         environment.merge(reporterLaunch?.environment ?? [:]) { _, reporterValue in reporterValue }

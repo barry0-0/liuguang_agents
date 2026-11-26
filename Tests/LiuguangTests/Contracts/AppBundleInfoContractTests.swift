@@ -50,7 +50,7 @@ struct AppBundleInfoContractTests {
         #expect(feedURL.host()?.hasPrefix("\(workerName).") == true, "\(feedURL)")
         #expect(feedURL.host()?.hasSuffix(".workers.dev") == true, "\(feedURL)")
         #expect(workerSource.contains("pathname !== \"\(feedURL.path())\""))
-        #expect(workerSource.contains("\"https://github.com/yangzichao/Liuguang/releases/latest/download/appcast.xml\""))
+        #expect(workerSource.contains("\"https://github.com/barry0-0/liuguang_agents/releases/latest/download/appcast.xml\""))
     }
 
     /// A CLI's voice input, such as Claude Code's `/voice`, records under the app's permission. Without the usage

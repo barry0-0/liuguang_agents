@@ -1,19 +1,17 @@
 # README screenshots
 
-Refreshed on October 10, 2026 from the current native interface at revision `e8003c06e3151130cb7d7367b6795b8be5432e17`. An isolated sample app links the production SwiftUI and AppKit views and models built by `make check`. It has its own bundle identifier, preferences, agent storage, projects, and tmux socket directory. The user's app and conversations are not screenshot content.
+These images are sanitized test illustrations. They show the Liuguang product structure with the Liuguang stream mark, sample project names, and placeholder session cards. They do not show real user conversations, live terminal transcripts, or live SSH sessions.
 
 | Image | What it shows |
 | --- | --- |
-| [native-terminal.jpg](native-terminal.jpg) | The real Claude Code `/help` interface with **Projects** selected. `orbit-web` groups five sessions: two Claude Code sessions, Codex, OpenCode, and Pi. |
-| [split-terminal.jpg](split-terminal.jpg) | **Open tabs** lists six terminals under one project. The split pairs Claude Code's command input with a shell showing a real Git diff. |
-| [session-overview.jpg](session-overview.jpg) | The current conversation reader, project and host groups, reading controls, and Resume action. |
-| [remote-desktop-sessions.jpg](remote-desktop-sessions.jpg) | A sample Claude Code conversation under the `dev-desktop` SSH host, beside local projects. |
-| [tmux-keep-running.jpg](tmux-keep-running.jpg) | A running file-indexing task after closing its tab with **Keep running** and reattaching through the sidebar. |
-| [tmux-close-choice.jpg](tmux-close-choice.jpg) | The actual close-tab dialog, including **Don't ask again**, Keep running, End session, and Cancel. |
-| [demo-split-view.jpg](demo-split-view.jpg) | Used only by the social card. The split-view frame at 28.0 seconds of the homepage demo, recorded October 11, 2026 from v1.2.6: Claude Code and Codex side by side, with `orbit-web`, `orbit-api`, and the `devbox` SSH host in the sidebar. The window is cropped from the 3200 × 1800 recording, its rounded corners are filled with the page color, and it is scaled to 2400 × 1350, by `Scripts/DemoVideo/demo-video window-still 28.0`. See [demo provenance](../../website/media/README.md). |
+| [native-terminal.jpg](native-terminal.jpg) | A product diagram of the workspace sidebar and a local-session placeholder. `liuguang-demo`, `cli-sessions`, and `web-app` are test names. |
+| [split-terminal.jpg](split-terminal.jpg) | A product diagram of Open tabs and split panes. Both panes use placeholder lines, not terminal output. |
+| [session-overview.jpg](session-overview.jpg) | A product diagram of the conversation reader with sample cards and reading controls. |
+| [remote-desktop-sessions.jpg](remote-desktop-sessions.jpg) | A product diagram of local and test-host groups. The SSH sample uses `test-host` and no connection status. |
+| [tmux-keep-running.jpg](tmux-keep-running.jpg) | A product diagram of a sample session kept running after its tab closes, with a Reattach action. |
+| [tmux-close-choice.jpg](tmux-close-choice.jpg) | The unchanged close-tab dialog: Don't ask again, Keep running, End session, and Cancel. |
+| [demo-split-view.jpg](demo-split-view.jpg) | A social-card illustration using the Liuguang mark and sanitized sample project names. |
 
-Full windows are captured at 2400 × 1440 pixels. The close-tab dialog is 520 × 540. These stills are native captures; the homepage uses a [narrated demo video](../../website/media/README.md). The Slack/social card is rendered from `demo-split-view.jpg`.
+Full diagrams are 2400 × 1440 pixels. The close-tab dialog is 520 × 540. `demo-split-view.jpg` is 2400 × 1350. This homepage uses a separate [sanitized demo poster and video](../../website/media/README.md).
 
-The project names, SSH hosts, and saved messages are examples. Remote history is fixture data, with no live SSH connection demonstrated. Claude Code 2.1.296, Codex 0.162.0-alpha.17.2, and OpenCode 1.18.35 are installed CLIs. Capture profiles are isolated from the user's credentials. Published footage shows local help, sample history, and local shell commands; it does not show a model response or performance benchmark. The indexing task hashes 500 disposable files. The split-view shell shows an actual uncommitted change in a sample Git repository.
-
-When replacing assets, use the current native interface, record the source revision, and update README alt text, demo posters, social card, and highlight coordinates together. Keep raw captures and sample-app code in ignored `dist/` folders. Stop the isolated sample tmux server after capture.
+When replacing assets, keep test data visibly sanitized, preserve the dimensions, and update README alt text, the demo poster, the social card, and the metadata cache versions together.

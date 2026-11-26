@@ -63,6 +63,38 @@ struct FilteredSidebarProjectionTests {
         #expect(afterRename.projects.isEmpty)
     }
 
+    @Test func hidesNumericTitlesButKeepsNamedAndMessageMatches() throws {
+        let isolatedUserDefaults = try IsolatedUserDefaults()
+        defer { isolatedUserDefaults.removeSuite() }
+        let numericTitle = Conversation.fixture(
+            sessionID: "numeric-title",
+            title: "1"
+        )
+        let namedSession = Conversation.fixture(
+            sessionID: "named-session",
+            title: "Session 1"
+        )
+        let store = makeStore(
+            listing: [numericTitle, namedSession],
+            userDefaults: isolatedUserDefaults.userDefaults
+        )
+
+        let listed = store.filteredSidebarProjection(
+            providerFilter: .all,
+            recencyFilter: .all,
+            searchText: ""
+        )
+        #expect(listed.projects.flatMap(\.conversations).map(\.id) == [namedSession.id])
+
+        let matched = store.filteredSidebarProjection(
+            providerFilter: .all,
+            recencyFilter: .all,
+            searchText: "needle",
+            messageMatchConversationIDs: [numericTitle.id]
+        )
+        #expect(matched.projects.flatMap(\.conversations).map(\.id).contains(numericTitle.id) == true)
+    }
+
     private func makeStore(listing conversations: [Conversation], userDefaults: UserDefaults) -> ConversationStore {
         let store = ConversationStore(
             adapters: [],

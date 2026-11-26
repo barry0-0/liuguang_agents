@@ -53,6 +53,7 @@ struct ThemeSegmentedPicker<Value: Hashable>: View {
                 }
                 .contentShape(Rectangle())
         }
+        .focusEffectDisabled()
         .buttonStyle(ThemePlainButtonStyle(cornerRadius: .small))
     }
 }

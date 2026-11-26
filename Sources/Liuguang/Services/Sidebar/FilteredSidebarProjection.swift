@@ -33,7 +33,8 @@ struct FilteredSidebarProjection {
         self.inputs = inputs
         let meaningfulConversations = projection.conversations.filter { conversation in
             let trimmedTitle = title(conversation).trimmingCharacters(in: .whitespacesAndNewlines)
-            guard trimmedTitle.isEmpty || trimmedTitle == ConversationMetadata.untitledConversationTitle else { return true }
+            let titleIsNumeric = !trimmedTitle.isEmpty && trimmedTitle.allSatisfy(\.isNumber)
+            guard trimmedTitle.isEmpty || titleIsNumeric || trimmedTitle == ConversationMetadata.untitledConversationTitle else { return true }
             return !inputs.messageMatchConversationIDs.contains(conversation.id)
         }
         let toolConversations = meaningfulConversations.filter { inputs.providerFilter.includes($0.provider) }

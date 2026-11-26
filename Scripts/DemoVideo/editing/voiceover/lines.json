@@ -14,5 +14,5 @@
   {"id": "s5-job", "text": "Start a long job."},
   {"id": "s5-close", "text": "Close the tab, and it keeps running on the server."},
   {"id": "s5-back", "text": "Click, and you're back."},
-  {"id": "s6-end", "text": "No account. No import. Nothing extra. Just sessions."}
+  {"id": "s6-end", "text": "No account. No import. Local sessions, one workspace."}
 ]

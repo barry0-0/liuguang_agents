@@ -72,13 +72,13 @@ struct HostFixAgentPromptTests {
         #expect(
             message.hasPrefix("Liuguang started you on devbox, in /home/me, straight in the user's login shell rather than in tmux"))
         #expect(message.contains("\n\nThe task.\n\n## Liuguang' guides\n"))
-        #expect(message.contains("https://github.com/yangzichao/Liuguang/tree/v1.2.11/docs/guides"))
+        #expect(message.contains("https://github.com/barry0-0/liuguang_agents/tree/v1.2.11/docs/guides"))
         #expect(
             message.hasSuffix(
                 """
                 ### session-management.md: When something fails on an SSH host
 
-                Source: https://github.com/yangzichao/Liuguang/blob/v1.2.11/docs/guides/session-management.md#when-something-fails-on-an-ssh-host
+                Source: https://github.com/barry0-0/liuguang_agents/blob/v1.2.11/docs/guides/session-management.md#when-something-fails-on-an-ssh-host
 
                 What to do.
 

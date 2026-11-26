@@ -50,7 +50,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          LATEST_PUBLISHED_RELEASE_TAG="$(gh release view --repo yangzichao/Liuguang --json tagName --jq .tagName)"
+          LATEST_PUBLISHED_RELEASE_TAG="$(gh release view --repo barry0-0/liuguang_agents --json tagName --jq .tagName)"
           export LATEST_PUBLISHED_RELEASE_TAG
           make website-check
       - name: Upload Pages artifact

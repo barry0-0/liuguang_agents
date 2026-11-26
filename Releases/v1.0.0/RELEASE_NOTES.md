@@ -2,12 +2,11 @@
 
 首个独立发布版本。
 
-- 以原生 macOS 工作台聚合本机 AI CLI 会话，保留各 CLI 原生终端与配置。
-- 支持 Claude Code、Codex CLI、Antigravity CLI、Kiro CLI、OpenCode、Pi。
-- 项目侧栏按项目聚合会话；支持搜索、固定、重命名、隐藏 CLI、子会话展示。
-- 原生终端标签、Chrome 风格标签组、拆分视图、会话恢复与 tmux 保活。
-- 新增流光品牌、原图标、上下文与权限状态显示、图片附件预览、设置左侧导航。
-- README、Issue 模板与项目链接统一指向 `barry0-0/liuguang_agents`。
+- 在原生 Mac 工作台中按项目浏览 Claude Code、Codex 和 Pi 会话。
+- 阅读会话历史，在原 CLI 中恢复会话，并从已安装的 CLI 新建会话。
+- 在同一侧栏管理本地与 SSH 会话，支持原生标签和拆分视图。
+- 顶部状态区显示 CLI 权限、当前模型与真实上下文占用。
+- 支持终端图片标记预览，设置页提供通用、外观、权限和帮助导航。
 
 ### 安装
 
@@ -15,4 +14,4 @@
 
 ### 校验
 
-DMG: `Releases/v1.0.0/Liuguang.dmg`
+SHA-256: `d5a2a99a7e8ede2be97aa3748a50103d6e8db07378eaa2a9b051b35c28fc301d`

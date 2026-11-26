@@ -17,7 +17,7 @@ struct CrashReportLinksTests {
     @Test func gitHubIssueOpensTheBugReportFormWithTheCrashFilledIn() throws {
         let url = CrashReportLinks.gitHubIssueURL(for: try summary(), reportFileName: reportFileName)
 
-        #expect(url.absoluteString.hasPrefix("https://github.com/yangzichao/Liuguang/issues/new?template=bug_report.yml&"))
+        #expect(url.absoluteString.hasPrefix("https://github.com/barry0-0/liuguang_agents/issues/new?template=bug_report.yml&"))
         #expect(queryValue("title", in: url) == "Crash: EXC_BREAKPOINT (SIGTRAP) in Liuguang 1.0.5 (12)")
         #expect(queryValue("app-version", in: url) == "1.0.5 (12)")
         #expect(queryValue("macos-version", in: url) == "macOS 26.5.1 (25F80)")

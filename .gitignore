@@ -9,3 +9,5 @@ __pycache__/
 .dev.vars
 # Coding agents' local state and skills stay out of git.
 /.claude/
+
+!website/media/*.mp4

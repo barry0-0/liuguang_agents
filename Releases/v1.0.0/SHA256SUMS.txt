@@ -1,1 +1,2 @@
-760353633f0c88d0e70e266137b7dc5d1c3b26b7f77b7f0954e09ff80bad06fc  Releases/v1.0.0/Liuguang.dmg
+d5a2a99a7e8ede2be97aa3748a50103d6e8db07378eaa2a9b051b35c28fc301d  dist/Liuguang.dmg
+d5a2a99a7e8ede2be97aa3748a50103d6e8db07378eaa2a9b051b35c28fc301d  Releases/v1.0.0/Liuguang.dmg

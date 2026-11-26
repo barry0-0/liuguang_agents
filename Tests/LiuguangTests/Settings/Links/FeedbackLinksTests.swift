@@ -12,13 +12,13 @@ struct FeedbackLinksTests {
 
     @Test func gitHubIssueStartsWithTheVersionsBelowRoomToWrite() throws {
         let url = FeedbackLinks.gitHubIssueURL(for: environment)
-        #expect(url.absoluteString.hasPrefix("https://github.com/yangzichao/Liuguang/issues/new?body="))
+        #expect(url.absoluteString.hasPrefix("https://github.com/barry0-0/liuguang_agents/issues/new?body="))
         #expect(queryValue("body", in: url) == "\n\nLiuguang 0.45.0 (45) · macOS 26.0.1")
     }
 
     @Test func feedbackFormOpensTheGuidesFormWithTheVersions() throws {
         let url = FeedbackLinks.formURL(for: environment)
-        #expect(url.absoluteString.hasPrefix("https://yangzichao.github.io/Liuguang/guide.html?"))
+        #expect(url.absoluteString.hasPrefix("https://barry0-0.github.io/liuguang_agents/guide.html?"))
         #expect(url.fragment == "feedback")
         #expect(queryValue("appVersion", in: url) == "0.45.0 (45)")
         #expect(queryValue("macOSVersion", in: url) == "26.0.1")

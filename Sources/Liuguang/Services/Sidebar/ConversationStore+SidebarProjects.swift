@@ -9,6 +9,22 @@ extension ConversationStore {
         sidebarProjection.projectGroups
     }
 
+    var recentProjectsForNewSession: [ProjectConversationGroup] {
+        let existingGroups = sidebarProjectGroups
+        let existingPaths = Set(existingGroups.map(\.projectPath))
+        let emptyProjectPaths = sidebarProjectList.projectPaths.subtracting(existingPaths)
+        let emptyProjectGroups = emptyProjectPaths.map { projectPath in
+            ProjectConversationGroup(
+                projectPath: projectPath,
+                displayName: projectDisplayName(forProjectPath: projectPath),
+                pinnedPlace: pinnedItems.pinnedPlace(ofProjectPath: projectPath),
+                conversations: [],
+                pendingNewSessions: []
+            )
+        }
+        return ProjectConversationGroup.orderedForSidebar(existingGroups + emptyProjectGroups)
+    }
+
     func filteredSidebarProjection(
         providerFilter: ConversationProviderFilter,
         recencyFilter: SessionRecencyFilter,

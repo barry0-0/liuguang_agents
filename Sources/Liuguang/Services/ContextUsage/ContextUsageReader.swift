@@ -30,10 +30,12 @@ enum ContextUsageReader {
                     )
                 }
         case .opencode:
-            guard let reply = OpenCodeContextUsage.readReply(
-                databaseFile: conversation.sourceFile,
-                sessionID: conversation.sessionID
-            ) else { return nil }
+            guard
+                let reply = OpenCodeContextUsage.readReply(
+                    databaseFile: conversation.sourceFile,
+                    sessionID: conversation.sessionID
+                )
+            else { return nil }
             return ContextUsage(
                 used: reply.usage.used,
                 window: ContextWindowLookup.openCodeWindow(conversation: conversation, modelID: reply.modelID),

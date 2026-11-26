@@ -46,7 +46,7 @@ struct LiuguangGuideSectionTests {
         #expect(LiuguangGuideText.gitReference(forAppVersion: "1.2") == "main")
         #expect(
             LiuguangGuideSection.whenSomethingFailsOnSSHHost.link(gitReference: "v1.2.11").absoluteString
-                == "https://github.com/yangzichao/Liuguang/blob/v1.2.11/docs/guides/session-management.md#when-something-fails-on-an-ssh-host"
+                == "https://github.com/barry0-0/liuguang_agents/blob/v1.2.11/docs/guides/session-management.md#when-something-fails-on-an-ssh-host"
         )
     }
 

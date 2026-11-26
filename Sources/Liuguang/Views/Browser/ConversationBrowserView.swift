@@ -72,7 +72,7 @@ struct ConversationBrowserView: View {
     }
 
     private var startableProjects: [ProjectConversationGroup] {
-        store.sidebarProjectGroups.filter(\.canStartNewSession)
+        store.recentProjectsForNewSession.filter(\.canStartNewSession)
     }
 
     private var focusedConversation: Conversation? {

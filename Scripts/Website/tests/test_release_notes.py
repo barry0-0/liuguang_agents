@@ -31,6 +31,7 @@ class ReleaseNotesTests(unittest.TestCase):
             self.assertIn('href="./release-notes.html" aria-current="page"', page)
             self.assertIn("release-notes.html", (output_directory / "sitemap.xml").read_text())
 
+    @unittest.skipIf(len(load_catalog()) < 2, "The single-release catalog has no unpublished successor to hide.")
     def test_website_hides_notes_merged_before_their_release_is_published(self):
         releases = load_catalog()
         unpublished_version, latest_published_version = releases[0]["version"], releases[1]["version"]
@@ -52,16 +53,18 @@ class ReleaseNotesTests(unittest.TestCase):
 
     def test_github_and_sparkle_receive_the_selected_versions_changes(self):
         releases = load_catalog()
-        selected = release_for_tag(releases, "v1.0.8")
+        selected_version = "v" + releases[-1]["version"]
+        selected = release_for_tag(releases, selected_version)
         with tempfile.TemporaryDirectory() as directory:
             output_directory = Path(directory)
-            prepare_release_notes("v1.0.8", output_directory)
+            prepare_release_notes(selected_version, output_directory)
             markdown = (output_directory / "release-notes.md").read_text()
             html = (output_directory / "Liuguang.html").read_text()
             self.assertIn(selected["title"]["en"], markdown)
             self.assertIn(escape(selected["title"]["en"]), html)
-            self.assertNotIn(releases[0]["title"]["en"], markdown)
-            self.assertNotIn(escape(releases[0]["title"]["en"]), html)
+            if len(releases) > 1:
+                self.assertNotIn(releases[0]["title"]["en"], markdown)
+                self.assertNotIn(escape(releases[0]["title"]["en"]), html)
             for section in selected["sections"]:
                 for item in section["items"]:
                     self.assertIn(item["en"], markdown)

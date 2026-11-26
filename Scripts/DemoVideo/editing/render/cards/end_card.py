@@ -13,7 +13,7 @@ TAGLINE_FONT = sf_pro(112, weight=700, optical_size=96)
 FOOTER_FONT = sf_pro(30, weight=500, optical_size=28)
 LINK_FONT = sf_pro(32, weight=620, optical_size=28)
 GRAY, WHITE, ORANGE = (150, 153, 165, 255), (255, 255, 255, 255), (255, 138, 31, 255)
-PHRASES = ["No account.", "No import.", "Nothing extra."]
+PHRASES = ["No account.", "No import."]
 PHRASE_GAP = 44
 FOOTER = "Free and open source  ·  MIT license"
 LINK = "barry0-0.github.io/liuguang_agents"
@@ -25,7 +25,7 @@ def sprites():
     return {
         "icon": icon,
         "phrases": [text_sprite(phrase, PHRASE_FONT, GRAY) for phrase in PHRASES],
-        "tagline": text_sprite("Just sessions.", TAGLINE_FONT, WHITE),
+        "tagline": text_sprite("Local sessions, one workspace.", TAGLINE_FONT, WHITE),
         "footer": text_sprite(FOOTER, FOOTER_FONT, GRAY),
         "link": text_sprite(LINK, LINK_FONT, ORANGE),
     }
@@ -49,7 +49,7 @@ def end_frame(time, duration, voice):
         paste_sprite(frame, sprite, x + sprite.width / 2, 480 + 14 * (1 - shown), opacity=shown * leaving)
         x += sprite.width + PHRASE_GAP
 
-    tagline_at = sentence_starts[3]
+    tagline_at = sentence_starts[2]
     shown = appear(time, tagline_at, 0.4)
     paste_sprite(frame, parts["tagline"], 960, 610, opacity=shown * leaving,
                  scale=0.92 + 0.08 * ease_out_back(min(1.0, max(0.0, (time - tagline_at) / 0.45))))
