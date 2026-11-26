@@ -47,7 +47,7 @@ def build_site(latest_published_release_tag=None):
         shutil.rmtree(script_directory)
     shutil.copytree(WEBSITE_SOURCE_DIRECTORY / "scripts", script_directory)
     version_script_imports(script_directory)
-    for image_name in ("session-overview.jpg", "native-terminal.jpg", "split-terminal.jpg", "remote-desktop-sessions.jpg", "tmux-keep-running.jpg", "tmux-close-choice.jpg"):
+    for image_name in ("liuguang-reader-v2.jpg", "liuguang-workspace-v2.jpg", "liuguang-split-v2.jpg", "liuguang-remote-v2.jpg", "liuguang-tmux-v2.jpg", "tmux-close-choice.jpg"):
         shutil.copy2(REPOSITORY_DIRECTORY / "docs/images" / image_name, asset_directory / image_name)
     for asset_path in ("Branding/SVG/mark.svg", "Branding/ThirdParty/Octicons/mark-github-16.svg", "Branding/PNG/app-icon-256.png", "website/social/social-preview.png"):
         shutil.copy2(REPOSITORY_DIRECTORY / asset_path, asset_directory / Path(asset_path).name)

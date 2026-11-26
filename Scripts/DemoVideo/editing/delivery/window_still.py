@@ -1,5 +1,5 @@
 """Cuts the app window out of the footage at one video moment, at the take's full 2x resolution, with rounded
-corners on the social card's paper color. docs/images/demo-split-view.jpg, the social card's image, is 28.0.
+corners on the social card's paper color. docs/images/liuguang-social-v2.jpg, the social card's image, is 28.0.
 
 Usage: python -m delivery.window_still <seconds> <output.jpg>
 """

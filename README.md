@@ -35,7 +35,7 @@ For people who prefer the command line. Liuguang adds a native Mac workspace aro
 - Hide the sessions of a CLI you don't use by unticking it in Settings.
 - Start or resume a session in its original CLI and project folder.
 
-![Sanitized product illustration of the Liuguang workspace with sample projects and agent sessions](docs/images/native-terminal.jpg)
+![Sanitized product illustration of the Liuguang workspace with sample projects and agent sessions](docs/images/liuguang-workspace-v2.jpg)
 
 ## New. Resume. Delete.
 
@@ -43,7 +43,7 @@ For people who prefer the command line. Liuguang adds a native Mac workspace aro
 - Read a conversation, then resume in its original CLI.
 - Delete saved sessions from the app.
 
-![Sanitized product illustration of the Liuguang conversation reader with sample sessions](docs/images/session-overview.jpg)
+![Sanitized product illustration of the Liuguang conversation reader with sample sessions](docs/images/liuguang-reader-v2.jpg)
 
 [Reading controls](docs/guides/session-management.md#preview-before-you-resume) cover text size, images, history paging, bookmarks with labels and tags (also from a tab, and searchable across sessions), the conversation map beside CLI tabs, and search limits.
 
@@ -53,7 +53,7 @@ For people who prefer the command line. Liuguang adds a native Mac workspace aro
 - Browse history and resume remotely.
 - Your code and CLI stay on the remote machine.
 
-![Sanitized product illustration of Liuguang local and test-host sessions](docs/images/remote-desktop-sessions.jpg)
+![Sanitized product illustration of Liuguang local and test-host sessions](docs/images/liuguang-remote-v2.jpg)
 
 Add a `~/.ssh/config` alias or `user@hostname` with `rsync` and the CLI installed. A host that asks for a password or a code logs in with **Connect…**. **Disconnect** in a host's **⋯** leaves it alone, sessions still listed, until you choose **Connect**. A host that needs you to sign in again every so often can run a **Sign-in command…** that asks for its PIN or code in a dialog. Session history is cached on your Mac. [SSH setup](docs/guides/session-management.md#ssh-hosts).
 
@@ -65,7 +65,7 @@ Add a `~/.ssh/config` alias or `user@hostname` with `rsync` and the CLI installe
 - Quit the app. The CLI stays alive in tmux.
 - Click the session to reattach to the same process.
 
-![Sanitized product illustration of a Liuguang tmux session kept running after closing its tab](docs/images/tmux-keep-running.jpg)
+![Sanitized product illustration of a Liuguang tmux session kept running after closing its tab](docs/images/liuguang-tmux-v2.jpg)
 
 The packaged app includes tmux for this Mac. Install tmux on each SSH host to survive disconnects there. Keep the machine awake. Plain shell tabs do not use tmux. [Terminal persistence](docs/guides/session-storage.md#terminal-persistence).
 
@@ -77,7 +77,7 @@ The packaged app includes tmux for this Mac. Install tmux on each SSH host to su
 - Keep an agent and shell side by side; drag the divider to resize.
 - Press **⌥⌘N** to choose a tab to show beside the current one.
 
-![Sanitized product illustration of Liuguang Open tabs and split view](docs/images/split-terminal.jpg)
+![Sanitized product illustration of Liuguang Open tabs and split view](docs/images/liuguang-split-v2.jpg)
 
 Tab recovery is controlled in **Settings → General**; split layouts reopen as separate tabs. [Tabs and split view](docs/guides/session-management.md#resume-branch-and-start-sessions).
 
