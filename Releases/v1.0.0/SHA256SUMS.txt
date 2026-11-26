@@ -1,2 +1,0 @@
-ef132dc0c7f31dffaffe48d753b6044c5db07e636894a1b2f1a4206cb0173184  /Users/barry/Desktop/Obsidian/cli_agent/Liuguang/dist/Liuguang.dmg
-ef132dc0c7f31dffaffe48d753b6044c5db07e636894a1b2f1a4206cb0173184  /Users/barry/Desktop/Obsidian/cli_agent/Liuguang/Releases/v1.0.0/Liuguang.dmg
