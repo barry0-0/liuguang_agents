@@ -65,7 +65,8 @@ struct PiAdapter: ConversationAdapter {
             projectPath: projectPath,
             suggestedTitle: title,
             updatedAt: ConversationMetadata.fileModificationDate(file),
-            sourceFile: file
+            sourceFile: file,
+            model: SessionModel(id: PiSessionCurrentModel.latest(in: file))
         )
     }
 

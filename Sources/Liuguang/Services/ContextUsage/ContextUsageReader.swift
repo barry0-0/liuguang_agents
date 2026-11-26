@@ -8,29 +8,41 @@ import Foundation
 enum ContextUsageReader {
     static func read(conversation: Conversation?) -> ContextUsage? {
         guard let conversation else { return nil }
-        let usage: ContextUsage?
         switch conversation.provider {
         case .codex:
-            usage = CodexContextUsage.read(file: conversation.sourceFile)
+            return CodexContextUsage.read(file: conversation.sourceFile)
         case .claude:
-            usage = ClaudeContextUsage.read(file: conversation.sourceFile)
+            return ClaudeContextUsage.read(file: conversation.sourceFile)
+                .flatMap { usage in
+                    ContextUsage(
+                        used: usage.used,
+                        window: ContextWindowLookup.claudeWindow(conversation: conversation),
+                        reportedPercent: usage.reportedPercent
+                    )
+                }
         case .pi:
-            usage = PiContextUsage.read(file: conversation.sourceFile)
+            return PiContextUsage.read(file: conversation.sourceFile)
+                .flatMap { usage in
+                    ContextUsage(
+                        used: usage.used,
+                        window: ContextWindowLookup.piWindow(conversation: conversation),
+                        reportedPercent: usage.reportedPercent
+                    )
+                }
         case .opencode:
-            usage = OpenCodeContextUsage.read(databaseFile: conversation.sourceFile, sessionID: conversation.sessionID)
-        case .kiro:
-            usage = KiroContextUsage.read(file: conversation.sourceFile)
-        case .antigravity:
-            usage = AntigravityContextUsage.read(databaseFile: conversation.sourceFile)
-        }
-        guard let usage else { return nil }
-        guard let window = usage.window else {
+            guard let reply = OpenCodeContextUsage.readReply(
+                databaseFile: conversation.sourceFile,
+                sessionID: conversation.sessionID
+            ) else { return nil }
             return ContextUsage(
-                used: usage.used,
-                window: ContextWindowLookup.window(for: conversation.provider, conversation: conversation),
-                reportedPercent: usage.reportedPercent
+                used: reply.usage.used,
+                window: ContextWindowLookup.openCodeWindow(conversation: conversation, modelID: reply.modelID),
+                reportedPercent: reply.usage.reportedPercent
             )
+        case .kiro:
+            return KiroContextUsage.read(file: conversation.sourceFile)
+        case .antigravity:
+            return AntigravityContextUsage.read(databaseFile: conversation.sourceFile)
         }
-        return usage
     }
 }

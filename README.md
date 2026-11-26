@@ -5,8 +5,8 @@
 <h1 align="center">Liuguang</h1>
 
 <p align="center">
-  <b>Nothing extra. Just sessions.</b><br>
-  Multiple agents, all your sessions in one place. Your familiar command line, with native tabs.
+  <b>本地会话，统一工作台。</b><br>
+  Claude Code、Codex、Pi 等 CLI 会话集中管理；保留原生终端体验。
 </p>
 
 <p align="center">

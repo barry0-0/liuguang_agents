@@ -6,6 +6,17 @@ import SQLite3
 /// `ContextWindowLookup` reads the one its model cache gives.
 enum OpenCodeContextUsage {
     static func read(databaseFile: URL, sessionID: String) -> ContextUsage? {
+        readReply(databaseFile: databaseFile, sessionID: sessionID)?.usage
+    }
+
+    /// The reply OpenCode wrote last, with the model it used, whose window `ContextWindowLookup` reads from the
+    /// model cache.
+    struct Reply {
+        let usage: ContextUsage
+        let modelID: String?
+    }
+
+    static func readReply(databaseFile: URL, sessionID: String) -> Reply? {
         guard FileManager.default.fileExists(atPath: databaseFile.path) else { return nil }
         var database: OpaquePointer?
         guard sqlite3_open_v2(databaseFile.path, &database, SQLITE_OPEN_READONLY, nil) == SQLITE_OK, let database else {
@@ -25,7 +36,7 @@ enum OpenCodeContextUsage {
         defer { sqlite3_finalize(statement) }
         sqlite3_bind_text(statement, 1, sessionID, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
 
-        var result: ContextUsage?
+        var result: Reply?
         while sqlite3_step(statement) == SQLITE_ROW {
             guard let bytes = sqlite3_column_text(statement, 0) else { continue }
             let data = Data(String(cString: bytes).utf8)
@@ -36,7 +47,10 @@ enum OpenCodeContextUsage {
             let cache = tokens["cache"] as? [String: Any]
             let cacheRead = cache?["read"] as? Int ?? 0
             let cacheWrite = cache?["write"] as? Int ?? 0
-            result = ContextUsage(used: input + cacheRead + cacheWrite, window: nil)
+            result = Reply(
+                usage: ContextUsage(used: input + cacheRead + cacheWrite, window: nil),
+                modelID: object["modelID"] as? String
+            )
             break
         }
         return result

@@ -6,23 +6,6 @@ import Foundation
 /// `CLAUDE_CODE_MAX_CONTEXT_TOKENS` in its settings, Pi and OpenCode from their model catalogs, and Antigravity
 /// from the model its session used.
 enum ContextWindowLookup {
-    static func window(for provider: ConversationProvider, conversation: Conversation?) -> Int? {
-        switch provider {
-        case .codex:
-            return nil
-        case .claude:
-            return claudeWindow(conversation: conversation)
-        case .pi:
-            return piWindow(conversation: conversation)
-        case .opencode:
-            return openCodeWindow(conversation: conversation)
-        case .kiro:
-            return nil
-        case .antigravity:
-            return nil
-        }
-    }
-
     /// Claude Code keeps the window it assumes in `CLAUDE_CODE_MAX_CONTEXT_TOKENS`, which its settings' `env` may
     /// set, and its `model` may carry the `[1m]` suffix that names the larger window.
     static func claudeWindow(
@@ -57,28 +40,31 @@ enum ContextWindowLookup {
     ) -> Int? {
         guard let conversation,
             let model = conversation.model?.id,
-            let catalog = jsonObject(at: catalogFile),
-            let providers = catalog["providers"] as? [String: Any]
+            let catalog = jsonObject(at: catalogFile)
         else { return nil }
+        guard let providers = catalog["providers"] as? [String: Any] else { return piFallbackWindow }
         for provider in providers.values {
             guard let models = (provider as? [String: Any])?["models"] as? [[String: Any]] else { continue }
             for entry in models where entry["id"] as? String == model {
                 if let window = entry["contextWindow"] as? Int, window > 0 { return window }
             }
         }
-        return nil
+        return piFallbackWindow
     }
+
+    /// The window Pi assumes for a model its catalog does not name, such as one a gateway serves under a name of its
+    /// own.
+    static let piFallbackWindow = 128_000
 
     /// OpenCode names each model's window in the cache it keeps, under the provider and model the session used.
     static func openCodeWindow(
         conversation: Conversation?,
-        catalogFile: URL = ContextWindowLookup.openCodeCatalogFile
+        catalogFile: URL = ContextWindowLookup.openCodeCatalogFile,
+        modelID: String? = nil
     ) -> Int? {
-        guard let conversation,
-            let model = conversation.model?.id,
-            let catalog = jsonObject(at: catalogFile),
-            let providers = catalog as? [String: Any]
-        else { return nil }
+        guard let model = modelID ?? conversation?.model?.id else { return nil }
+        guard let catalog = jsonObject(at: catalogFile) else { return nil }
+        guard let providers = catalog as? [String: Any] else { return openCodeFallbackWindow }
         for provider in providers.values {
             guard let models = (provider as? [String: Any])?["models"] as? [String: Any] else { continue }
             for (identifier, entry) in models {
@@ -91,8 +77,12 @@ enum ContextWindowLookup {
                 }
             }
         }
-        return nil
+        return openCodeFallbackWindow
     }
+
+    /// The window OpenCode assumes for a model its cache does not name, such as one a plugin serves under a name of
+    /// its own.
+    static let openCodeFallbackWindow = 128_000
 
     private static func jsonObject(at file: URL) -> [String: Any]? {
         guard let data = try? Data(contentsOf: file) else { return nil }
