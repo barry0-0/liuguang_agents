@@ -96,7 +96,7 @@ jobs:
           codesign --verify --deep --strict dist/Liuguang.app
           codesign --verify --strict dist/Liuguang.app/Contents/Resources/Tmux/bin/tmux
           test "$(plutil -extract LiuguangSourceRevision raw dist/Liuguang.app/Contents/Info.plist)" = "$GITHUB_SHA"
-          test "$(plutil -extract CFBundleDisplayName raw dist/Liuguang.app/Contents/Info.plist)" = "Liuguang"
+          test "$(plutil -extract CFBundleDisplayName raw dist/Liuguang.app/Contents/Info.plist)" = "流光"
           test "$(plutil -extract CFBundleVersion raw dist/Liuguang.app/Contents/Info.plist)" = "$((GITHUB_RUN_NUMBER + 19))"
           test "$(plutil -extract CFBundleShortVersionString raw dist/Liuguang.app/Contents/Info.plist)" = "$APP_VERSION"
           codesign --display --verbose=2 dist/Liuguang.app 2>&1 | grep -F "Authority=Developer ID Application:"
