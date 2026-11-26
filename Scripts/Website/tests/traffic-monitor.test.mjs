@@ -30,7 +30,7 @@ test("local previews, unrelated GitHub projects, errors, and redirect pages neve
 });
 
 test("the homepage aliases and Guide use stable page names", async () => {
-  for (const [path, page] of [["/Liuguang", "home"], ["/Liuguang/index.html", "home"], ["/Liuguang/guide.html", "guide"]]) {
+  for (const [path, page] of [["/liuguang_agents", "home"], ["/liuguang_agents/index.html", "home"], ["/liuguang_agents/guide.html", "guide"]]) {
     const browser = createBrowser(`https://barry0-0.github.io${path}`);
     await recordWebsitePageView(browser);
     assert.equal(new URL(browser.requests[0].address).searchParams.get("page"), page);

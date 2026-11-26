@@ -1,9 +1,9 @@
 export const publishedWebsiteOrigin = "https://barry0-0.github.io";
 export const publishedPages = new Map([
-  ["/Liuguang", "home"],
-  ["/Liuguang/", "home"],
-  ["/Liuguang/index.html", "home"],
-  ["/Liuguang/guide.html", "guide"],
+  ["/liuguang_agents", "home"],
+  ["/liuguang_agents/", "home"],
+  ["/liuguang_agents/index.html", "home"],
+  ["/liuguang_agents/guide.html", "guide"],
 ]);
 export const trafficSourceCategories = new Set([
   "direct", "internal", "github", "google", "bing", "duckduckgo", "baidu",
