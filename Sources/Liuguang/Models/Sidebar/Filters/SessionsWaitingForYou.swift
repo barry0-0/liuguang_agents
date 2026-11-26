@@ -1,0 +1,6 @@
+import Foundation
+
+struct SessionsWaitingForYou: Equatable {
+    var conversationIDs: Set<String> = []
+    var terminalIDs: Set<UUID> = []
+}

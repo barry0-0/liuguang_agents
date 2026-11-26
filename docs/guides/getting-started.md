@@ -1,0 +1,74 @@
+# Find and resume AI coding sessions on macOS
+
+[Project home](../../README.md) · [Documentation](../README.md) · [Online quick guide](https://barry0-0.github.io/liuguang_agents/guide.html)
+
+Liuguang reads your existing CLI history and resumes sessions in their original project folders. It is free, open source, and requires no Liuguang account.
+
+## Install
+
+You need **macOS 14 Sonoma or later on Apple Silicon**, plus at least one installed CLI with its usual provider authentication.
+
+| CLI | Executable |
+| --- | --- |
+| Claude Code | `claude` |
+| OpenAI Codex CLI | `codex` |
+| Google Antigravity CLI | `agy` |
+| Kiro CLI | `kiro-cli` |
+| OpenCode | `opencode` |
+| Pi | `pi` |
+
+1. Download the signed, notarized [Liuguang.dmg](https://github.com/barry0-0/liuguang_agents/releases/latest/download/Liuguang.dmg).
+2. Open the disk image and drag **Liuguang** into **Applications**.
+3. Launch the app. Existing local sessions appear under **This Mac**, grouped by project.
+
+On first launch, a short tour points out your sessions, **New session**, and SSH hosts beside the controls themselves. After that, tips show the first time you need them: reading a session points out **Resume** and find, reading another points out its right-click menu and search, and your first tabs point out tab groups, hiding the sidebar, **Keep running**, **Open tabs**, and split view. Each shows once; skip any of them. To see the tour again, choose **Help → Take the Tour**, or **Take the tour** in **Settings → Help**; the tips then show again too, the next time you reach each part.
+
+Each time Liuguang opens after that first launch, the bottom of the sidebar shows a random tip about something you may not have tried. → shows another, × hides it until the next launch, and **Show a tip in the sidebar each time Liuguang opens** in **Settings → Help** turns tips off for good. Right-clicking the tip offers **Don't show tips** too.
+
+Sparkle delivers subsequent app updates. Your CLI provider's plans and charges still apply.
+
+## Resume your first session
+
+1. Choose **Projects** in the sidebar, then search a project name or path, session title, session ID, or something said in the session.
+2. Select a supported session to read its conversation preview.
+3. Double-click a session or choose **Resume** to open its CLI in the original working directory.
+
+Choose **Open tabs** to switch between this window's terminals, grouped by project like the tab bar; each group's heading shows its project and, for SSH, its host. Switching views keeps each list's search and scroll position. A session whose CLI is already running opens on that process with one click. All six support local browsing, preview, and resume. See the [full capability table](../../README.md#supported-clis).
+
+Click the new-window button in the preview's reading toolbar to open a dedicated reading window. Adjust text with **A− / A+**, switch between a readable column and the full window width, jump to the first or latest message, bookmark messages with **⌘D** and go between them with **⌘'** and **⇧⌘'**, also from a session's tab, where **View → Show Conversation Map** draws the whole conversation beside the terminal, and copy code without starting the CLI. [Reading controls and position memory](session-management.md#preview-before-you-resume).
+
+The **+** at the top of the sidebar, or **⌘N**, opens **New session**: start an installed CLI in a project folder, or choose **Terminal** to open your login shell instead. A project's **+** menu offers the same. Both run in SwiftTerm's native AppKit terminal, or in [Ghostty](https://ghostty.org)'s if you choose it under **Settings → Appearance → Terminal → Engine**. Project tab groups and [keyboard shortcuts](session-management.md#tab-keyboard-shortcuts) help you switch between open terminals; **Settings → Appearance → Terminal** also lets you import your iTerm2 colors.
+
+## Use another machine over SSH
+
+The remote machine needs `rsync` and Claude Code, Codex, Antigravity, Kiro CLI, OpenCode, or Pi installed. If it asks for a password or a code, click **Connect…** on its heading to log in once.
+
+1. Choose **Add SSH host…** in the sidebar.
+2. Enter a `~/.ssh/config` alias or `user@hostname`.
+3. Browse its projects and resume a session on that host.
+
+Antigravity and OpenCode SSH hosts also need `python3`; deleting Antigravity sessions there needs `lsof`.
+
+The code and CLI run remotely. Supported session files are cached on your Mac. This is terminal access, not graphical remote desktop control. [SSH setup and limits](session-management.md#ssh-hosts).
+
+## Keep work running with tmux
+
+The app includes tmux for this Mac; no Homebrew or separate tmux install is needed. Direct `swift run` builds need **tmux 3.3+**. SSH hosts need their own tmux before launching the session. Close a local tab with **Keep running**, then select its session to reattach. Quitting the app also leaves tmux sessions running; remote tmux sessions survive SSH disconnections, such as your Mac sleeping, and their tabs reconnect on their own once the host answers again.
+
+Keep the machine doing the work awake. Without tmux, closing a terminal tab ends its process. Plain project terminals do not use tmux. [Terminal persistence details](session-storage.md#terminal-persistence).
+
+## If a session or CLI is missing
+
+- In **Projects**, clear the filters, then click the affected host's refresh button.
+- Confirm the CLI executable works in your usual terminal. New session menus offer only installed CLIs.
+- Start one conversation in the CLI so it has history for the app to discover. Kiro sessions need at least one message; OpenCode archived sessions are excluded. Subagents' sessions are hidden until you turn them on in **Settings > General**; then expand the session that started them with the chevron before its icon.
+- Check [session locations and supported environment variables](session-storage.md#session-locations). Remote history follows the same settings in the host's login shell; Antigravity always uses its standard folder.
+- For SSH, confirm that `ssh <host>` works in Terminal, and check `rsync` and the remote CLI. A host that asks for a password or a code needs **Connect…** on its heading.
+
+## Appearance, privacy, and help
+
+Open **Settings** in the sidebar or press ⌘,. **General > Interface language** offers **Follow System** (default), **English**, and **Chinese**. The interface updates immediately and remembers your choice. Appearance and terminal settings also update open terminals in place. **Permissions** shows what macOS allows Liuguang, such as notifications.
+
+Liuguang reads local CLI files and caches supported remote history over SSH. It does not upload conversations to a Liuguang service. The CLIs still communicate with their providers. Sparkle checks for app updates through a Liuguang update server that counts checks per day and app version, without storing IP addresses or identifiers. After a crash, Liuguang offers to report it with a GitHub issue or an email filled in from the crash report macOS saved; nothing is sent unless you send it. [Storage and privacy](session-storage.md).
+
+Open **Settings → Help** or **Help → Liuguang Help** for a brief feature overview, remote host setup, what to check when a session is missing, and every keyboard shortcut. To send feedback, use **Send feedback** at the bottom of **Settings → General** (or **Help → Send Feedback**), which opens the website's feedback form with your app and macOS versions, or **Report an issue** beside it. Install **tmux on the remote host** so sessions survive disconnections or closing a tab. The [website Guide](https://barry0-0.github.io/liuguang_agents/guide.html) covers the same features and SSH setup, with a feedback form, issue reporting, and email in its [Feedback section](https://barry0-0.github.io/liuguang_agents/guide.html#feedback).

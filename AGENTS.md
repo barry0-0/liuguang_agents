@@ -1,0 +1,58 @@
+# Working on Liuguang
+
+## Feature requirements
+
+Before changing behavior, UI, or a hot path, read the matching files in [feature requirements](docs/requirements/README.md). A change that contradicts a line there is a regression unless the same pull request updates that line and says why. New features add a line; performance changes rerun the named measurement. Don't bring back anything in [removed on purpose](docs/requirements/removed-on-purpose.md) without a decision that answers its reason.
+
+## SSH testing from a Mac
+
+Contributors develop and run Liuguang on macOS. Use a disposable local Ubuntu 24.04 VM in Multipass as the standard Linux SSH test target; follow [SSH development testing](docs/development/ssh-testing.md) for setup and the manual checklist. Use the `liuguang-test` SSH alias so instructions are consistent across contributors and coding agents.
+
+For SSH behavior changes, run the relevant checklist with disposable sessions and record the host OS, CLI versions, and results. Also test a macOS target when changing remote shell commands, paths, or platform-dependent tools. To test SSH to a Mac, install [Tart](https://tart.run) and use a disposable macOS VM with the `liuguang-test-macos` alias, as [macOS target coverage](docs/development/ssh-testing.md#macos-target-coverage) describes; a separate macOS account or another Mac also works. Simulated tests and `make verify` do not establish live SSH coverage; explicitly report any untested host or provider. SSH to your everyday Mac account accesses real session files, so use the isolated target for deletion tests.
+
+## Comments
+
+Code says what it does and why through its names, types, and structure. Don't narrate it in comments. A comment stays only for:
+
+- a license header;
+- non-obvious behavior an outside tool forces and we can't change (ssh, tmux, a shell, macOS, a CLI's file format), checked and said in a line or two;
+- a lint suppression whose rule is wrong for that line;
+- an issue link for a constraint the code can't express.
+
+When code needs a comment to be understood, rename, extract, or retype it instead. No `// MARK:` banners, commented-out code, or internal tracking numbers such as `PERF-88` in code; those belong in [Performance](docs/development/performance.md) and the requirements.
+
+## Checks before you push
+
+App release Actions run when a version tag is pushed. Website changes pushed to `main` run the independent website tests, build, and deployment; the website can also be deployed manually from `main`. Pull requests and other branch pushes do not run CI, and website Actions do not replace the required local app checks. Developers and coding agents must complete the checks locally:
+
+```sh
+make verify
+```
+
+Run it on the final commit before opening or updating a pull request, merging, or pushing to `main`. Rerun it after code changes, conflict resolution, or rebasing. Do not merge or push failing checks, or substitute a GitHub Actions run for local verification.
+
+Use the PR template to attach the tested commit SHA, verification date, macOS and Swift versions, exact commands and results, and a concise log summary. Update that evidence whenever the PR head changes; identify any failures or checks that were not run explicitly. Include relevant manual checks for behavior changes. For direct pushes to `main`, report the same evidence in the delivery summary.
+
+`make verify` runs `make lint` (swift format, see [Formatting and lint](docs/development/build-and-release.md#formatting-and-lint)) and `make dead-code-check` (Periphery, see [Dead code](docs/development/build-and-release.md#dead-code)), fails if git tracks coding agent state or skills (`.claude/`, `.agents/`, `CLAUDE.md`, and the like) or machine-local output, checks release-note style, runs the website tests and build with the traffic and feedback Worker tests, the update feed Worker tests, `make test`, and `make localization-check`, builds `dist/Liuguang.app`, and opens it for 8 seconds to check it keeps running. Reopening the last quit's tabs is off for that launch, so it starts no CLIs. After editing workflows, also run `actionlint` locally.
+
+Run `make verify` again on the exact commit you tag for a release. The app release workflow validates the website, reruns the Swift tests and localization checks, then signs and publishes the app. The separate website workflow tests and deploys current `main` without creating an app release; see [website deployment](docs/development/website.md#deployment-and-discovery).
+
+For a faster loop while working, `make format` formats Swift, `make check` lints and compiles the development build and `make test` runs the tests against the bundled tmux runtime. After changing UI copy, run `make localization` and add the missing translations; see [Interface localization](docs/development/localization.md).
+
+## Release notes before tagging
+
+Before creating or pushing any version tag, follow the [release-note writing standard](docs/development/release-notes.md). This is a required editorial check, alongside the build checks.
+
+- Choose the version first, as [Choosing the version](docs/development/release-notes.md#choosing-the-version) says: major for what users must act on or would lose, minor for a new capability, patch for fixes and refinements.
+- Aim for 1–3 bullets; use at most 5. Each bullet describes one concrete change a user will notice. English bullets have at most 20 words; Simplified Chinese bullets have at most 60 characters.
+- Compare each claim with the changes since the previous release. Preserve provider/host limitations and required user actions. Only claim performance gains supported by evidence.
+- Remove marketing, AI-style filler, implementation details, repeated points, and vague claims such as “bug fixes and improvements.” Group minor fixes into one final Fixed bullet, exactly “Small bug fixes.” / “修复了一些小问题。” Read both languages for meaning and brevity.
+- Record the previous tag, candidate commit, and evidence for the bullets in the release PR or delivery summary. Do not treat passing the automated style check as a factual review.
+
+Run `make release-check RELEASE_TAG=vX.Y.Z` on the exact commit to be tagged. This requires matching notes at the top of the catalog, previews both languages, and runs `make verify`. Do not tag until the editorial review and checks pass. Recheck after any change to the candidate commit.
+
+## More
+
+- [Build and release](docs/development/build-and-release.md): Make commands, the bundled tmux runtime, CI, and release signing.
+- [Source layout](docs/development/source-layout.md): where each feature lives.
+- [Performance](docs/development/performance.md): known hotspots and the status of each optimization. Update it when performance work lands.

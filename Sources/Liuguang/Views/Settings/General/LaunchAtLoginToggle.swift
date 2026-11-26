@@ -1,0 +1,42 @@
+import AppKit
+import ServiceManagement
+import SwiftUI
+
+struct LaunchAtLoginToggle: View {
+    @ObservedObject var settingsStore: LaunchAtLoginSettingsStore
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Toggle(
+                "Launch 流光 at login",
+                isOn: Binding(
+                    get: { settingsStore.launchesAtLogin },
+                    set: { settingsStore.setLaunchesAtLogin($0) }
+                )
+            )
+            .accessibilityIdentifier("settings.launchAtLogin")
+
+            if settingsStore.status == .requiresApproval {
+                Text("Allow 流光 in macOS Login Items to finish enabling automatic launch.")
+                    .font(ThemeFont.caption)
+                    .foregroundStyle(ThemePalette.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+                Button("Open Login Items Settings") {
+                    settingsStore.openSystemSettings()
+                }
+                .buttonStyle(QuietBorderedButtonStyle())
+            }
+
+            if let errorDescription = settingsStore.errorDescription {
+                Text("Could not change launch at login: \(errorDescription)")
+                    .font(ThemeFont.caption)
+                    .foregroundStyle(ThemePalette.errorText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .onAppear { settingsStore.refreshStatus() }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            settingsStore.refreshStatus()
+        }
+    }
+}

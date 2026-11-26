@@ -1,0 +1,90 @@
+import Foundation
+
+/// The tmux commands that find text in a tmux session's history with copy mode's own search, which highlights the
+/// matches and scrolls the selected one into view, and what they print. tmux finds the text as typed, with no patterns.
+/// It ignores the case of A to Z only in text without a capital one, and matches other letters as typed, so the search
+/// is for the text with A to Z made lowercase, and ignores their case as the terminal's own find does. Each search
+/// leaves copy mode's cursor at the start of the selected match, in emacs and vi `mode-keys` alike:
+///
+/// - Backward search selects the nearest match that starts before the cursor, so from a match's start it moves to the
+///   one printed before it, wrapping from the oldest to the newest (`wrap-search`, on by default).
+/// - Forward search from a match's start selects that match in emacs keys and the next one in vi keys, and leaves the
+///   cursor past that match's end in emacs keys. So twice forward, then once back, selects the next newer match in
+///   either.
+///
+/// tmux counts every match only for the first search of a copy mode or a search for other text; a search for the same
+/// text again counts only the screen's and keeps the count it had. Any copy mode command but a search drops the count,
+/// so no other command comes between a search's steps, and a new search leaves copy mode and enters it again first.
+/// tmux 3.4 counts nothing, and only says whether the search found any; 3.6a and 3.7c count.
+enum TmuxHistorySearchCommands {
+    static let countMarker = "liuguang-find-count"
+    static let countFormat = "\(countMarker) #{search_count} #{search_count_partial} #{search_present}"
+
+    static func startingSearch(for query: String, inSession sessionName: String) -> [String] {
+        let pane = paneTarget(sessionName)
+        var commands: [String] = ["if-shell", "-F", "-t", pane, "#{pane_in_mode}", "send-keys -t \(pane) -X cancel", ";"]
+        commands += ["copy-mode", "-t", pane, ";"]
+        commands += copyModeCommand("history-bottom", pane: pane)
+        commands += [";"]
+        commands += copyModeCommand("end-of-line", pane: pane)
+        commands += [";"]
+        commands += searchCommand("search-backward-text", for: query, pane: pane)
+        commands += [";"]
+        commands += printingCount(pane: pane)
+        return commands
+    }
+
+    static func movingSearch(_ direction: TerminalFindDirection, for query: String, inSession sessionName: String) -> [String] {
+        let pane = paneTarget(sessionName)
+        let backward = searchCommand("search-backward-text", for: query, pane: pane)
+        let forward = searchCommand("search-forward-text", for: query, pane: pane)
+        let moves =
+            switch direction {
+            case .towardOlder: backward
+            case .towardNewer: forward + [";"] + forward + [";"] + backward
+            }
+        return moves + [";"] + printingCount(pane: pane)
+    }
+
+    static func endingSearch(inSession sessionName: String) -> [String] {
+        copyModeCommand("cancel", pane: paneTarget(sessionName))
+    }
+
+    static func printedCount(inOutput output: String) -> (total: Int?, isPartial: Bool, foundAny: Bool?)? {
+        guard let line = output.split(whereSeparator: \.isNewline).last(where: { $0.hasPrefix(countMarker) }) else { return nil }
+        // An empty field is a field: tmux 3.4 prints `<marker>   1`.
+        let fields = line.dropFirst(countMarker.count + 1).split(separator: " ", omittingEmptySubsequences: false)
+        func field(_ index: Int) -> Substring? { fields.indices.contains(index) ? fields[index] : nil }
+        let foundAny: Bool? =
+            switch field(2) {
+            case "1": true
+            case "0": false
+            default: nil
+            }
+        return (field(0).flatMap { Int($0) }, field(1) == "1", foundAny)
+    }
+
+    /// `=name:` is exactly that session's pane; a bare `=name` is no pane, and a plain name could match another
+    /// session whose name starts with it.
+    private static func paneTarget(_ sessionName: String) -> String {
+        "=\(sessionName):"
+    }
+
+    private static func copyModeCommand(_ command: String, argument: String? = nil, pane: String) -> [String] {
+        ["send-keys", "-t", pane, "-X", command] + (argument.map { [ThisMacTmuxServer.escapingCommandSeparator($0)] } ?? [])
+    }
+
+    private static func searchCommand(_ command: String, for query: String, pane: String) -> [String] {
+        copyModeCommand(command, argument: lowercasingAToZ(query), pane: pane)
+    }
+
+    static func lowercasingAToZ(_ text: String) -> String {
+        let capitals: ClosedRange<Unicode.Scalar> = "A"..."Z"
+        let scalars = text.unicodeScalars.map { capitals.contains($0) ? Unicode.Scalar($0.value + 32)! : $0 }
+        return String(String.UnicodeScalarView(scalars))
+    }
+
+    private static func printingCount(pane: String) -> [String] {
+        ["display-message", "-p", "-t", pane, countFormat]
+    }
+}

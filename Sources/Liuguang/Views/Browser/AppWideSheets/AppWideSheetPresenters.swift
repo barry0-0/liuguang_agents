@@ -1,0 +1,49 @@
+import AppKit
+
+@MainActor
+enum AppWideSheetPresenters {
+    private struct Registration {
+        weak var window: NSWindow?
+        let isShowingSettings: () -> Bool
+        let show: (AppWideSheet) -> Void
+    }
+
+    private static var registrations: [Registration] = []
+    private static var sheetForNewWorkspaceWindow: AppWideSheet?
+
+    static func register(
+        _ window: NSWindow,
+        isShowingSettings: @escaping () -> Bool,
+        show: @escaping (AppWideSheet) -> Void
+    ) {
+        unregister(window)
+        registrations.append(Registration(window: window, isShowingSettings: isShowingSettings, show: show))
+    }
+
+    static func unregister(_ window: NSWindow) {
+        registrations.removeAll { $0.window == nil || $0.window === window }
+    }
+
+    static func show(_ sheet: AppWideSheet, openWorkspaceWindow: () -> Void) {
+        registrations.removeAll { $0.window == nil }
+        let frontmostRegistration = NSApp.orderedWindows.lazy
+            .filter(\.isVisible)
+            .compactMap { window in registrations.first { $0.window === window } }
+            .first
+        // A closed window can stay registered until it is released.
+        let minimizedRegistration = registrations.first { $0.window?.isMiniaturized == true }
+        guard let registration = frontmostRegistration ?? minimizedRegistration, let window = registration.window else {
+            sheetForNewWorkspaceWindow = sheet
+            openWorkspaceWindow()
+            return
+        }
+        if window.isMiniaturized { window.deminiaturize(nil) }
+        window.makeKeyAndOrderFront(nil)
+        if window.attachedSheet == nil || registration.isShowingSettings() { registration.show(sheet) }
+    }
+
+    static func takeSheetForNewWorkspaceWindow() -> AppWideSheet? {
+        defer { sheetForNewWorkspaceWindow = nil }
+        return sheetForNewWorkspaceWindow
+    }
+}

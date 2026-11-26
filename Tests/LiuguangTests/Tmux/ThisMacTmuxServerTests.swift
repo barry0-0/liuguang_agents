@@ -1,0 +1,134 @@
+import AppKit
+import Carbon.HIToolbox
+import Testing
+
+@testable import Liuguang
+
+struct ThisMacTmuxServerTests {
+    private let server = ThisMacTmuxServer(executablePath: "/opt/homebrew/bin/tmux", environment: [:])
+
+    @Test func wrapsTheCLIInASessionOfTheAppsOwnServer() throws {
+        let cli = NativeCLICommand(
+            executablePath: "/Users/me/.local/bin/claude",
+            arguments: ["--resume", "abc"],
+            workingDirectory: "/Users/me/paper",
+            environment: ["COLORTERM=truecolor", "PATH=/usr/bin:/bin", "TERM=xterm-256color", "TMUX=/tmp/tmux-501/default,1,0"]
+        )
+
+        let command = server.command(attachingTo: "liuguang-claude-abc", running: cli)
+
+        #expect(command.executablePath == "/opt/homebrew/bin/tmux")
+        #expect(Array(command.arguments.prefix(7)) == ["-L", "liuguang", "-f", "/dev/null", "-u", "-T", "RGB,hyperlinks"])
+        for option in ThisMacTmuxServer.globalOptions {
+            #expect(command.arguments.containsSubsequence(["set-option", "-gq", option.name, option.value, ";"]))
+        }
+        for hook in ThisMacTmuxServer.globalHooks {
+            #expect(command.arguments.containsSubsequence(["set-hook", "-g", hook.name, hook.command, ";"]))
+        }
+        let sessionStart = try #require(command.arguments.firstIndex(of: "new-session"))
+        #expect(
+            Array(command.arguments[sessionStart...]) == [
+                "new-session", "-A", "-s", "liuguang-claude-abc",
+                "-e", "COLORTERM=truecolor", "-e", "PATH=/usr/bin:/bin",
+                "--", "/Users/me/.local/bin/claude", "--resume", "abc",
+            ])
+        #expect(command.workingDirectory == "/Users/me/paper")
+        #expect(command.environment == ["COLORTERM=truecolor", "PATH=/usr/bin:/bin", "TERM=xterm-256color"])
+    }
+
+    /// A plain terminal's pane keeps as many lines as the tab's terminal would. tmux gives a pane the limit in force as
+    /// it starts, so the server's is raised for the new session only, and set on it for tmux 3.7 on, which applies a
+    /// session's limit to its pane again as it changes.
+    @Test func aPlainTerminalsSessionKeepsMoreHistoryAndOtherSessionsKeepTmuxsDefault() throws {
+        let shell = NativeCLICommand(executablePath: "/bin/zsh", arguments: ["-l"], workingDirectory: "/Users/me/paper", environment: [])
+
+        let arguments = server.command(attachingTo: "liuguang-terminal-a1b2c3d4", running: shell, historyLimit: 10_000).arguments
+
+        let sessionStart = try #require(arguments.firstIndex(of: "new-session"))
+        #expect(Array(arguments[(sessionStart - 5)..<sessionStart]) == ["set-option", "-gq", "history-limit", "10000", ";"])
+        #expect(
+            Array(arguments.suffix(15)) == [
+                "--", "/bin/zsh", "-l",
+                ";", "set-option", "-q", "-t", "=liuguang-terminal-a1b2c3d4:", "history-limit", "10000",
+                ";", "set-option", "-gq", "history-limit", "2000",
+            ])
+        #expect(!server.command(attachingTo: "liuguang-claude-abc", running: shell).arguments.contains("history-limit"))
+    }
+
+    @Test func aCLIWithoutArgumentsRunsThroughEnvRatherThanTheShell() {
+        let cli = NativeCLICommand(executablePath: "/Users/me/my tools/codex", arguments: [], workingDirectory: "/tmp", environment: [])
+
+        let arguments = server.command(attachingTo: "liuguang-codex-new-1a2b3c4d", running: cli).arguments
+
+        #expect(Array(arguments.suffix(3)) == ["--", "/usr/bin/env", "/Users/me/my tools/codex"])
+    }
+
+    @Test func anArgumentEndingInASemicolonStaysOneArgument() {
+        let cli = NativeCLICommand(
+            executablePath: "/bin/claude",
+            arguments: ["say;", ";", "a;b"],
+            workingDirectory: "/tmp",
+            environment: ["PROMPT_COMMAND=history -a;"]
+        )
+
+        let arguments = server.command(attachingTo: "liuguang-claude-abc", running: cli).arguments
+
+        #expect(arguments.contains("PROMPT_COMMAND=history -a\\;"))
+        #expect(Array(arguments.suffix(3)) == ["say\\;", "\\;", "a;b"])
+    }
+
+    @Test func tmuxVersionsFromThreePointThreeOnAreSupported() {
+        #expect(ThisMacTmuxVersionCheck.isSupported(versionOutput: "tmux 3.6a\n"))
+        #expect(ThisMacTmuxVersionCheck.isSupported(versionOutput: "tmux 3.3"))
+        #expect(ThisMacTmuxVersionCheck.isSupported(versionOutput: "tmux next-3.8"))
+        #expect(ThisMacTmuxVersionCheck.isSupported(versionOutput: "tmux 10.0"))
+        #expect(!ThisMacTmuxVersionCheck.isSupported(versionOutput: "tmux 3.2a"))
+        #expect(!ThisMacTmuxVersionCheck.isSupported(versionOutput: "tmux 2.9"))
+        #expect(!ThisMacTmuxVersionCheck.isSupported(versionOutput: "tmux master"))
+        #expect(!ThisMacTmuxVersionCheck.isSupported(versionOutput: ""))
+    }
+
+    @Test func paneListingMapsEachSessionToItsCLIProcessLeavingOutDeadPanes() {
+        let output =
+            "liuguang-claude-abc 4242 0\nliuguang-codex-new-1a2b3c4d 77 0\nliuguang-pi-dead 91 1\nbroken line here now\nno-pid\n"
+            + "my work 55 0\n"
+
+        #expect(
+            ThisMacTmuxServer.paneProcessIDs(inListOutput: output) == [
+                "liuguang-claude-abc": 4242,
+                "liuguang-codex-new-1a2b3c4d": 77,
+                "my work": 55,
+            ])
+    }
+
+    @Test func shiftReturnIsReturnOrKeypadEnterWithShiftAlone() {
+        #expect(ShiftReturnKey.matches(keyEvent(keyCode: kVK_Return, modifiers: .shift)))
+        #expect(ShiftReturnKey.matches(keyEvent(keyCode: kVK_ANSI_KeypadEnter, modifiers: [.shift, .numericPad])))
+        #expect(ShiftReturnKey.matches(keyEvent(keyCode: kVK_Return, modifiers: [.shift, .capsLock])))
+        #expect(!ShiftReturnKey.matches(keyEvent(keyCode: kVK_Return, modifiers: [])))
+        #expect(!ShiftReturnKey.matches(keyEvent(keyCode: kVK_Return, modifiers: [.shift, .option])))
+        #expect(!ShiftReturnKey.matches(keyEvent(keyCode: kVK_ANSI_A, modifiers: .shift)))
+    }
+
+    private func keyEvent(keyCode: Int, modifiers: NSEvent.ModifierFlags) -> NSEvent {
+        NSEvent.keyEvent(
+            with: .keyDown,
+            location: .zero,
+            modifierFlags: modifiers,
+            timestamp: 0,
+            windowNumber: 0,
+            context: nil,
+            characters: "\r",
+            charactersIgnoringModifiers: "\r",
+            isARepeat: false,
+            keyCode: UInt16(keyCode)
+        )!
+    }
+}
+
+extension Array where Element: Equatable {
+    fileprivate func containsSubsequence(_ subsequence: [Element]) -> Bool {
+        guard subsequence.count <= count else { return false }
+        return indices.dropLast(subsequence.count - 1).contains { Array(self[$0..<($0 + subsequence.count)]) == subsequence }
+    }
+}

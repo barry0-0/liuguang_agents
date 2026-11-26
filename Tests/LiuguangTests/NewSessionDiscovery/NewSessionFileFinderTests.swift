@@ -1,0 +1,221 @@
+import Darwin
+import Foundation
+import Testing
+
+@testable import Liuguang
+
+struct NewSessionFileFinderTests {
+    private static let wrapperProcessID: Int32 = 999_999
+    private static let fixtureProcessLifetime = "300"
+
+    @Test func findsThePreassignedClaudeTranscriptEvenAfterTheCLIExited() throws {
+        let root = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let sessionID = UUID().uuidString.lowercased()
+        try writeClaudeTranscript(sessionID: sessionID, under: root)
+        let tab = claudeTab(runningCLIProcessID: nil, preassignedSessionID: sessionID)
+
+        let sessionFiles = finder(claudeConfigurationDirectory: root)
+            .sessionFiles(for: [tab], processTree: ProcessTree(parentProcessIDs: [:]))
+
+        #expect(sessionFiles[tab.terminalID]?.sessionID == sessionID)
+        #expect(sessionFiles[tab.terminalID]?.file.lastPathComponent == "\(sessionID).jsonl")
+    }
+
+    @Test func findsAWrappedClaudeCLIThroughTheRegistryOfItsChildProcess() throws {
+        let root = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let sessionID = UUID().uuidString.lowercased()
+        let cliProcessID: Int32 = 4_242
+        try writeClaudeTranscript(sessionID: sessionID, under: root)
+        let sessions = root.appendingPathComponent("sessions")
+        try FileManager.default.createDirectory(at: sessions, withIntermediateDirectories: true)
+        try #"{"sessionId":"\#(sessionID)"}"#.write(
+            to: sessions.appendingPathComponent("\(cliProcessID).json"),
+            atomically: true,
+            encoding: .utf8
+        )
+        let tab = claudeTab(runningCLIProcessID: Self.wrapperProcessID, preassignedSessionID: nil)
+        let processTree = ProcessTree(parentProcessIDs: [cliProcessID: Self.wrapperProcessID])
+
+        let sessionFiles = finder(claudeConfigurationDirectory: root).sessionFiles(for: [tab], processTree: processTree)
+
+        #expect(sessionFiles[tab.terminalID]?.sessionID == sessionID)
+        #expect(
+            finder(claudeConfigurationDirectory: root)
+                .sessionFiles(for: [tab], processTree: ProcessTree(parentProcessIDs: [:])).isEmpty)
+    }
+
+    @Test func findsTheRolloutThatTheChildOfAWrapperScriptHoldsOpen() async throws {
+        let root = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let sessionID = UUID().uuidString.lowercased()
+        let dayDirectory = root.appendingPathComponent("sessions/2026/09/25")
+        try FileManager.default.createDirectory(at: dayDirectory, withIntermediateDirectories: true)
+        let rollout = dayDirectory.appendingPathComponent("rollout-2026-09-25T00-00-00-\(sessionID).jsonl")
+        try "{}\n".write(to: rollout, atomically: true, encoding: .utf8)
+        let wrapper = Process()
+        wrapper.executableURL = URL(fileURLWithPath: "/bin/sh")
+        wrapper.arguments = ["-c", #"sleep "$1" 3<"$0" & echo $!; wait"#, rollout.path, Self.fixtureProcessLifetime]
+        let output = Pipe()
+        wrapper.standardOutput = output
+        try wrapper.run()
+        let childLine = String(decoding: output.fileHandleForReading.availableData, as: UTF8.self)
+        let childProcessID = try #require(Int32(childLine.trimmingCharacters(in: .whitespacesAndNewlines)))
+        defer {
+            kill(childProcessID, SIGKILL)
+            wrapper.waitUntilExit()
+        }
+        let tab = WaitingNewSessionTab(
+            terminalID: UUID(),
+            provider: .codex,
+            runningCLIProcessID: wrapper.processIdentifier,
+            preassignedSessionID: nil,
+            branchedFromSessionID: nil
+        )
+        let finder = finder(claudeConfigurationDirectory: root)
+
+        var sessionFile: NewSessionFile?
+        let deadline = ContinuousClock.now + .seconds(120)
+        while sessionFile == nil, ContinuousClock.now < deadline {
+            sessionFile = finder.sessionFiles(for: [tab], processTree: .ofRunningProcesses())[tab.terminalID]
+            if sessionFile == nil { try await Task.sleep(for: .milliseconds(50)) }
+        }
+
+        #expect(sessionFile?.sessionID == sessionID)
+        #expect(sessionFile?.file.lastPathComponent == rollout.lastPathComponent)
+        #expect(finder.sessionFiles(for: [tab], processTree: ProcessTree(parentProcessIDs: [:])).isEmpty)
+    }
+
+    @Test func branchTabSkipsTheSessionItForkedInClaudesRegistry() throws {
+        let root = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let forkedSessionID = UUID().uuidString.lowercased()
+        let forkSessionID = UUID().uuidString.lowercased()
+        let cliProcessID: Int32 = 4_243
+        try writeClaudeTranscript(sessionID: forkedSessionID, under: root)
+        try writeClaudeTranscript(sessionID: forkSessionID, under: root)
+        let tab = branchTab(provider: .claude, processID: cliProcessID, branchedFromSessionID: forkedSessionID)
+        let finder = finder(claudeConfigurationDirectory: root)
+        let processTree = ProcessTree(parentProcessIDs: [:])
+
+        try writeClaudeRegistryRecord(sessionID: forkedSessionID, processID: cliProcessID, under: root)
+        #expect(finder.sessionFiles(for: [tab], processTree: processTree).isEmpty)
+
+        try writeClaudeRegistryRecord(sessionID: forkSessionID, processID: cliProcessID, under: root)
+        #expect(finder.sessionFiles(for: [tab], processTree: processTree)[tab.terminalID]?.sessionID == forkSessionID)
+    }
+
+    @Test func branchTabTakesItsForkRolloutWhileTheForkedOneIsAlsoOpen() async throws {
+        let root = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let forkedSessionID = UUID().uuidString.lowercased()
+        let forkSessionID = UUID().uuidString.lowercased()
+        let forkedRollout = try writeCodexRollout(sessionID: forkedSessionID, under: root)
+        let forkRollout = try writeCodexRollout(sessionID: forkSessionID, under: root)
+        let cli = Process()
+        cli.executableURL = URL(fileURLWithPath: "/bin/sh")
+        cli.arguments = ["-c", #"exec sleep "$2" 3<"$0" 4<"$1""#, forkedRollout.path, forkRollout.path, Self.fixtureProcessLifetime]
+        try cli.run()
+        defer {
+            cli.terminate()
+            cli.waitUntilExit()
+        }
+        let tab = branchTab(provider: .codex, processID: cli.processIdentifier, branchedFromSessionID: forkedSessionID)
+        let finder = finder(claudeConfigurationDirectory: root)
+
+        var sessionFile: NewSessionFile?
+        let deadline = ContinuousClock.now + .seconds(120)
+        while sessionFile == nil, ContinuousClock.now < deadline {
+            sessionFile = finder.sessionFiles(for: [tab], processTree: ProcessTree(parentProcessIDs: [:]))[tab.terminalID]
+            if sessionFile == nil { try await Task.sleep(for: .milliseconds(50)) }
+        }
+
+        #expect(sessionFile?.sessionID == forkSessionID)
+        #expect(sessionFile?.file.lastPathComponent == forkRollout.lastPathComponent)
+    }
+
+    @Test func findsNothingBeforeTheCLIWritesItsSession() throws {
+        let root = try makeTemporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let idleCLI = Process()
+        idleCLI.executableURL = URL(fileURLWithPath: "/bin/sleep")
+        idleCLI.arguments = [Self.fixtureProcessLifetime]
+        try idleCLI.run()
+        defer {
+            idleCLI.terminate()
+            idleCLI.waitUntilExit()
+        }
+        let claude = claudeTab(
+            runningCLIProcessID: idleCLI.processIdentifier,
+            preassignedSessionID: UUID().uuidString.lowercased()
+        )
+        let codex = WaitingNewSessionTab(
+            terminalID: UUID(),
+            provider: .codex,
+            runningCLIProcessID: idleCLI.processIdentifier,
+            preassignedSessionID: nil,
+            branchedFromSessionID: nil
+        )
+
+        let sessionFiles = finder(claudeConfigurationDirectory: root)
+            .sessionFiles(for: [claude, codex], processTree: ProcessTree(parentProcessIDs: [:]))
+
+        #expect(sessionFiles.isEmpty)
+    }
+
+    private func finder(claudeConfigurationDirectory: URL) -> NewSessionFileFinder {
+        NewSessionFileFinder(
+            claudeTranscripts: ClaudeSessionFileLocator(configurationDirectory: claudeConfigurationDirectory),
+            claudeRegistry: ClaudeLiveSessionRegistry(configurationDirectory: claudeConfigurationDirectory)
+        )
+    }
+
+    private func claudeTab(runningCLIProcessID: Int32?, preassignedSessionID: String?) -> WaitingNewSessionTab {
+        WaitingNewSessionTab(
+            terminalID: UUID(),
+            provider: .claude,
+            runningCLIProcessID: runningCLIProcessID,
+            preassignedSessionID: preassignedSessionID,
+            branchedFromSessionID: nil
+        )
+    }
+
+    private func branchTab(
+        provider: ConversationProvider,
+        processID: Int32,
+        branchedFromSessionID: String
+    ) -> WaitingNewSessionTab {
+        WaitingNewSessionTab(
+            terminalID: UUID(),
+            provider: provider,
+            runningCLIProcessID: processID,
+            preassignedSessionID: nil,
+            branchedFromSessionID: branchedFromSessionID
+        )
+    }
+
+    private func writeClaudeTranscript(sessionID: String, under root: URL) throws {
+        let project = root.appendingPathComponent("projects/-tmp-new-session-project")
+        try FileManager.default.createDirectory(at: project, withIntermediateDirectories: true)
+        try "{}\n".write(to: project.appendingPathComponent("\(sessionID).jsonl"), atomically: true, encoding: .utf8)
+    }
+
+    private func writeClaudeRegistryRecord(sessionID: String, processID: Int32, under root: URL) throws {
+        let sessions = root.appendingPathComponent("sessions")
+        try FileManager.default.createDirectory(at: sessions, withIntermediateDirectories: true)
+        try #"{"sessionId":"\#(sessionID)"}"#.write(
+            to: sessions.appendingPathComponent("\(processID).json"),
+            atomically: true,
+            encoding: .utf8
+        )
+    }
+
+    private func writeCodexRollout(sessionID: String, under root: URL) throws -> URL {
+        let dayDirectory = root.appendingPathComponent("sessions/2026/09/25")
+        try FileManager.default.createDirectory(at: dayDirectory, withIntermediateDirectories: true)
+        let rollout = dayDirectory.appendingPathComponent("rollout-2026-09-25T00-00-00-\(sessionID).jsonl")
+        try "{}\n".write(to: rollout, atomically: true, encoding: .utf8)
+        return rollout
+    }
+}

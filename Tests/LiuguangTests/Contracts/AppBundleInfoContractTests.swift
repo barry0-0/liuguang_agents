@@ -1,0 +1,107 @@
+import Foundation
+import Testing
+
+@testable import Liuguang
+
+struct AppBundleInfoContractTests {
+    @Test func bundleIdentifierIsTheOneTheCodeUses() throws {
+        #expect(try Self.infoPlistTemplate()["CFBundleIdentifier"] as? String == AppIdentity.bundleIdentifier)
+    }
+
+    @Test func executableIsThePackagesProduct() throws {
+        let executableName = try #require(try Self.infoPlistTemplate()["CFBundleExecutable"] as? String)
+        let manifest = try RepositoryFiles.contents(of: "Package.swift")
+        #expect(manifest.contains(".executable(name: \"\(executableName)\""))
+        #expect(try RepositoryFiles.contents(of: "Scripts/build-app.sh").contains("\"$build_directory/\(executableName)\""))
+    }
+
+    @Test func minimumSystemVersionMatchesThePackagesPlatform() throws {
+        let manifest = try RepositoryFiles.contents(of: "Package.swift")
+        let platformMatch = try #require(manifest.firstMatch(of: try Regex(#"\.macOS\(\.v(\d+)(?:_(\d+))?\)"#)))
+        let majorVersion = try #require(platformMatch.output[1].substring)
+        let minorVersion = platformMatch.output[2].substring ?? "0"
+
+        #expect(try Self.infoPlistTemplate()["LSMinimumSystemVersion"] as? String == "\(majorVersion).\(minorVersion)")
+    }
+
+    @Test func iconFileIsInTheRepository() throws {
+        let iconName = try #require(try Self.infoPlistTemplate()["CFBundleIconFile"] as? String)
+        let iconFile = RepositoryFiles.rootDirectory.appendingPathComponent("Branding/\(iconName).icns")
+        #expect(FileManager.default.fileExists(atPath: iconFile.path))
+    }
+
+    @Test func updatesAreFetchedOverHTTPSAndVerifiedBeforeInstalling() throws {
+        let infoPlist = try Self.infoPlistTemplate()
+        let feedURL = try #require((infoPlist["SUFeedURL"] as? String).flatMap(URL.init(string:)))
+        let publicKey = try #require((infoPlist["SUPublicEDKey"] as? String).flatMap { Data(base64Encoded: $0) })
+
+        #expect(feedURL.scheme == "https")
+        #expect(feedURL.pathExtension == "xml")
+        #expect(publicKey.count == 32, "an Ed25519 public key is 32 bytes")
+        #expect(infoPlist["SUVerifyUpdateBeforeExtraction"] as? Bool == true)
+    }
+
+    @Test func updatesAreCheckedThroughTheCountingWorker() throws {
+        let feedURL = try #require((try Self.infoPlistTemplate()["SUFeedURL"] as? String).flatMap(URL.init(string:)))
+        let workerConfiguration = try RepositoryFiles.contents(of: "Cloudflare/UpdateFeed/wrangler.jsonc")
+        let workerSource = try RepositoryFiles.contents(of: "Cloudflare/UpdateFeed/src/worker.js")
+        let workerName = try #require(workerConfiguration.firstMatch(of: try Regex(#""name": "([^"]+)""#))?.output[1].substring)
+
+        #expect(feedURL.host()?.hasPrefix("\(workerName).") == true, "\(feedURL)")
+        #expect(feedURL.host()?.hasSuffix(".workers.dev") == true, "\(feedURL)")
+        #expect(workerSource.contains("pathname !== \"\(feedURL.path())\""))
+        #expect(workerSource.contains("\"https://github.com/yangzichao/Liuguang/releases/latest/download/appcast.xml\""))
+    }
+
+    /// A CLI's voice input, such as Claude Code's `/voice`, records under the app's permission. Without the usage
+    /// description macOS never asks and gives silence; the hardened runtime also needs the audio-input entitlement.
+    @Test func programsInTheTerminalCanAskForTheMicrophone() throws {
+        let usageDescription = try #require(try Self.infoPlistTemplate()["NSMicrophoneUsageDescription"] as? String)
+        let entitlements = try #require(
+            try PropertyListSerialization.propertyList(
+                from: Data(try RepositoryFiles.contents(of: "Scripts/Liuguang.entitlements").utf8),
+                format: nil
+            ) as? [String: Any])
+
+        #expect(!usageDescription.isEmpty)
+        #expect(entitlements["com.apple.security.device.audio-input"] as? Bool == true)
+        #expect(
+            try RepositoryFiles.contents(of: "Scripts/build-app.sh")
+                .contains("--entitlements \"$project_directory/Scripts/Liuguang.entitlements\""))
+    }
+
+    @Test func theMicrophonePromptIsInSimplifiedChinese() throws {
+        let translations = try #require(
+            try PropertyListSerialization.propertyList(
+                from: Data(
+                    try RepositoryFiles.contents(
+                        of: "Localization/InfoPlist/zh-Hans.lproj/InfoPlist.strings"
+                    ).utf8),
+                format: nil
+            ) as? [String: String])
+
+        let translation = try #require(translations["NSMicrophoneUsageDescription"])
+        #expect(translation.contains("Liuguang"))
+        #expect(translation.contains("麦克风"))
+        #expect(try RepositoryFiles.contents(of: "Scripts/build-app.sh").contains("Localization/InfoPlist/*.lproj/InfoPlist.strings"))
+    }
+
+    @Test func everyKeyTheScriptFillsInIsInTheTemplate() throws {
+        let script = try RepositoryFiles.contents(of: "Scripts/build-app.sh")
+        let replacedKeys = script.matches(of: try Regex(#"plutil -replace (\w+)"#)).compactMap { $0.output[1].substring }
+        let infoPlist = try Self.infoPlistTemplate()
+
+        #expect(!replacedKeys.isEmpty)
+        for replacedKey in replacedKeys {
+            #expect(infoPlist[String(replacedKey)] != nil, "\(replacedKey)")
+        }
+    }
+
+    private static func infoPlistTemplate() throws -> [String: Any] {
+        let script = try RepositoryFiles.contents(of: "Scripts/build-app.sh")
+        let templateStart = try #require(script.range(of: "<<'PLIST'\n"))
+        let templateEnd = try #require(script.range(of: "\nPLIST\n", range: templateStart.upperBound..<script.endIndex))
+        let template = Data(script[templateStart.upperBound..<templateEnd.lowerBound].utf8)
+        return try #require(try PropertyListSerialization.propertyList(from: template, format: nil) as? [String: Any])
+    }
+}

@@ -1,0 +1,68 @@
+:root {
+  /* Comic accents from the app icon: ink outlines, hard offset shadows, and halftone dots. */
+  --comic-outline: 2.5px solid var(--ink);
+  --comic-shadow: 4px 4px 0 var(--ink);
+  --comic-halftone: radial-gradient(circle, rgb(21 23 28 / 22%) 1.6px, transparent 2.1px) 0 0 / 11px 11px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+body { margin: 0; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+a, summary { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+figure { margin: 0; }
+figcaption { margin-top: 16px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+p { color: var(--secondary); font-size: 17px; line-height: 1.7; }
+h1, h2, h3, p { margin-top: 0; }
+h1, h2, h3 { font-weight: 650; }
+h2 { margin-bottom: 18px; font-size: clamp(30px, 3.2vw, 42px); line-height: 1.2; letter-spacing: -.035em; }
+h3 { font-size: 23px; letter-spacing: -.025em; line-height: 1.3; }
+code { font-size: .92em; }
+.page-width { width: min(1184px, calc(100% - 64px)); margin-inline: auto; }
+.section-space { padding-block: 72px; }
+.eyebrow { margin-bottom: 18px; font-size: 12px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; line-height: 1.5; color: var(--muted); }
+.fine-print { font-size: 13px; line-height: 1.7; color: var(--muted); }
+.muted { color: var(--muted); }
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 14px 22px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  background: var(--ink);
+  /* A hard comic shadow in Claude orange, the first dot of the mark. */
+  box-shadow: 3px 3px 0 var(--provider-claude);
+  color: var(--ink-foreground);
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.35;
+  transition: background-color .18s, box-shadow .12s, transform .12s;
+}
+.button:hover { background: var(--button-hover); box-shadow: 4px 4px 0 var(--provider-claude); transform: translate(-1px, -1px); }
+.button:active { box-shadow: 1px 1px 0 var(--provider-claude); transform: translate(2px, 2px); }
+.text-link { display: inline-flex; align-items: center; gap: 8px; padding-block: 10px; font-size: 15px; font-weight: 600; color: var(--ink); }
+.text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.wordmark { display: inline-flex; align-items: center; gap: 11px; font-size: 21px; font-weight: 650; letter-spacing: -.025em; }
+.skip-link { position: absolute; top: -80px; left: 20px; z-index: 5; padding: 12px 20px; background: var(--surface); }
+.skip-link:focus { top: 14px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+  .button:hover, .button:active { transform: none; }
+}

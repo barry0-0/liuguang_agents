@@ -1,0 +1,90 @@
+import AppKit
+
+@MainActor
+protocol TabTerminalView: NSView, TerminalTextFinding {
+    var onFocus: (() -> Void)? { get set }
+    var onBackgroundColorChange: (() -> Void)? { get set }
+    var onUnheardLightDarkChange: (() -> Void)? { get set }
+    var reportsThemeAfterNextBackgroundQuery: Bool { get }
+    func reportThemeAfterNextBackgroundQuery()
+    func cancelThemeReportAfterNextBackgroundQuery()
+    var makeContextMenu: ((_ linkUnderPointer: String?) -> NSMenu)? { get set }
+    var onOpenLink: ((String) -> Void)? { get set }
+    var onReturnKeyPressed: (() -> Void)? { get set }
+    var onImageMarkerClicked: ((String) -> Void)? { get set }
+    func currentPromptText() -> String?
+    func deletePromptText(_ text: String) -> Bool
+    func imageMarker(under event: NSEvent) -> String?
+    func link(under event: NSEvent) -> String?
+    var selectionActive: Bool { get }
+    var promptSelection: TerminalPromptSelection { get }
+    func copy(_ sender: Any)
+    func paste(_ sender: Any)
+    var marginColor: NSColor { get }
+    var trailingMarginWidth: CGFloat { get }
+    var cliRunsInTmux: Bool { get set }
+    var isOnAlternateScreen: Bool { get }
+    var acceptsDroppedFiles: Bool { get set }
+    var copyDroppedFilesToHost: ((_ fileURLs: [URL]) -> Bool)? { get set }
+    var imagePaste: TerminalImagePaste { get }
+    @discardableResult
+    func typeDroppedPaths(_ paths: [String]) -> Bool
+    func sendText(_ text: String)
+    func setWorkspaceActive(_ isActive: Bool)
+    func startProcess(executable: String, args: [String], environment: [String]?, execName: String?, currentDirectory: String?)
+    var processID: Int32 { get }
+    func terminate()
+    func connectProcessObserver(_ observer: TerminalProcessObserver)
+}
+
+extension SelectableTerminalView: TabTerminalView {
+    var marginColor: NSColor { nativeBackgroundColor }
+    /// None: SwiftTerm keeps its scroller's width free inside its own view.
+    var trailingMarginWidth: CGFloat { 0 }
+    var processID: Int32 { process.shellPid }
+    var isOnAlternateScreen: Bool { terminal.isCurrentBufferAlternate }
+
+    func sendText(_ text: String) { send(txt: text) }
+
+    func currentPromptText() -> String? {
+        guard let screen = screenForPromptSelection() else { return nil }
+        return promptSelection.layout?.prompt(on: screen)?.text
+    }
+
+    func deletePromptText(_ text: String) -> Bool {
+        guard let screen = screenForPromptSelection(),
+              let prompt = promptSelection.layout?.prompt(on: screen),
+              prompt.text.contains(text)
+        else { return false }
+        typeForPromptSelection(CLIPromptEditingKeys.clearing(prompt))
+        return true
+    }
+
+    func imageMarker(under event: NSEvent) -> String? {
+        let point = convert(event.locationInWindow, from: nil)
+        guard bounds.contains(point) else { return nil }
+        guard let screen = screenForPromptSelection() else { return nil }
+        for row in screen.rows.indices {
+            let lineText = String(screen.rows[row].characters)
+            guard let range = lineText.range(of: #"\[Image #\d+\]"#, options: .regularExpression) else { continue }
+            let start = lineText.distance(from: lineText.startIndex, to: range.lowerBound)
+            let end = lineText.distance(from: lineText.startIndex, to: range.upperBound)
+            guard let frame = frame(ofCells: start..<end, inRow: row), frame.contains(point) else { continue }
+            return String(lineText[range])
+        }
+        return nil
+    }
+
+    func connectProcessObserver(_ observer: TerminalProcessObserver) {
+        processDelegate = observer
+    }
+}
+
+extension TerminalEngine {
+    @MainActor
+    func makeTabTerminalView(frame: NSRect) -> any TabTerminalView {
+        switch self {
+        case .swiftTerm: SelectableTerminalView(frame: frame)
+        }
+    }
+}

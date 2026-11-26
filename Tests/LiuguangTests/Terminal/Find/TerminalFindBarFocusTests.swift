@@ -1,0 +1,117 @@
+import AppKit
+import SwiftUI
+import Testing
+
+@testable import Liuguang
+
+/// Who has the keyboard as a tab's find bar opens and closes, with the tab's view in a window as the app shows it.
+/// A selected tab's terminal takes the keyboard a moment after it appears, so tests wait for that before opening the
+/// bar, as a person would. The field never takes the keyboard while the Mac's screen is locked, so a full run then
+/// fails here; see `keyboardState` for what a failure reports.
+@MainActor
+@Suite(.serialized)
+struct TerminalFindBarFocusTests {
+    @MainActor
+    private final class Fixture {
+        let window: NSWindow
+        let tab: TerminalSession
+        var focusCount = 0
+
+        init(isActive: Bool = true) {
+            _ = NSApplication.shared
+            tab = TerminalSession(
+                engine: .swiftTerm,
+                conversation: nil,
+                provider: nil,
+                projectPath: "/tmp/terminal-find",
+                action: nil,
+                displayTitle: "Find focus",
+                command: NativeCLICommand(executablePath: "/bin/cat", arguments: [], workingDirectory: "/tmp", environment: [])
+            )
+            window = NSWindow(
+                contentRect: NSRect(x: 0, y: 0, width: 700, height: 400), styleMask: [.titled], backing: .buffered, defer: false)
+            window.isReleasedWhenClosed = false
+            window.contentView = NSHostingView(
+                rootView: TerminalWorkspaceView(
+                    session: tab,
+                    isShown: true,
+                    isActive: isActive,
+                    onReconnect: nil,
+                    onCheckHost: nil,
+                    onFocus: { [unowned self] in focusCount += 1 },
+                    makeContextMenu: { _ in NSMenu() },
+                    onOpenLink: { _ in }
+                ))
+            window.makeKeyAndOrderFront(nil)
+        }
+
+        var findFieldHasTheKeyboard: Bool {
+            guard let fieldEditor = window.firstResponder as? NSTextView,
+                let field = fieldEditor.delegate as? NSTextField
+            else { return false }
+            return field.isDescendant(of: window.contentView!)
+        }
+
+        var terminalHasTheKeyboard: Bool { window.firstResponder === tab.terminalView }
+
+        func expectEventually(_ condition: () -> Bool, sourceLocation: SourceLocation = #_sourceLocation) async throws {
+            let clock = ContinuousClock()
+            let deadline = clock.now + .seconds(120)
+            while !condition(), clock.now < deadline {
+                try await Task.sleep(for: .milliseconds(10))
+            }
+            #expect(condition(), "\(keyboardState)", sourceLocation: sourceLocation)
+        }
+
+        private var keyboardState: String {
+            let firstResponder = window.firstResponder.map { String(describing: type(of: $0)) } ?? "none"
+            return "first responder: \(firstResponder), bar shown: \(tab.findState.isPresented), "
+                + "field focused: \(tab.findState.isFieldFocused), focus count: \(focusCount), "
+                + "window visible: \(window.isVisible), occluded: \(!window.occlusionState.contains(.visible))"
+        }
+
+        func tearDown() {
+            tab.close()
+            window.close()
+        }
+    }
+
+    @Test func showingTheBarGivesItsFieldTheKeyboardAndClosingGivesItBack() async throws {
+        let fixture = Fixture()
+        defer { fixture.tearDown() }
+        try await fixture.expectEventually { fixture.terminalHasTheKeyboard }
+
+        fixture.tab.findState.show()
+
+        try await fixture.expectEventually { fixture.findFieldHasTheKeyboard && fixture.tab.findState.isFieldFocused }
+
+        fixture.tab.findState.close()
+
+        try await fixture.expectEventually { fixture.terminalHasTheKeyboard }
+        #expect(!fixture.tab.findState.isFieldFocused)
+    }
+
+    @Test func showingTheOpenBarAgainTakesTheKeyboardBack() async throws {
+        let fixture = Fixture()
+        defer { fixture.tearDown() }
+        try await fixture.expectEventually { fixture.terminalHasTheKeyboard }
+        fixture.tab.findState.show()
+        try await fixture.expectEventually { fixture.findFieldHasTheKeyboard }
+        fixture.window.makeFirstResponder(fixture.tab.terminalView)
+        try await fixture.expectEventually { !fixture.tab.findState.isFieldFocused }
+
+        fixture.tab.findState.show()
+
+        try await fixture.expectEventually { fixture.findFieldHasTheKeyboard && fixture.tab.findState.isFieldFocused }
+    }
+
+    @Test func theFieldOfAPaneNotSelectedSelectsItsTab() async throws {
+        let fixture = Fixture(isActive: false)
+        defer { fixture.tearDown() }
+
+        fixture.tab.findState.show()
+
+        try await fixture.expectEventually { fixture.findFieldHasTheKeyboard }
+        try await fixture.expectEventually { fixture.focusCount == 1 }
+    }
+}

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liuguang social card source</title>
+  <link rel="icon" type="image/svg+xml" href="../../Branding/SVG/mark.svg">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #15171c; }
+    .social-card { position: relative; width: 1200px; height: 630px; overflow: hidden; background: #fcfbf8; padding: 44px 48px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 27px; font-weight: 650; letter-spacing: -1px; }
+    .brand img { width: 40px; height: 40px; }
+    .copy { position: relative; z-index: 1; width: 350px; }
+    h1 { margin: 115px 0 24px; font-size: 58px; line-height: 1.07; letter-spacing: -2.5px; font-weight: 750; }
+    h1 span { display: block; white-space: nowrap; }
+    p { margin: 0; font-size: 24px; line-height: 1.5; font-weight: 600; color: #303139; }
+    .app-window { position: absolute; top: 108px; left: 430px; width: 820px; overflow: hidden; border: 1px solid #15171c17; border-radius: 14px; background: #fcfbf8; box-shadow: 0 14px 38px #15171c15, 0 3px 8px #15171c08; }
+    .app-window img { display: block; width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <main class="social-card">
+    <div class="brand"><img src="../../Branding/SVG/mark.svg" alt="">Liuguang</div>
+    <div class="copy">
+      <h1><span>Nothing extra.</span><span>Just sessions.</span></h1>
+      <p>Multiple agents.<br>Your CLI. Native tabs.</p>
+    </div>
+    <div class="app-window">
+      <img src="../../docs/images/demo-split-view.jpg" width="2400" height="1350" alt="Liuguang in split view: Claude Code and Codex side by side, with local projects and an SSH host in the sidebar.">
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,88 @@
+import SwiftUI
+
+extension ConversationSidebarView {
+    @ViewBuilder
+    var projectList: some View {
+        let selectedConversations = selectedConversations
+        let onboardingTourProjectID = onboardingTourProjectID
+        let pinDragging = pinDragging
+
+        ScrollViewReader { scrollProxy in
+            SidebarSelectionScrollView(
+                isFocused: $isSidebarListFocused,
+                onDismissSelection: dismissSidebarSelection
+            ) {
+                LazyVStack(alignment: .leading, spacing: SidebarIndentGuide.rowSpacing) {
+                    if isSearching, searchScope.searchesMessagesAndBookmarks {
+                        SidebarMessageSearchProgress(indexer: store.messageIndexer)
+                    }
+                    ForEach(hostSections) { section in
+                        hostHeading(for: section)
+                            .padding(.top, 14)
+                            .padding(.bottom, 4)
+
+                        if section.projects.isEmpty {
+                            SidebarEmptyHostNote(
+                                message: SidebarEmptyHostMessage(
+                                    host: section.host,
+                                    refreshStatus: store.hostRefreshStatuses[section.host],
+                                    copyStep: store.remoteSessionCopySteps[section.host],
+                                    isSearching: isSearching,
+                                    recencyFilter: recencyFilter,
+                                    statusFilter: statusFilter,
+                                    isDisconnected: store.isDisconnected(section.host)
+                                )
+                            )
+                            .onboardingTourStop(section.host == .thisMac ? .noSessionsYet : nil)
+                        }
+
+                        let parentLabels = ProjectParentLabels(projectsOnOneHost: section.projects)
+                        ForEach(section.projects) { project in
+                            SidebarProjectSection(
+                                store: store,
+                                project: project,
+                                parentLabel: parentLabels.label(for: project),
+                                pinDragging: pinDragging,
+                                hostProjectRows: { section.projects.map(SidebarPinDrag.Row.project) },
+                                isExpanded: isExpanded(project),
+                                sessionLimit: sessionLimit(for: project),
+                                isOnboardingTourProject: project.id == onboardingTourProjectID,
+                                projectSelection: projectSelection,
+                                sessionSelection: sessionSelection,
+                                selectedConversations: selectedConversations,
+                                showsSubagents: showsSubagents,
+                                subagentRows: subagentRows,
+                                onToggleSubagents: { subagentRows.toggle($0.id) },
+                                messageMatches: messageMatches,
+                                bookmarkMatches: bookmarkMatches,
+                                onToggleExpansion: { toggleExpansion(of: project.id) },
+                                onShowMoreSessions: { hiddenSessionCount in
+                                    sessionRowLimits.showMore(inProject: project.id, hiddenSessionCount: hiddenSessionCount)
+                                },
+                                onClickProject: { handleProjectClick(project) },
+                                onNewSession: { provider in
+                                    store.launchNewSessionFromProject(provider: provider, projectPath: project.projectPath)
+                                },
+                                onClickConversation: handleConversationClick,
+                                onSelectPendingNewSession: selectTab,
+                                onDroppedRowIntoTerminals: clearSelectionForDroppedRow,
+                                onRenameConversation: onRenameConversation,
+                                onRenameProject: { onRenameProject(project) },
+                                onRemoveSelectedProjectsAndDeleteSessions: requestRemovalOfSelectedProjectsAndTheirSessions,
+                                onRequestDeletion: onRequestDeletion
+                            )
+                        }
+                        .padding(.horizontal, 8)
+                    }
+                }
+                .sidebarRowFramesCoordinateSpace()
+                .padding(.bottom, 12)
+            }
+            .task(id: projectToReveal) {
+                guard let projectToReveal else { return }
+                withAnimation { scrollProxy.scrollTo(projectToReveal, anchor: .center) }
+                self.projectToReveal = nil
+            }
+        }
+    }
+}

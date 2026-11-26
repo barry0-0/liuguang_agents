@@ -1,0 +1,113 @@
+import Foundation
+
+enum CrashReportSamples {
+    static let bundleIdentifier = "dev.zichaoyang.liuguang"
+
+    static func reportText(
+        bugType: String = "309",
+        bundleIdentifier: String? = CrashReportSamples.bundleIdentifier,
+        appVersion: String = "1.0.5",
+        buildVersion: String = "12",
+        body: [String: Any] = swiftRuntimeErrorBody()
+    ) -> String {
+        var header: [String: Any] = [
+            "app_name": "Liuguang",
+            "timestamp": "2026-10-05 10:00:00.00 -0700",
+            "app_version": appVersion,
+            "build_version": buildVersion,
+            "bug_type": bugType,
+            "os_version": "macOS 26.5.1 (25F80)",
+            "name": "Liuguang",
+        ]
+        if let bundleIdentifier { header["bundleID"] = bundleIdentifier }
+        return json(header, options: []) + "\n" + json(body, options: [.prettyPrinted])
+    }
+
+    static func swiftRuntimeErrorBody() -> [String: Any] {
+        [
+            "procPath": "/Users/someone/Applications/Liuguang.app/Contents/MacOS/Liuguang",
+            "exception": ["type": "EXC_BREAKPOINT", "signal": "SIGTRAP", "codes": "0x0000000000000001, 0x00000001a0f88cc8"],
+            "faultingThread": 1,
+            "threads": [
+                ["id": 1, "queue": "com.apple.main-thread", "frames": [["imageIndex": 1, "imageOffset": 64, "symbol": "main"]]],
+                [
+                    "id": 2,
+                    "triggered": true,
+                    "queue": "com.apple.root.user-initiated-qos",
+                    "frames": [
+                        [
+                            "imageIndex": 0, "imageOffset": 1_445_064, "symbol": "_assertionFailure(_:_:file:line:flags:)",
+                            "symbolLocation": 172,
+                        ],
+                        [
+                            "imageIndex": 1, "imageOffset": 4096, "symbol": "ConversationStore.removeDeletedConversations(_:)",
+                            "symbolLocation": 40,
+                            "sourceFile": "/Users/builder/Liuguang/Sources/Liuguang/Services/Store/ConversationStore.swift",
+                            "sourceLine": 494,
+                        ],
+                        ["imageIndex": 1, "imageOffset": 8192],
+                        ["imageIndex": 9, "imageOffset": 16],
+                    ],
+                ],
+            ],
+            "usedImages": [
+                ["name": "libswiftCore.dylib", "path": "/usr/lib/swift/libswiftCore.dylib"],
+                ["name": "Liuguang", "path": "/Users/someone/Applications/Liuguang.app/Contents/MacOS/Liuguang"],
+            ],
+        ]
+    }
+
+    static func objectiveCExceptionBody() -> [String: Any] {
+        [
+            "exception": ["type": "EXC_CRASH", "signal": "SIGABRT"],
+            "asi": [
+                "libsystem_c.dylib": ["abort() called"],
+                "CoreFoundation": ["*** -[__NSArrayM objectAtIndex:]: index 3 beyond bounds [0 .. 2]"],
+            ],
+            "faultingThread": 0,
+            "threads": [
+                [
+                    "queue": "com.apple.main-thread",
+                    "triggered": true,
+                    "frames": [["imageIndex": 0, "symbol": "__pthread_kill"], ["imageIndex": 1, "symbol": "abort"]],
+                ]
+            ],
+            "lastExceptionBacktrace": [
+                ["imageIndex": 2, "symbol": "__exceptionPreprocess"],
+                ["imageIndex": 3, "symbol": "objc_exception_throw"],
+                ["imageIndex": 4, "symbol": "-[NSTableRowData _availableRowViewWhileUpdatingAtRow:]"],
+            ],
+            "usedImages": [
+                ["name": "libsystem_kernel.dylib"], ["name": "libsystem_c.dylib"], ["name": "CoreFoundation"],
+                ["name": "libobjc.A.dylib"], ["name": "AppKit"],
+            ],
+        ]
+    }
+
+    static func longBacktraceBody(frameCount: Int, symbolLength: Int) -> [String: Any] {
+        let frames: [[String: Any]] = (0..<frameCount).map { index in
+            ["imageIndex": 0, "symbol": "frame\(index)_" + String(repeating: "x", count: symbolLength)]
+        }
+        return [
+            "exception": ["type": "EXC_CRASH", "signal": "SIGABRT"],
+            "faultingThread": 0,
+            "threads": [["queue": "com.apple.main-thread", "frames": frames]],
+            "lastExceptionBacktrace": frames,
+            "usedImages": [["name": "Liuguang"]],
+        ]
+    }
+
+    static func oneFrameBody(symbol: String) -> [String: Any] {
+        [
+            "exception": ["type": "EXC_BAD_ACCESS", "signal": "SIGSEGV"],
+            "faultingThread": 0,
+            "threads": [["frames": [["imageIndex": 0, "symbol": symbol]]]],
+            "usedImages": [["name": "libc++.1.dylib"]],
+        ]
+    }
+
+    private static func json(_ object: [String: Any], options: JSONSerialization.WritingOptions) -> String {
+        let data = (try? JSONSerialization.data(withJSONObject: object, options: options.union(.sortedKeys))) ?? Data()
+        return String(decoding: data, as: UTF8.self)
+    }
+}

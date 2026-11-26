@@ -1,0 +1,11 @@
+.build/
+dist/
+.DS_Store
+*.xcuserstate
+*.profraw
+__pycache__/
+.playwright-mcp/
+.wrangler/
+.dev.vars
+# Coding agents' local state and skills stay out of git.
+/.claude/

@@ -1,0 +1,53 @@
+import Testing
+
+@testable import Liuguang
+
+struct OpenTabGroupCollapseTests {
+    @Test func groupsStartExpandedAndToggle() {
+        var collapse = OpenTabGroupCollapse()
+        #expect(!collapse.isCollapsed("a", whileSearching: false))
+
+        collapse.toggle("a")
+        #expect(collapse.isCollapsed("a", whileSearching: false))
+
+        collapse.toggle("a")
+        #expect(!collapse.isCollapsed("a", whileSearching: false))
+    }
+
+    @Test func searchingShowsEveryGroupWithoutChangingWhichAreCollapsed() {
+        var collapse = OpenTabGroupCollapse()
+        collapse.toggle("a")
+
+        #expect(!collapse.isCollapsed("a", whileSearching: true))
+        #expect(collapse.collapsedProjectKeys == ["a"])
+    }
+
+    @Test func expandingOpensOnlyThatGroup() {
+        var collapse = OpenTabGroupCollapse()
+        collapse.toggle("a")
+        collapse.toggle("b")
+
+        collapse.expand("a")
+        #expect(collapse.collapsedProjectKeys == ["b"])
+    }
+
+    @Test func collapseAllAndExpandAllChangeEveryGroup() {
+        var collapse = OpenTabGroupCollapse()
+        collapse.toggle("a")
+
+        collapse.collapse(["a", "b", "c"])
+        #expect(collapse.collapsedProjectKeys == ["a", "b", "c"])
+
+        collapse.expandAll()
+        #expect(collapse.collapsedProjectKeys.isEmpty)
+    }
+
+    @Test func aGroupWhoseTabsAllClosedOpensExpandedNextTime() {
+        var collapse = OpenTabGroupCollapse()
+        collapse.toggle("a")
+        collapse.toggle("b")
+
+        collapse.keepOnly(["b", "c"])
+        #expect(collapse.collapsedProjectKeys == ["b"])
+    }
+}

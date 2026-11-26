@@ -1,0 +1,138 @@
+<p align="center">
+  <img src="Branding/PNG/app-icon-256.png" width="96" height="96" alt="Liuguang macOS app icon">
+</p>
+
+<h1 align="center">Liuguang</h1>
+
+<p align="center">
+  <b>Nothing extra. Just sessions.</b><br>
+  Multiple agents, all your sessions in one place. Your familiar command line, with native tabs.
+</p>
+
+<p align="center">
+  <a href="https://github.com/barry0-0/liuguang_agents/releases/latest/download/Liuguang.dmg"><img src="https://img.shields.io/badge/Download-Liuguang.dmg-15171C?style=for-the-badge&logo=apple&logoColor=white" alt="Download Liuguang for macOS"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/barry0-0/liuguang_agents/releases/latest"><img src="https://img.shields.io/github/v/release/barry0-0/liuguang_agents?label=release" alt="Latest release"></a>
+  <a href="https://github.com/barry0-0/liuguang_agents/releases"><img src="https://img.shields.io/github/downloads/barry0-0/liuguang_agents/total" alt="Total downloads"></a>
+  <img src="https://img.shields.io/badge/macOS-14%2B-black?logo=apple" alt="macOS 14 or later">
+  <img src="https://img.shields.io/badge/Apple%20Silicon-arm64-black" alt="Apple Silicon">
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/barry0-0/liuguang_agents" alt="MIT license"></a>
+</p>
+
+For people who prefer the command line. Liuguang adds a native Mac workspace around your existing CLIs. Keep their terminal interface, configuration, and provider authentication.
+
+This fork is customized from [JustSessions](https://github.com/yangzichao/JustSessions). It keeps the native terminal workspace and adds local project-focused features, Liuguang branding, attachment previews, a redesigned settings sheet, and CLI runtime status panels.
+
+[Website](https://barry0-0.github.io/liuguang_agents/) · [Guide](https://barry0-0.github.io/liuguang_agents/guide.html) · [Compare](https://barry0-0.github.io/liuguang_agents/compare.html) · [Download](#download) · [Supported CLIs](#supported-clis) · [Documentation](docs/README.md)
+
+## Multiple agents. One project.
+
+**Claude Code · Codex CLI · Antigravity CLI · Kiro CLI · OpenCode · Pi**
+
+- Group sessions from different agents under the same project.
+- Search projects and sessions, down to the text of their messages; pin and rename favorites.
+- List subagents' sessions under the session that started them, once turned on in Settings.
+- Hide the sessions of a CLI you don't use by unticking it in Settings.
+- Start or resume a session in its original CLI and project folder.
+
+![The real Claude Code CLI running in Liuguang, with the Projects sidebar grouping two Claude Code sessions, Codex, OpenCode, and Pi under one project](docs/images/native-terminal.jpg)
+
+## New. Resume. Delete.
+
+- Start with any installed agent.
+- Read a conversation, then resume in its original CLI.
+- Delete saved sessions from the app.
+
+![Liuguang' conversation reader, with reading controls and sessions grouped by project and machine](docs/images/session-overview.jpg)
+
+[Reading controls](docs/guides/session-management.md#preview-before-you-resume) cover text size, images, history paging, bookmarks with labels and tags (also from a tab, and searchable across sessions), the conversation map beside CLI tabs, and search limits.
+
+## Work on any host.
+
+- Local and SSH projects in one sidebar.
+- Browse history and resume remotely.
+- Your code and CLI stay on the remote machine.
+
+![Liuguang displaying a Claude Code conversation on the dev-desktop SSH host alongside local projects and a build server](docs/images/remote-desktop-sessions.jpg)
+
+Add a `~/.ssh/config` alias or `user@hostname` with `rsync` and the CLI installed. A host that asks for a password or a code logs in with **Connect…**. **Disconnect** in a host's **⋯** leaves it alone, sessions still listed, until you choose **Connect**. A host that needs you to sign in again every so often can run a **Sign-in command…** that asks for its PIN or code in a dialog. Session history is cached on your Mac. [SSH setup](docs/guides/session-management.md#ssh-hosts).
+
+**Upgrading to 1.3.2:** some SSH hosts need a fresh connection before their cached history appears again. Remote history is not deleted. [Upgrade details](docs/guides/session-storage.md#upgrading-to-132).
+
+## Close a tab. Keep the work.
+
+- Close the tab → choose [**Keep running**](docs/images/tmux-close-choice.jpg).
+- Quit the app. The CLI stays alive in tmux.
+- Click the session to reattach to the same process.
+
+![Liuguang reattached to the same tmux-backed Claude Code CLI after closing its tab, with a local file-indexing task still progressing](docs/images/tmux-keep-running.jpg)
+
+The packaged app includes tmux for this Mac. Install tmux on each SSH host to survive disconnects there. Keep the machine awake. Plain shell tabs do not use tmux. [Terminal persistence](docs/guides/session-storage.md#terminal-persistence).
+
+## Tabs like Chrome. Split view.
+
+- Create, switch, and group tabs by project.
+- Use **Open tabs** for a vertical list of your terminals.
+- Automatically reopen tabs on launch.
+- Keep an agent and shell side by side; drag the divider to resize.
+- Press **⌥⌘N** to choose a tab to show beside the current one.
+
+![Liuguang Open tabs sidebar with six tabs under one project, alongside the real Claude Code CLI and a project shell displaying Git diff in split view](docs/images/split-terminal.jpg)
+
+Tab recovery is controlled in **Settings → General**; split layouts reopen as separate tabs. [Tabs and split view](docs/guides/session-management.md#resume-branch-and-start-sessions).
+
+## Lightweight by design
+
+- **Native SwiftUI + SwiftTerm.** A Mac app with an AppKit terminal, or Ghostty's GPU-drawn one as a setting.
+- **No import or new account.** Reads the history your CLIs already create.
+- **No conversation uploads.** Liuguang reads existing CLI history; your CLIs still communicate with their providers.
+- **Free and open source.** MIT licensed; your CLI provider’s charges still apply.
+
+Choose system, English, or Chinese for the interface. Set app themes, the interface size, terminal fonts and colors, or import iTerm2 colors. Claude Code, Codex, Antigravity, Pi, OpenCode, and Kiro CLI sessions, on this Mac and on SSH hosts, notify when a turn finishes; all but Kiro CLI also notify when they need your input. [Settings and notifications](docs/guides/session-management.md).
+
+## Download
+
+**macOS 14+ · Apple Silicon · A supported CLI installed and signed in**
+
+1. Download **[Liuguang.dmg](https://github.com/barry0-0/liuguang_agents/releases/latest/download/Liuguang.dmg)**, Developer ID signed and notarized by Apple.
+2. Drag **Liuguang** into **Applications** and launch it.
+3. Choose a session in **Projects**, then double-click or press **Resume**.
+
+Updates arrive through Sparkle; check manually in **Settings → General**. [Getting started](docs/guides/getting-started.md).
+
+## Supported CLIs
+
+| Capability | Claude Code | OpenAI Codex CLI | Google Antigravity CLI | Kiro CLI | OpenCode | Pi |
+| --- | --- | --- | --- | --- | --- | --- |
+| Browse, search, and resume local sessions | Yes | Yes | Yes | Yes | Yes | Yes |
+| Read a conversation preview | Yes | Yes | Yes | Yes | Yes | Yes |
+| Branch a conversation from the app | Yes | Yes | Use `/fork` inside the CLI | Use `/rewind` inside the CLI | Yes | Yes |
+| Browse and manage sessions over SSH | Yes | Yes | Yes | Yes | Yes | Yes |
+| Delete sessions from the app | Yes | Yes | Yes | Yes | Yes | Yes |
+
+New session menus offer only installed CLIs. See the [storage guide](docs/guides/session-storage.md#session-locations) for discovery paths and deletion requirements.
+
+Search matches project names and paths, session titles, session IDs, and message text: what you wrote, the CLI's replies, and tool call summaries. **Branch** forks a conversation; it does not create a Git branch.
+
+## Documentation and development
+
+Build locally with `make`; the app is written to `dist/Liuguang.app`. Use `make dev` to build and open it, or `make help` for other commands.
+
+- [Getting started](docs/guides/getting-started.md)
+- [Session management](docs/guides/session-management.md): tabs, split view, shortcuts, SSH, notifications, and settings.
+- [Session storage and privacy](docs/guides/session-storage.md)
+- [Build and release](docs/development/build-and-release.md) · [Source layout](docs/development/source-layout.md)
+- [Website development and traffic](docs/development/website.md) · [Counting update checks](docs/development/update-checks.md)
+- [All documentation](docs/README.md) · [Release notes](https://barry0-0.github.io/liuguang_agents/release-notes.html)
+
+See [Contributing](CONTRIBUTING.md) for setup and pull requests. Run `make verify` on the final commit and include the results in the PR template. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+
+[Security reports](SECURITY.md) · [Accessibility](ACCESSIBILITY.md) · [Report a bug or suggest a feature](https://github.com/barry0-0/liuguang_agents/issues/new/choose)
+
+For in-app help, open **Settings → Help**. Send feedback or report an issue from **Settings → General**, or the [website Guide](https://barry0-0.github.io/liuguang_agents/guide.html#feedback).
+
+## License
+
+[MIT](LICENSE). The embedded terminal uses [Ghostty](https://github.com/ghostty-org/ghostty) through [libghostty-spm](https://github.com/Lakr233/libghostty-spm), and [SwiftTerm](https://github.com/migueldeicaza/SwiftTerm), each under its MIT license; the app includes the licenses of everything Ghostty's library links, apart from the few its [notice](Branding/ThirdParty/Ghostty/README.md) lists as not collected. Terminals draw Nerd Font icons with Symbols Nerd Font Mono from [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts), which the app includes with its license and the licenses of its icon sets.

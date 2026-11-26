@@ -1,0 +1,1904 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key></key>
+	<string></string>
+	<key>#idea #todo</key>
+	<string>#idea #todo</string>
+	<key>%@ %@</key>
+	<string>%@ %@</string>
+	<key>%@ %@ — %@</key>
+	<string>%@ %@ — %@</string>
+	<key>%@ (imported)</key>
+	<string>%@ (imported)</string>
+	<key>%@ (not installed)</key>
+	<string>%@ (not installed)</string>
+	<key>%@ (not supported)</key>
+	<string>%@ (not supported)</string>
+	<key>%@ - Bottom view</key>
+	<string>%@ - Bottom view</string>
+	<key>%@ - Left view</key>
+	<string>%@ - Left view</string>
+	<key>%@ - Right view</key>
+	<string>%@ - Right view</string>
+	<key>%@ - Top view</key>
+	<string>%@ - Top view</string>
+	<key>%@ Click to check %@.</key>
+	<string>%@ Click to check %@.</string>
+	<key>%@ Click to see what the check found.</key>
+	<string>%@ Click to see what the check found.</string>
+	<key>%@ could not be refreshed: %@</key>
+	<string>%@ could not be refreshed: %@</string>
+	<key>%@ deletes it permanently.</key>
+	<string>%@ deletes it permanently.</string>
+	<key>%@ didn't answer the rest of the check within %lld seconds, or the connection dropped.</key>
+	<string>%@ didn't answer the rest of the check within %lld seconds, or the connection dropped.</string>
+	<key>%@ has no tool that lists its ports. Type the port instead.</key>
+	<string>%@ has no tool that lists its ports. Type the port instead.</string>
+	<key>%@ has not saved this session yet · click to open its terminal</key>
+	<string>%@ has not saved this session yet · click to open its terminal</string>
+	<key>%@ has tmux %@. 流光 needs tmux 2.6 or later to pass Control-B to the CLI and to end a session before deleting it.</key>
+	<string>%@ has tmux %@. 流光 needs tmux 2.6 or later to pass Control-B to the CLI and to end a session before deleting it.</string>
+	<key>%@ is a folder on %@.</key>
+	<string>%@ is a folder on %@.</string>
+	<key>%@ is already added.</key>
+	<string>%@ is already added.</string>
+	<key>%@ is disconnected</key>
+	<string>%@ is disconnected</string>
+	<key>%@ isn't a folder on %@, so the session can't start there. It may have been moved or deleted.</key>
+	<string>%@ isn't a folder on %@, so the session can't start there. It may have been moved or deleted.</string>
+	<key>%@ isn't on the PATH of %@'s login shell, so its sessions listed here can't resume. If it's installed, add its folder to PATH in a startup file that shell reads.</key>
+	<string>%@ isn't on the PATH of %@'s login shell, so its sessions listed here can't resume. If it's installed, add its folder to PATH in a startup file that shell reads.</string>
+	<key>%@ isn't on the PATH of %@'s login shell, so this session can't start. If it's installed, add its folder to PATH in a startup file that shell reads.</key>
+	<string>%@ isn't on the PATH of %@'s login shell, so this session can't start. If it's installed, add its folder to PATH in a startup file that shell reads.</string>
+	<key>%@ printed:</key>
+	<string>%@ printed:</string>
+	<key>%@ tab group</key>
+	<string>%@ tab group</string>
+	<key>%@ wasn't checked: the check can't pass a path with quotes, $, or backslashes to %@.</key>
+	<string>%@ wasn't checked: the check can't pass a path with quotes, $, or backslashes to %@.</string>
+	<key>%@ will permanently delete this session using its native CLI. This cannot be undone.</key>
+	<string>%@ will permanently delete this session using its native CLI. This cannot be undone.</string>
+	<key>%@ · %@ · %@%@</key>
+	<string>%@ · %@ · %@%@</string>
+	<key>%@ · ⌘-click to select multiple projects; Shift-click to select a range</key>
+	<string>%@ · ⌘-click to select multiple projects; Shift-click to select a range</string>
+	<key>%@ — %@</key>
+	<string>%@ — %@</string>
+	<key>%@%@, %@, %@</key>
+	<string>%@%@, %@, %@</string>
+	<key>%@'s interactive startup files start another program, so CLIs start without them. A PATH set only in those files doesn't reach the CLIs.</key>
+	<string>%@'s interactive startup files start another program, so CLIs start without them. A PATH set only in those files doesn't reach the CLIs.</string>
+	<key>%@'s shell startup starts another program before the app's commands run, so sessions open that program instead of their CLI.</key>
+	<string>%@'s shell startup starts another program before the app's commands run, so sessions open that program instead of their CLI.</string>
+	<key>%@'s tmux server runs tmux %@, but the tmux 流光 finds is %@. Opening a session in that server can fail until its sessions end and the server starts again.</key>
+	<string>%@'s tmux server runs tmux %@, but the tmux 流光 finds is %@. Opening a session in that server can fail until its sessions end and the server starts again.</string>
+	<key>%@'s tmux server was started by another tmux version than %@, the one 流光 finds there, as when tmux is upgraded while sessions run. Its sessions keep running but can't be opened. Reattach with the tmux that started the server, or end its sessions with that tmux and start them again.</key>
+	<string>%@'s tmux server was started by another tmux version than %@, the one 流光 finds there, as when tmux is upgraded while sessions run. Its sessions keep running but can't be opened. Reattach with the tmux that started the server, or end its sessions with that tmux and start them again.</string>
+	<key>%@, %@</key>
+	<string>%@, %@</string>
+	<key>%@, %@%@%@%@</key>
+	<string>%@, %@%@%@%@</string>
+	<key>%@, %@, open terminal, not saved yet</key>
+	<string>%@, %@, open terminal, not saved yet</string>
+	<key>%lld</key>
+	<string>%lld</string>
+	<key>%lld bookmarks</key>
+	<string>%lld bookmarks</string>
+	<key>%lld bookmarks belong to sessions no host lists now.</key>
+	<string>%lld bookmarks belong to sessions no host lists now.</string>
+	<key>%lld earlier entries are not shown. Resume the session to see all of it.</key>
+	<string>%lld earlier entries are not shown. Resume the session to see all of it.</string>
+	<key>%lld hours</key>
+	<string>%lld hours</string>
+	<key>%lld of %lld</key>
+	<string>%lld of %lld</string>
+	<key>%lld points</key>
+	<string>%lld points</string>
+	<key>%lld pt</key>
+	<string>%lld pt</string>
+	<key>%lld selected</key>
+	<string>%lld selected</string>
+	<key>%lld sessions are still running: their tabs close and their CLIs end first.</key>
+	<string>%lld sessions are still running: their tabs close and their CLIs end first.</string>
+	<key>%lld sessions selected</key>
+	<string>%lld sessions selected</string>
+	<key>%lld sessions with open terminals will be skipped.</key>
+	<string>%lld sessions with open terminals will be skipped.</string>
+	<key>%lld subagent sessions stay on disk.</key>
+	<string>%lld subagent sessions stay on disk.</string>
+	<key>%lld tool calls</key>
+	<string>%lld tool calls</string>
+	<key>%lld+ matches</key>
+	<string>%lld+ matches</string>
+	<key>**Open tabs** lists every tab with what its CLI is doing. ⌘1 to ⌘8 go to a tab by its position, and ⌘9 to the last.</key>
+	<string>**Open tabs** lists every tab with what its CLI is doing. ⌘1 to ⌘8 go to a tab by its position, and ⌘9 to the last.</string>
+	<key>**Resume** continues this conversation in its CLI, in its original folder. Double-clicking the session in the sidebar does the same.</key>
+	<string>**Resume** continues this conversation in its CLI, in its original folder. Double-clicking the session in the sidebar does the same.</string>
+	<key>**Resume**, or a double-click, continues the conversation in its CLI and original folder. **Branch**, where the CLI supports it, starts a new session from a copy and leaves the original as it was.</key>
+	<string>**Resume**, or a double-click, continues the conversation in its CLI and original folder. **Branch**, where the CLI supports it, starts a new session from a copy and leaves the original as it was.</string>
+	<key>**⌘N** starts a session in any installed CLI, or a plain terminal. Tabs group by project, and **Open tabs** in the sidebar lists them all. Right-click a tab, or press **⌥⌘N**, to show two side by side.</key>
+	<string>**⌘N** starts a session in any installed CLI, or a plain terminal. Tabs group by project, and **Open tabs** in the sidebar lists them all. Right-click a tab, or press **⌥⌘N**, to show two side by side.</string>
+	<key>+%lld</key>
+	<string>+%lld</string>
+	<key>1 bookmark</key>
+	<string>1 bookmark</string>
+	<key>1 bookmark belongs to a session no host lists now.</key>
+	<string>1 bookmark belongs to a session no host lists now.</string>
+	<key>1 message</key>
+	<string>1 message</string>
+	<key>1 session is still running: its tab closes and its CLI ends first.</key>
+	<string>1 session is still running: its tab closes and its CLI ends first.</string>
+	<key>1 session with an open terminal will be skipped.</key>
+	<string>1 session with an open terminal will be skipped.</string>
+	<key>1 subagent session stays on disk.</key>
+	<string>1 subagent session stays on disk.</string>
+	<key>1 tool call</key>
+	<string>1 tool call</string>
+	<key>A CLI or a plain terminal's shell still running in tmux reattaches. Other sessions resume when you select their tab, including after a Mac restart, and other plain terminals open a new shell in their folder. With this off, quitting ends plain terminals' shells.</key>
+	<string>A CLI or a plain terminal's shell still running in tmux reattaches. Other sessions resume when you select their tab, including after a Mac restart, and other plain terminals open a new shell in their folder. With this off, quitting ends plain terminals' shells.</string>
+	<key>A blue dot means a CLI finished a turn you haven't seen yet.</key>
+	<string>A blue dot means a CLI finished a turn you haven't seen yet.</string>
+	<key>A name to know it by</key>
+	<string>A name to know it by</string>
+	<key>A plain terminal has no conversation to bookmark.</key>
+	<string>A plain terminal has no conversation to bookmark.</string>
+	<key>A port goes in `~/.ssh/config`. Add these lines there, then enter %@.</key>
+	<string>A port goes in `~/.ssh/config`. Add these lines there, then enter %@.</string>
+	<key>A session whose subagents ran sessions of their own gets a chevron before its icon. Click it to list them under the session and read them. Kiro's aren't listed; on SSH hosts, only Codex's and Antigravity's are.</key>
+	<string>A session whose subagents ran sessions of their own gets a chevron before its icon. Click it to list them under the session and read them. Kiro's aren't listed; on SSH hosts, only Codex's and Antigravity's are.</string>
+	<key>A subagent ran this session for the session that started it. It can be read here, but not resumed or deleted on its own.</key>
+	<string>A subagent ran this session for the session that started it. It can be read here, but not resumed or deleted on its own.</string>
+	<key>A web address always opens in your browser, and a folder in the Finder. An editor opens text files, such as code and Markdown, at the printed line when it's VS Code or an editor built on it; images, PDFs, and other files open in their default app. Right-click a link for every choice.</key>
+	<string>A web address always opens in your browser, and a folder in the Finder. An editor opens text files, such as code and Markdown, at the printed line when it's VS Code or an editor built on it; images, PDFs, and other files open in their default app. Right-click a link for every choice.</string>
+	<key>A+</key>
+	<string>A+</string>
+	<key>About 流光</key>
+	<string>About 流光</string>
+	<key>Accessibility</key>
+	<string>Accessibility</string>
+	<key>Actual Size</key>
+	<string>Actual Size</string>
+	<key>Add #%@</key>
+	<string>Add #%@</string>
+	<key>Add SSH host</key>
+	<string>Add SSH host</string>
+	<key>Add SSH host…</key>
+	<string>Add SSH host…</string>
+	<key>Add Tab to New Split View</key>
+	<string>Add Tab to New Split View</string>
+	<key>Add a project folder on %@</key>
+	<string>Add a project folder on %@</string>
+	<key>Add a project folder on this Mac</key>
+	<string>Add a project folder on this Mac</string>
+	<key>Add a project folder or restore an archived project on %@</key>
+	<string>Add a project folder or restore an archived project on %@</string>
+	<key>Add a project folder or restore an archived project on this Mac</key>
+	<string>Add a project folder or restore an archived project on this Mac</string>
+	<key>Add a server you reach over SSH to browse and resume its sessions here.</key>
+	<string>Add a server you reach over SSH to browse and resume its sessions here.</string>
+	<key>Add anyway</key>
+	<string>Add anyway</string>
+	<key>Add bookmark</key>
+	<string>Add bookmark</string>
+	<key>Add host</key>
+	<string>Add host</string>
+	<key>Add or Remove Bookmark</key>
+	<string>Add or Remove Bookmark</string>
+	<key>Add or remove bookmark</key>
+	<string>Add or remove bookmark</string>
+	<key>Add or restore a project on %@</key>
+	<string>Add or restore a project on %@</string>
+	<key>Add or restore a project on this Mac</key>
+	<string>Add or restore a project on this Mac</string>
+	<key>Add project</key>
+	<string>Add project</string>
+	<key>Add project on %@</key>
+	<string>Add project on %@</string>
+	<key>Add project on this Mac</key>
+	<string>Add project on this Mac</string>
+	<key>Add project…</key>
+	<string>Add project…</string>
+	<key>Add tag %@</key>
+	<string>Add tag %@</string>
+	<key>Adjusted to stay readable</key>
+	<string>Adjusted to stay readable</string>
+	<key>All</key>
+	<string>All</string>
+	<key>All 26 letters are in use. Remove a bookmark to add another.</key>
+	<string>All 26 letters are in use. Remove a bookmark to add another.</string>
+	<key>All Bookmarks</key>
+	<string>All Bookmarks</string>
+	<key>All sessions</key>
+	<string>All sessions</string>
+	<key>All time</key>
+	<string>All time</string>
+	<key>All tools</key>
+	<string>All tools</string>
+	<key>Allow 流光 in macOS Login Items to finish enabling automatic launch.</key>
+	<string>Allow 流光 in macOS Login Items to finish enabling automatic launch.</string>
+	<key>Allowed</key>
+	<string>Allowed</string>
+	<key>Already added as %@, which also connects to %@.</key>
+	<string>Already added as %@, which also connects to %@.</string>
+	<key>Also resumes %@ sessions on this Mac. 流光 adds its own arguments after it.</key>
+	<string>Also resumes %@ sessions on this Mac. 流光 adds its own arguments after it.</string>
+	<key>An archived project is hidden from the sidebar. Its folder and sessions stay on disk, and restoring it lists them again. Starting a new session in its folder also restores it.</key>
+	<string>An archived project is hidden from the sidebar. Its folder and sessions stay on disk, and restoring it lists them again. Starting a new session in its folder also restores it.</string>
+	<key>An unticked CLI's sessions leave the sidebar, search, and the filter menu, and New session stops offering it. Its open tabs stay, and its session files are kept.</key>
+	<string>An unticked CLI's sessions leave the sidebar, search, and the filter menu, and New session stops offering it. Its open tabs stay, and its session files are kept.</string>
+	<key>Another program on this Mac uses port %@. Choose another port on this Mac.</key>
+	<string>Another program on this Mac uses port %@. Choose another port on this Mac.</string>
+	<key>Answer</key>
+	<string>Answer</string>
+	<key>Antigravity and OpenCode need `python3`; deleting Antigravity sessions also needs `lsof`.</key>
+	<string>Antigravity and OpenCode need `python3`; deleting Antigravity sessions also needs `lsof`.</string>
+	<key>App</key>
+	<string>App</string>
+	<key>Appearance</key>
+	<string>Appearance</string>
+	<key>Applies immediately to all terminals. Some CLI apps use their own colors.</key>
+	<string>Applies immediately to all terminals. Some CLI apps use their own colors.</string>
+	<key>Applies to tabs opened after you change it.</key>
+	<string>Applies to tabs opened after you change it.</string>
+	<key>Archive</key>
+	<string>Archive</string>
+	<key>Archive %lld projects</key>
+	<string>Archive %lld projects</string>
+	<key>Archive %lld projects and delete 1 session</key>
+	<string>Archive %lld projects and delete 1 session</string>
+	<key>Archive and delete sessions…</key>
+	<string>Archive and delete sessions…</string>
+	<key>Archive project</key>
+	<string>Archive project</string>
+	<key>Archive project and delete %lld sessions</key>
+	<string>Archive project and delete %lld sessions</string>
+	<key>Archive project and delete 1 session</key>
+	<string>Archive project and delete 1 session</string>
+	<key>Archive project and delete all sessions (%lld)…</key>
+	<string>Archive project and delete all sessions (%lld)…</string>
+	<key>Archive projects you're done with; restore them anytime from the host's **+** menu.</key>
+	<string>Archive projects you're done with; restore them anytime from the host's **+** menu.</string>
+	<key>Archive selected projects</key>
+	<string>Archive selected projects</string>
+	<key>Archive selected projects and delete their sessions</key>
+	<string>Archive selected projects and delete their sessions</string>
+	<key>Archive session</key>
+	<string>Archive session</string>
+	<key>Archive the selected projects and delete their sessions, ending those that still run first</key>
+	<string>Archive the selected projects and delete their sessions, ending those that still run first</string>
+	<key>Archive the selected projects; keep sessions and open terminals</key>
+	<string>Archive the selected projects; keep sessions and open terminals</string>
+	<key>Archived</key>
+	<string>Archived</string>
+	<key>Archived projects</key>
+	<string>Archived projects</string>
+	<key>Archived projects (%lld)…</key>
+	<string>Archived projects (%lld)…</string>
+	<key>Archived projects on %@</key>
+	<string>Archived projects on %@</string>
+	<key>Arrange split view</key>
+	<string>Arrange split view</string>
+	<key>Ask Now</key>
+	<string>Ask Now</string>
+	<key>Ask each time</key>
+	<string>Ask each time</string>
+	<key>Asking about tmux, rsync, and each CLI's version</key>
+	<string>Asking about tmux, rsync, and each CLI's version</string>
+	<key>Asking about tmux, rsync, each CLI's version, and the tab's folder</key>
+	<string>Asking about tmux, rsync, each CLI's version, and the tab's folder</string>
+	<key>A−</key>
+	<string>A−</string>
+	<key>Back</key>
+	<string>Back</string>
+	<key>Back (⌘[). Right-click to see history.</key>
+	<string>Back (⌘[). Right-click to see history.</string>
+	<key>Back to the tab or session shown before</key>
+	<string>Back to the tab or session shown before</string>
+	<key>Background</key>
+	<string>Background</string>
+	<key>Bookmark %@</key>
+	<string>Bookmark %@</string>
+	<key>Bookmark %@'s message is no longer in this conversation. This is where it was.</key>
+	<string>Bookmark %@'s message is no longer in this conversation. This is where it was.</string>
+	<key>Bookmark the message you're reading, or remove its bookmark</key>
+	<string>Bookmark the message you're reading, or remove its bookmark</string>
+	<key>Bookmarks</key>
+	<string>Bookmarks</string>
+	<key>Bookmarks (⌘D, ⌘', ⇧⌘')</key>
+	<string>Bookmarks (⌘D, ⌘', ⇧⌘')</string>
+	<key>Bottom view</key>
+	<string>Bottom view</string>
+	<key>Branch</key>
+	<string>Branch</string>
+	<key>Browse and resume sessions on another machine.</key>
+	<string>Browse and resume sessions on another machine.</string>
+	<key>Browse and resume sessions on other machines with **Add SSH host…**.</key>
+	<string>Browse and resume sessions on other machines with **Add SSH host…**.</string>
+	<key>Browse…</key>
+	<string>Browse…</string>
+	<key>CLIs run in %@ on %@, so they keep running when a tab closes or the connection drops.</key>
+	<string>CLIs run in %@ on %@, so they keep running when a tab closes or the connection drops.</string>
+	<key>CLIs skip your interactive shell startup, which starts another program</key>
+	<string>CLIs skip your interactive shell startup, which starts another program</string>
+	<key>Can't check</key>
+	<string>Can't check</string>
+	<key>Cancel</key>
+	<string>Cancel</string>
+	<key>Cancel copying</key>
+	<string>Cancel copying</string>
+	<key>Cancel deletion</key>
+	<string>Cancel deletion</string>
+	<key>Changes the chosen theme's colors, in its light or dark version. Your changes stay with the theme when you choose another one. Text is made readable on your colors, so the text color can come out darker or lighter than you chose. Terminals that match the app theme take its background.</key>
+	<string>Changes the chosen theme's colors, in its light or dark version. Your changes stay with the theme when you choose another one. Text is made readable on your colors, so the text color can come out darker or lighter than you chose. Terminals that match the app theme take its background.</string>
+	<key>Check %@</key>
+	<string>Check %@</string>
+	<key>Check Again</key>
+	<string>Check Again</string>
+	<key>Check again</key>
+	<string>Check again</string>
+	<key>Check command</key>
+	<string>Check command</string>
+	<key>Check command (optional)</key>
+	<string>Check command (optional)</string>
+	<key>Check for updates</key>
+	<string>Check for updates</string>
+	<key>Check host</key>
+	<string>Check host</string>
+	<key>Check that the CLI runs in your usual terminal and has saved a conversation. **New session** offers only the CLIs it finds installed.</key>
+	<string>Check that the CLI runs in your usual terminal and has saved a conversation. **New session** offers only the CLIs it finds installed.</string>
+	<key>Check this host…</key>
+	<string>Check this host…</string>
+	<key>Check what on the host could have ended this tab, such as its CLI or its folder</key>
+	<string>Check what on the host could have ended this tab, such as its CLI or its folder</string>
+	<key>Checking %@</key>
+	<string>Checking %@</string>
+	<key>Checking %@…</key>
+	<string>Checking %@…</string>
+	<key>Checking its shell startup</key>
+	<string>Checking its shell startup</string>
+	<key>Checking the folder on %@…</key>
+	<string>Checking the folder on %@…</string>
+	<key>Checking the start command on %@…</key>
+	<string>Checking the start command on %@…</string>
+	<key>Checking the start command…</key>
+	<string>Checking the start command…</string>
+	<key>Checks this host</key>
+	<string>Checks this host</string>
+	<key>Choose</key>
+	<string>Choose</string>
+	<key>Choose **Add SSH host…** at the bottom of the sidebar, then enter `user@hostname` or an alias from `~/.ssh/config`. Your code and CLIs run on the host; its history is cached on this Mac.</key>
+	<string>Choose **Add SSH host…** at the bottom of the sidebar, then enter `user@hostname` or an alias from `~/.ssh/config`. Your code and CLIs run on the host; its history is cached on this Mac.</string>
+	<key>Choose a session in the sidebar to read its conversation.</key>
+	<string>Choose a session in the sidebar to read its conversation.</string>
+	<key>Choose a tab</key>
+	<string>Choose a tab</string>
+	<key>Choose a tab - Bottom view</key>
+	<string>Choose a tab - Bottom view</string>
+	<key>Choose a tab - Left view</key>
+	<string>Choose a tab - Left view</string>
+	<key>Choose a tab - Right view</key>
+	<string>Choose a tab - Right view</string>
+	<key>Choose a tab - Top view</key>
+	<string>Choose a tab - Top view</string>
+	<key>Choose a tab to add to split view</key>
+	<string>Choose a tab to add to split view</string>
+	<key>Choose a tab to show beside this one</key>
+	<string>Choose a tab to show beside this one</string>
+	<key>Choose folder…</key>
+	<string>Choose folder…</string>
+	<key>Choose or enter a folder</key>
+	<string>Choose or enter a folder</string>
+	<key>Claude Code, Antigravity, and Pi sessions move to the Trash; Codex, Kiro CLI, and OpenCode sessions are permanently deleted.</key>
+	<string>Claude Code, Antigravity, and Pi sessions move to the Trash; Codex, Kiro CLI, and OpenCode sessions are permanently deleted.</string>
+	<key>Claude Code, Antigravity, and Pi sessions on this Mac move to the Trash. Codex, Kiro CLI, and OpenCode sessions and all sessions on SSH hosts are permanently deleted.</key>
+	<string>Claude Code, Antigravity, and Pi sessions on this Mac move to the Trash. Codex, Kiro CLI, and OpenCode sessions and all sessions on SSH hosts are permanently deleted.</string>
+	<key>Claude Code, Codex, Antigravity, Pi, OpenCode, and Kiro CLI, on this Mac or an SSH host, notify you when they finish a turn or need your input, unless you are looking at their tab. Choose which in General. The bell at the top of the sidebar always lists the sessions waiting for you.</key>
+	<string>Claude Code, Codex, Antigravity, Pi, OpenCode, and Kiro CLI, on this Mac or an SSH host, notify you when they finish a turn or need your input, unless you are looking at their tab. Choose which in General. The bell at the top of the sidebar always lists the sessions waiting for you.</string>
+	<key>Clear filters</key>
+	<string>Clear filters</string>
+	<key>Clear the selection, or close search</key>
+	<string>Clear the selection, or close search</string>
+	<key>Click a project's label in the tab bar to fold away its tabs.</key>
+	<string>Click a project's label in the tab bar to fold away its tabs.</string>
+	<key>Click a session to read it without starting its CLI.</key>
+	<string>Click a session to read it without starting its CLI.</string>
+	<key>Click a session to read it; nothing runs. Double-click it to continue in its CLI, in the original folder.</key>
+	<string>Click a session to read it; nothing runs. Double-click it to continue in its CLI, in the original folder.</string>
+	<key>Click a session to read its conversation; no CLI starts. **Open in new window** gives it a window of its own.</key>
+	<string>Click a session to read its conversation; no CLI starts. **Open in new window** gives it a window of its own.</string>
+	<key>Click the project's name to collapse its tabs. A collapsed group still shows when a CLI is waiting on you.</key>
+	<string>Click the project's name to collapse its tabs. A collapsed group still shows when a CLI is waiting on you.</string>
+	<key>Close</key>
+	<string>Close</string>
+	<key>Close %@</key>
+	<string>Close %@</string>
+	<key>Close Bottom View</key>
+	<string>Close Bottom View</string>
+	<key>Close Left View</key>
+	<string>Close Left View</string>
+	<key>Close Right View</key>
+	<string>Close Right View</string>
+	<key>Close Tab…</key>
+	<string>Close Tab…</string>
+	<key>Close Top View</key>
+	<string>Close Top View</string>
+	<key>Close Window</key>
+	<string>Close Window</string>
+	<key>Close a tab with **Keep running**, or quit the app, and the CLI carries on in tmux. Click its session to return. A plain terminal ends with its tab.</key>
+	<string>Close a tab with **Keep running**, or quit the app, and the CLI carries on in tmux. Click its session to return. A plain terminal ends with its tab.</string>
+	<key>Close all tabs in %@?</key>
+	<string>Close all tabs in %@?</string>
+	<key>Close all tabs in group…</key>
+	<string>Close all tabs in group…</string>
+	<key>Close and delete 1 session</key>
+	<string>Close and delete 1 session</string>
+	<key>Close and delete session</key>
+	<string>Close and delete session</string>
+	<key>Close and delete session…</key>
+	<string>Close and delete session…</string>
+	<key>Close and end session</key>
+	<string>Close and end session</string>
+	<key>Close bottom view</key>
+	<string>Close bottom view</string>
+	<key>Close find</key>
+	<string>Close find</string>
+	<key>Close find, while its field has the keyboard</key>
+	<string>Close find, while its field has the keyboard</string>
+	<key>Close left view</key>
+	<string>Close left view</string>
+	<key>Close right view</key>
+	<string>Close right view</string>
+	<key>Close search</key>
+	<string>Close search</string>
+	<key>Close search (Escape)</key>
+	<string>Close search (Escape)</string>
+	<key>Close tabs</key>
+	<string>Close tabs</string>
+	<key>Close terminal</key>
+	<string>Close terminal</string>
+	<key>Close terminal…</key>
+	<string>Close terminal…</string>
+	<key>Close the tab, keep the CLI</key>
+	<string>Close the tab, keep the CLI</string>
+	<key>Close the tab, or the window when no tabs are open</key>
+	<string>Close the tab, or the window when no tabs are open</string>
+	<key>Close this tab?</key>
+	<string>Close this tab?</string>
+	<key>Close this terminal?</key>
+	<string>Close this terminal?</string>
+	<key>Close this view</key>
+	<string>Close this view</string>
+	<key>Close top view</key>
+	<string>Close top view</string>
+	<key>Close without asking</key>
+	<string>Close without asking</string>
+	<key>Closing tabs</key>
+	<string>Closing tabs</string>
+	<key>Closing the tab ends the CLI and deletes the session without asking again. Closing the window or quitting 流光 keeps it until its tab closes. Keep session in the tab's menu keeps it after all.</key>
+	<string>Closing the tab ends the CLI and deletes the session without asking again. Closing the window or quitting 流光 keeps it until its tab closes. Keep session in the tab's menu keeps it after all.</string>
+	<key>Collapse all groups</key>
+	<string>Collapse all groups</string>
+	<key>Collapse group</key>
+	<string>Collapse group</string>
+	<key>Collapse project</key>
+	<string>Collapse project</string>
+	<key>Color intensity</key>
+	<string>Color intensity</string>
+	<key>Colors</key>
+	<string>Colors</string>
+	<key>Command</key>
+	<string>Command</string>
+	<key>Commands start in %@'s login shell with its interactive startup files, as in your own terminal.</key>
+	<string>Commands start in %@'s login shell with its interactive startup files, as in your own terminal.</string>
+	<key>Complete your split view</key>
+	<string>Complete your split view</string>
+	<key>Connect</key>
+	<string>Connect</string>
+	<key>Connect again; a CLI or shell still running in tmux on the host is reattached</key>
+	<string>Connect again; a CLI or shell still running in tmux on the host is reattached</string>
+	<key>Connect and refresh sessions on %@</key>
+	<string>Connect and refresh sessions on %@</string>
+	<key>Connecting to %@…</key>
+	<string>Connecting to %@…</string>
+	<key>Connecting…</key>
+	<string>Connecting…</string>
+	<key>Connection</key>
+	<string>Connection</string>
+	<key>Connection lost. Reconnecting…</key>
+	<string>Connection lost. Reconnecting…</string>
+	<key>Connects to %@, port %@.</key>
+	<string>Connects to %@, port %@.</string>
+	<key>Connects to %@.</key>
+	<string>Connects to %@.</string>
+	<key>Connect…</key>
+	<string>Connect…</string>
+	<key>Continue</key>
+	<string>Continue</string>
+	<key>Continue any past session in its own CLI and folder: just double-click it.</key>
+	<string>Continue any past session in its own CLI and folder: just double-click it.</string>
+	<key>Conversation map</key>
+	<string>Conversation map</string>
+	<key>Copied</key>
+	<string>Copied</string>
+	<key>Copies %@'s sessions to this Mac.</key>
+	<string>Copies %@'s sessions to this Mac.</string>
+	<key>Copies sessions of %@.</key>
+	<string>Copies sessions of %@.</string>
+	<key>Copies the colors once. 流光 doesn't read iTerm2's settings again.</key>
+	<string>Copies the colors once. 流光 doesn't read iTerm2's settings again.</string>
+	<key>Copy</key>
+	<string>Copy</string>
+	<key>Copy Link</key>
+	<string>Copy Link</string>
+	<key>Copy Path</key>
+	<string>Copy Path</string>
+	<key>Copy address</key>
+	<string>Copy address</string>
+	<key>Copy code</key>
+	<string>Copy code</string>
+	<key>Copy conversation</key>
+	<string>Copy conversation</string>
+	<key>Copy project path</key>
+	<string>Copy project path</string>
+	<key>Copy report</key>
+	<string>Copy report</string>
+	<key>Copy saved messages and tool-call summaries as Markdown</key>
+	<string>Copy saved messages and tool-call summaries as Markdown</string>
+	<key>Copy session ID</key>
+	<string>Copy session ID</string>
+	<key>Copy the command</key>
+	<string>Copy the command</string>
+	<key>Copy the report as text, for an issue or for whoever runs the host</key>
+	<string>Copy the report as text, for an issue or for whoever runs the host</string>
+	<key>Copy the selection. Hold ⇧ while dragging to select text.</key>
+	<string>Copy the selection. Hold ⇧ while dragging to select text.</string>
+	<key>Copying %@ sessions (%lld of %lld)…</key>
+	<string>Copying %@ sessions (%lld of %lld)…</string>
+	<key>Copying dropped files to %@</key>
+	<string>Copying dropped files to %@</string>
+	<key>Copying sessions…</key>
+	<string>Copying sessions…</string>
+	<key>Copying to %@…</key>
+	<string>Copying to %@…</string>
+	<key>Could not change launch at login: %@</key>
+	<string>Could not change launch at login: %@</string>
+	<key>Could not copy conversation</key>
+	<string>Could not copy conversation</string>
+	<key>Could not export conversation</key>
+	<string>Could not export conversation</string>
+	<key>Could not open terminal</key>
+	<string>Could not open terminal</string>
+	<key>Could not read this session</key>
+	<string>Could not read this session</string>
+	<key>Could not start session</key>
+	<string>Could not start session</string>
+	<key>Couldn't ask %@ which ports it listens on. Type the port instead.</key>
+	<string>Couldn't ask %@ which ports it listens on. Type the port instead.</string>
+	<key>Couldn't connect to %@.</key>
+	<string>Couldn't connect to %@.</string>
+	<key>Couldn't copy to %@</key>
+	<string>Couldn't copy to %@</string>
+	<key>Couldn't find iTerm2's default profile. A dynamic profile can't be imported.</key>
+	<string>Couldn't find iTerm2's default profile. A dynamic profile can't be imported.</string>
+	<key>Couldn't sign in on %@</key>
+	<string>Couldn't sign in on %@</string>
+	<key>Create folder and add</key>
+	<string>Create folder and add</string>
+	<key>Create folder and open terminal</key>
+	<string>Create folder and open terminal</string>
+	<key>Create folder and start</key>
+	<string>Create folder and start</string>
+	<key>Creating the folder on %@…</key>
+	<string>Creating the folder on %@…</string>
+	<key>Customize colors</key>
+	<string>Customize colors</string>
+	<key>Customized</key>
+	<string>Customized</string>
+	<key>Dark</key>
+	<string>Dark</string>
+	<key>Default size</key>
+	<string>Default size</string>
+	<key>Delete %lld project folders and %lld sessions</key>
+	<string>Delete %lld project folders and %lld sessions</string>
+	<key>Delete %lld project folders and 1 session</key>
+	<string>Delete %lld project folders and 1 session</string>
+	<key>Delete %lld project folders…</key>
+	<string>Delete %lld project folders…</string>
+	<key>Delete 1 session</key>
+	<string>Delete 1 session</string>
+	<key>Delete all deletable sessions (%lld)…</key>
+	<string>Delete all deletable sessions (%lld)…</string>
+	<key>Delete back to the start of the line</key>
+	<string>Delete back to the start of the line</string>
+	<key>Delete project folder and %lld sessions</key>
+	<string>Delete project folder and %lld sessions</string>
+	<key>Delete project folder and 1 session</key>
+	<string>Delete project folder and 1 session</string>
+	<key>Delete project folders…</key>
+	<string>Delete project folders…</string>
+	<key>Delete project folder…</key>
+	<string>Delete project folder…</string>
+	<key>Delete selected project folders</key>
+	<string>Delete selected project folders</string>
+	<key>Delete session</key>
+	<string>Delete session</string>
+	<key>Delete sessions?</key>
+	<string>Delete sessions?</string>
+	<key>Delete session…</key>
+	<string>Delete session…</string>
+	<key>Delete the session when its tab closes</key>
+	<string>Delete the session when its tab closes</string>
+	<key>Deleted when its tab closes</key>
+	<string>Deleted when its tab closes</string>
+	<key>Delete…</key>
+	<string>Delete…</string>
+	<key>Deleting %lld of %lld…</key>
+	<string>Deleting %lld of %lld…</string>
+	<key>Deleting sessions</key>
+	<string>Deleting sessions</string>
+	<key>Deleting when the tab closes</key>
+	<string>Deleting when the tab closes</string>
+	<key>Deletion progress</key>
+	<string>Deletion progress</string>
+	<key>Disconnect</key>
+	<string>Disconnect</string>
+	<key>Disconnect from %@?</key>
+	<string>Disconnect from %@?</string>
+	<key>Disconnected</key>
+	<string>Disconnected</string>
+	<key>Disconnected. Connect to copy its sessions.</key>
+	<string>Disconnected. Connect to copy its sessions.</string>
+	<key>Don't ask again</key>
+	<string>Don't ask again</string>
+	<key>Don't ask again on %@</key>
+	<string>Don't ask again on %@</string>
+	<key>Don't show tips</key>
+	<string>Don't show tips</string>
+	<key>Done</key>
+	<string>Done</string>
+	<key>Drag a session or tab onto the terminal: to a side for split view, to the middle to show it alone.</key>
+	<string>Drag a session or tab onto the terminal: to a side for split view, to the middle to show it alone.</string>
+	<key>Drag a tab out of the tab bar to give it its own window.</key>
+	<string>Drag a tab out of the tab bar to give it its own window.</string>
+	<key>Drop files from Finder onto a terminal on this Mac to paste their paths.</key>
+	<string>Drop files from Finder onto a terminal on this Mac to paste their paths.</string>
+	<key>Each host has its own choice for tabs whose CLI can keep running in tmux there. A terminal's shell always ends with its tab. Don't ask again in the close dialog sets these too.</key>
+	<string>Each host has its own choice for tabs whose CLI can keep running in tmux there. A terminal's shell always ends with its tab. Don't ask again in the close dialog sets these too.</string>
+	<key>Each project folder on this Mac moves to the Trash with its session files. A session whose CLI still runs ends first.</key>
+	<string>Each project folder on this Mac moves to the Trash with its session files. A session whose CLI still runs ends first.</string>
+	<key>Edit</key>
+	<string>Edit</string>
+	<key>Edit Bookmark…</key>
+	<string>Edit Bookmark…</string>
+	<key>Edit bookmark %@…</key>
+	<string>Edit bookmark %@…</string>
+	<key>Edit bookmark…</key>
+	<string>Edit bookmark…</string>
+	<key>End and close this terminal</key>
+	<string>End and close this terminal</string>
+	<key>End session</key>
+	<string>End session</string>
+	<key>End sessions</key>
+	<string>End sessions</string>
+	<key>End this CLI session?</key>
+	<string>End this CLI session?</string>
+	<key>Ended</key>
+	<string>Ended</string>
+	<key>Engine</key>
+	<string>Engine</string>
+	<key>Enter a port from 1 to 65535.</key>
+	<string>Enter a port from 1 to 65535.</string>
+	<key>Enter only the host, such as `devbox` or `me@devbox`. Options such as a key or a jump host go in `~/.ssh/config`.</key>
+	<string>Enter only the host, such as `devbox` or `me@devbox`. Options such as a key or a jump host go in `~/.ssh/config`.</string>
+	<key>Every open tab in one list</key>
+	<string>Every open tab in one list</string>
+	<key>Exited (%d)</key>
+	<string>Exited (%d)</string>
+	<key>Exited (%d) right after starting</key>
+	<string>Exited (%d) right after starting</string>
+	<key>Expand all groups</key>
+	<string>Expand all groups</string>
+	<key>Expand group</key>
+	<string>Expand group</string>
+	<key>Expand project</key>
+	<string>Expand project</string>
+	<key>Export</key>
+	<string>Export</string>
+	<key>Export conversation</key>
+	<string>Export conversation</string>
+	<key>Export conversations</key>
+	<string>Export conversations</string>
+	<key>Feedback</key>
+	<string>Feedback</string>
+	<key>Feedback and issues start with these versions filled in.</key>
+	<string>Feedback and issues start with these versions filled in.</string>
+	<key>Fields and buttons</key>
+	<string>Fields and buttons</string>
+	<key>File links</key>
+	<string>File links</string>
+	<key>Filter project sessions</key>
+	<string>Filter project sessions</string>
+	<key>Filters active</key>
+	<string>Filters active</string>
+	<key>Find a session</key>
+	<string>Find a session</string>
+	<key>Find any session</key>
+	<string>Find any session</string>
+	<key>Find in conversation</key>
+	<string>Find in conversation</string>
+	<key>Find in conversation (⌘F)</key>
+	<string>Find in conversation (⌘F)</string>
+	<key>Find in terminal</key>
+	<string>Find in terminal</string>
+	<key>Find in the conversation</key>
+	<string>Find in the conversation</string>
+	<key>Find in the terminal. In a tab linked to a session, find in its conversation in a reading window.</key>
+	<string>Find in the terminal. In a tab linked to a session, find in its conversation in a reading window.</string>
+	<key>Find in this conversation</key>
+	<string>Find in this conversation</string>
+	<key>Finding the folder on %@…</key>
+	<string>Finding the folder on %@…</string>
+	<key>Finding the latest message…</key>
+	<string>Finding the latest message…</string>
+	<key>Finished its turn</key>
+	<string>Finished its turn</string>
+	<key>Finishes its turn</key>
+	<string>Finishes its turn</string>
+	<key>First message</key>
+	<string>First message</string>
+	<key>Fix %@ with an agent</key>
+	<string>Fix %@ with an agent</string>
+	<key>Fix with agent…</key>
+	<string>Fix with agent…</string>
+	<key>Fixed</key>
+	<string>Fixed</string>
+	<key>Follow System</key>
+	<string>Follow System</string>
+	<key>Font</key>
+	<string>Font</string>
+	<key>Font size</key>
+	<string>Font size</string>
+	<key>For sessions to survive disconnects or closed tabs, install `tmux` on the host. Reopen a session to reattach.</key>
+	<string>For sessions to survive disconnects or closed tabs, install `tmux` on the host. Reopen a session to reattach.</string>
+	<key>Fork in the native CLI</key>
+	<string>Fork in the native CLI</string>
+	<key>Forward</key>
+	<string>Forward</string>
+	<key>Forward (⌘]). Right-click to see history.</key>
+	<string>Forward (⌘]). Right-click to see history.</string>
+	<key>Forward a port</key>
+	<string>Forward a port</string>
+	<key>Forward a port…</key>
+	<string>Forward a port…</string>
+	<key>Forward again</key>
+	<string>Forward again</string>
+	<key>Forward port</key>
+	<string>Forward port</string>
+	<key>Forwarded to %@</key>
+	<string>Forwarded to %@</string>
+	<key>Forwarding…</key>
+	<string>Forwarding…</string>
+	<key>Found at %@, but it didn't print its version within %lld seconds.</key>
+	<string>Found at %@, but it didn't print its version within %lld seconds.</string>
+	<key>Found at %@, but it failed when asked for its version, so it may fail to start sessions too.</key>
+	<string>Found at %@, but it failed when asked for its version, so it may fail to start sessions too.</string>
+	<key>Found at %@.</key>
+	<string>Found at %@.</string>
+	<key>Found nothing on %@ that keeps sessions from working.</key>
+	<string>Found nothing on %@ that keeps sessions from working.</string>
+	<key>Found something on %@ that keeps sessions from working; see the problems below.</key>
+	<string>Found something on %@ that keeps sessions from working; see the problems below.</string>
+	<key>Full</key>
+	<string>Full</string>
+	<key>Full Disk Access</key>
+	<string>Full Disk Access</string>
+	<key>General</key>
+	<string>General</string>
+	<key>Get notified when a CLI finishes a turn or needs you. Choose which in Settings → General.</key>
+	<string>Get notified when a CLI finishes a turn or needs you. Choose which in Settings → General.</string>
+	<key>GitHub ↗</key>
+	<string>GitHub ↗</string>
+	<key>Give the terminal the whole window: ⌘B hides the sidebar.</key>
+	<string>Give the terminal the whole window: ⌘B hides the sidebar.</string>
+	<key>Gives the theme back its own colors, light and dark.</key>
+	<string>Gives the theme back its own colors, light and dark.</string>
+	<key>Go</key>
+	<string>Go</string>
+	<key>Go to a tab by its position</key>
+	<string>Go to a tab by its position</string>
+	<key>Go to bookmark %@</key>
+	<string>Go to bookmark %@</string>
+	<key>Go to the first available message</key>
+	<string>Go to the first available message</string>
+	<key>Go to the latest message</key>
+	<string>Go to the latest message</string>
+	<key>Got it</key>
+	<string>Got it</string>
+	<key>Help</key>
+	<string>Help</string>
+	<key>Hidden CLIs</key>
+	<string>Hidden CLIs</string>
+	<key>Hide Conversation Map</key>
+	<string>Hide Conversation Map</string>
+	<key>Hide Sidebar</key>
+	<string>Hide Sidebar</string>
+	<key>Hide or show the sidebar</key>
+	<string>Hide or show the sidebar</string>
+	<key>Hide sidebar</key>
+	<string>Hide sidebar</string>
+	<key>Hide sidebar (⌘B)</key>
+	<string>Hide sidebar (⌘B)</string>
+	<key>Hide subagent sessions of %@</key>
+	<string>Hide subagent sessions of %@</string>
+	<key>Hide the sidebar to give the terminal the whole window, and click again to bring it back. ⌘B does the same.</key>
+	<string>Hide the sidebar to give the terminal the whole window, and click again to bring it back. ⌘B does the same.</string>
+	<key>Hide until 流光 opens again</key>
+	<string>Hide until 流光 opens again</string>
+	<key>Host</key>
+	<string>Host</string>
+	<key>Host check</key>
+	<string>Host check</string>
+	<key>Hosts run Linux or macOS. For Windows, connect to WSL over SSH.</key>
+	<string>Hosts run Linux or macOS. For Windows, connect to WSL over SSH.</string>
+	<key>How it works</key>
+	<string>How it works</string>
+	<key>If a session is missing</key>
+	<string>If a session is missing</string>
+	<key>If a session opens a shell instead of its CLI, the host's shell startup starts another program first, such as tmux or zsh. The app checks for this and works around it when it can; the host's **⋯** says what it found.</key>
+	<string>If a session opens a shell instead of its CLI, the host's shell startup starts another program first, such as tmux or zsh. The app checks for this and works around it when it can; the host's **⋯** says what it found.</string>
+	<key>Image</key>
+	<string>Image</string>
+	<key>Image can't be shown</key>
+	<string>Image can't be shown</string>
+	<key>Import</key>
+	<string>Import</string>
+	<key>Improved</key>
+	<string>Improved</string>
+	<key>In **Projects**, clear the filters, then click the host's refresh button.</key>
+	<string>In **Projects**, clear the filters, then click the host's refresh button.</string>
+	<key>In a tab linked to a session, bookmark its latest message, or remove its bookmark</key>
+	<string>In a tab linked to a session, bookmark its latest message, or remove its bookmark</string>
+	<key>In a tab linked to a session, label and tag its latest message's bookmark</key>
+	<string>In a tab linked to a session, label and tag its latest message's bookmark</string>
+	<key>In a tab linked to a session, open its reading window at the next bookmark</key>
+	<string>In a tab linked to a session, open its reading window at the next bookmark</string>
+	<key>In a tab linked to a session, open its reading window at the previous bookmark</key>
+	<string>In a tab linked to a session, open its reading window at the previous bookmark</string>
+	<key>Install `rsync` and the CLIs you use on the host.</key>
+	<string>Install `rsync` and the CLIs you use on the host.</string>
+	<key>Interface language</key>
+	<string>Interface language</string>
+	<key>Interface size</key>
+	<string>Interface size</string>
+	<key>It didn't print its version within %lld seconds.</key>
+	<string>It didn't print its version within %lld seconds.</string>
+	<key>It failed when asked for its version, so it may fail to start sessions too.</key>
+	<string>It failed when asked for its version, so it may fail to start sessions too.</string>
+	<key>It is deleted permanently on %@. SSH hosts have no Trash.</key>
+	<string>It is deleted permanently on %@. SSH hosts have no Trash.</string>
+	<key>It isn't on the PATH of %@'s login shell, so tabs start it from this folder.</key>
+	<string>It isn't on the PATH of %@'s login shell, so tabs start it from this folder.</string>
+	<key>It moves to the Trash.</key>
+	<string>It moves to the Trash.</string>
+	<key>Its CLI, still running on %@, ends first.</key>
+	<string>Its CLI, still running on %@, ends first.</string>
+	<key>Its open tabs close, and the CLIs and shells running in them stop.</key>
+	<string>Its open tabs close, and the CLIs and shells running in them stop.</string>
+	<key>Its open tabs close. Keep running leaves their CLIs running in tmux; click a session to reattach once you connect again. End sessions stops them.</key>
+	<string>Its open tabs close. Keep running leaves their CLIs running in tmux; click a session to reattach once you connect again. End sessions stops them.</string>
+	<key>Its open tabs close. Keep running leaves their CLIs running in tmux; click a session to reattach once you connect again. End sessions stops them. The other tabs' CLIs and shells stop either way.</key>
+	<string>Its open tabs close. Keep running leaves their CLIs running in tmux; click a session to reattach once you connect again. End sessions stops them. The other tabs' CLIs and shells stop either way.</string>
+	<key>Its tab closes and its CLI ends first.</key>
+	<string>Its tab closes and its CLI ends first.</string>
+	<key>Jump back to the tab or session you just left with ⌘[, forward with ⌘].</key>
+	<string>Jump back to the tab or session you just left with ⌘[, forward with ⌘].</string>
+	<key>Keep running</key>
+	<string>Keep running</string>
+	<key>Keep running leaves the CLI running in tmux on %@; click the session to reattach. End session stops it.</key>
+	<string>Keep running leaves the CLI running in tmux on %@; click the session to reattach. End session stops it.</string>
+	<key>Keep running leaves their CLIs running in tmux; click a session to reattach. End sessions stops them.</key>
+	<string>Keep running leaves their CLIs running in tmux; click a session to reattach. End sessions stops them.</string>
+	<key>Keep running leaves their CLIs running in tmux; click a session to reattach. End sessions stops them. The other tabs' CLIs and shells stop either way.</key>
+	<string>Keep running leaves their CLIs running in tmux; click a session to reattach. End sessions stops them. The other tabs' CLIs and shells stop either way.</string>
+	<key>Keep session</key>
+	<string>Keep session</string>
+	<key>Keyboard shortcuts</key>
+	<string>Keyboard shortcuts</string>
+	<key>Label</key>
+	<string>Label</string>
+	<key>Label and tag the bookmark of the message you're reading</key>
+	<string>Label and tag the bookmark of the message you're reading</string>
+	<key>Larger reading text</key>
+	<string>Larger reading text</string>
+	<key>Larger text</key>
+	<string>Larger text</string>
+	<key>Last 7 days</key>
+	<string>Last 7 days</string>
+	<key>Last Tab</key>
+	<string>Last Tab</string>
+	<key>Last tab</key>
+	<string>Last tab</string>
+	<key>Latest message</key>
+	<string>Latest message</string>
+	<key>Latest release notes ↗</key>
+	<string>Latest release notes ↗</string>
+	<key>Launch 流光 at login</key>
+	<string>Launch 流光 at login</string>
+	<key>Left view</key>
+	<string>Left view</string>
+	<key>Lets 流光 tell you when a session needs your input or finishes its turn. Choose which in General.</key>
+	<string>Lets 流光 tell you when a session needs your input or finishes its turn. Choose which in General.</string>
+	<key>Light</key>
+	<string>Light</string>
+	<key>Light or dark</key>
+	<string>Light or dark</string>
+	<key>List the sessions on another machine you reach with ssh</key>
+	<string>List the sessions on another machine you reach with ssh</string>
+	<key>Listening on %@</key>
+	<string>Listening on %@</string>
+	<key>Lists the monospaced fonts installed on this Mac.</key>
+	<string>Lists the monospaced fonts installed on this Mac.</string>
+	<key>Load earlier messages</key>
+	<string>Load earlier messages</string>
+	<key>Load later messages</key>
+	<string>Load later messages</string>
+	<key>Local Network</key>
+	<string>Local Network</string>
+	<key>Log in to %@</key>
+	<string>Log in to %@</string>
+	<key>Logged in to %@.</key>
+	<string>Logged in to %@.</string>
+	<key>Logged in with Connect…</key>
+	<string>Logged in with Connect…</string>
+	<key>Logging in to %@</key>
+	<string>Logging in to %@</string>
+	<key>Login shell</key>
+	<string>Login shell</string>
+	<key>Looking up each CLI</key>
+	<string>Looking up each CLI</string>
+	<key>Looking up the ports %@ listens on…</key>
+	<string>Looking up the ports %@ listens on…</string>
+	<key>Make text bigger or smaller with ⌘+ and ⌘−, in terminals and conversations.</key>
+	<string>Make text bigger or smaller with ⌘+ and ⌘−, in terminals and conversations.</string>
+	<key>Makes the 16 colors that shells and many CLIs pick from stronger or softer. Colors a program sets exactly stay as they are.</key>
+	<string>Makes the 16 colors that shells and many CLIs pick from stronger or softer. Colors a program sets exactly stay as they are.</string>
+	<key>Markdown (.md)…</key>
+	<string>Markdown (.md)…</string>
+	<key>Match app</key>
+	<string>Match app</string>
+	<key>Match app theme</key>
+	<string>Match app theme</string>
+	<key>More actions</key>
+	<string>More actions</string>
+	<key>More actions for %@</key>
+	<string>More actions for %@</string>
+	<key>More in the right-click menu</key>
+	<string>More in the right-click menu</string>
+	<key>More in the user guide ↗</key>
+	<string>More in the user guide ↗</string>
+	<key>More room for the terminal</key>
+	<string>More room for the terminal</string>
+	<key>Move Here</key>
+	<string>Move Here</string>
+	<key>Move Tab to This Window</key>
+	<string>Move Tab to This Window</string>
+	<key>Move here</key>
+	<string>Move here</string>
+	<key>Move tab into split view</key>
+	<string>Move tab into split view</string>
+	<key>Move the selected project folders on this Mac to the Trash, ending sessions that still run first</key>
+	<string>Move the selected project folders on this Mac to the Trash, ending sessions that still run first</string>
+	<key>Move to</key>
+	<string>Move to</string>
+	<key>Name</key>
+	<string>Name</string>
+	<key>Names only</key>
+	<string>Names only</string>
+	<key>Needs my input, such as a permission prompt</key>
+	<string>Needs my input, such as a permission prompt</string>
+	<key>Needs your input</key>
+	<string>Needs your input</string>
+	<key>Nerd Font icons</key>
+	<string>Nerd Font icons</string>
+	<key>New</key>
+	<string>New</string>
+	<key>New Session…</key>
+	<string>New Session…</string>
+	<key>New Tab…</key>
+	<string>New Tab…</string>
+	<key>New Window</key>
+	<string>New Window</string>
+	<key>New session</key>
+	<string>New session</string>
+	<key>New session (⌘N)</key>
+	<string>New session (⌘N)</string>
+	<key>New session in %@</key>
+	<string>New session in %@</string>
+	<key>New session…</key>
+	<string>New session…</string>
+	<key>New split view below current tab</key>
+	<string>New split view below current tab</string>
+	<key>New split view with current tab</key>
+	<string>New split view with current tab</string>
+	<key>New terminal</key>
+	<string>New terminal</string>
+	<key>New window</key>
+	<string>New window</string>
+	<key>Newer match</key>
+	<string>Newer match</string>
+	<key>Newer match (⇧⌘G or ⇧Return)</key>
+	<string>Newer match (⇧⌘G or ⇧Return)</string>
+	<key>Next</key>
+	<string>Next</string>
+	<key>Next Bookmark</key>
+	<string>Next Bookmark</string>
+	<key>Next Tab</key>
+	<string>Next Tab</string>
+	<key>Next bookmark</key>
+	<string>Next bookmark</string>
+	<key>Next match</key>
+	<string>Next match</string>
+	<key>Next match (⌘G or Return)</key>
+	<string>Next match (⌘G or Return)</string>
+	<key>Next tab</key>
+	<string>Next tab</string>
+	<key>Next tip</key>
+	<string>Next tip</string>
+	<key>No CLI found on this Mac.</key>
+	<string>No CLI found on this Mac.</string>
+	<key>No CLI on %@ can start; run the agent on this Mac.</key>
+	<string>No CLI on %@ can start; run the agent on this Mac.</string>
+	<key>No Claude Code, Codex, Antigravity, Pi, or OpenCode session is waiting for you</key>
+	<string>No Claude Code, Codex, Antigravity, Pi, or OpenCode session is waiting for you</string>
+	<key>No archived projects</key>
+	<string>No archived projects</string>
+	<key>No bookmarks in this conversation</key>
+	<string>No bookmarks in this conversation</string>
+	<key>No bookmarks in this conversation. Press ⌘D to bookmark the message you're reading.</key>
+	<string>No bookmarks in this conversation. Press ⌘D to bookmark the message you're reading.</string>
+	<key>No bookmarks in this session. Press ⌘D to bookmark its latest message.</key>
+	<string>No bookmarks in this session. Press ⌘D to bookmark its latest message.</string>
+	<key>No bookmarks match.</key>
+	<string>No bookmarks match.</string>
+	<key>No bookmarks yet. Press ⌘D to bookmark a message.</key>
+	<string>No bookmarks yet. Press ⌘D to bookmark a message.</string>
+	<key>No matches</key>
+	<string>No matches</string>
+	<key>No matching open tabs</key>
+	<string>No matching open tabs</string>
+	<key>No matching projects or sessions</key>
+	<string>No matching projects or sessions</string>
+	<key>No messages in this session yet.</key>
+	<string>No messages in this session yet.</string>
+	<key>No messages yet</key>
+	<string>No messages yet</string>
+	<key>No open tabs</key>
+	<string>No open tabs</string>
+	<key>No session is running</key>
+	<string>No session is running</string>
+	<key>No session selected</key>
+	<string>No session selected</string>
+	<key>No session was running at the last refresh</key>
+	<string>No session was running at the last refresh</string>
+	<key>No sessions</key>
+	<string>No sessions</string>
+	<key>No sessions in the past seven days</key>
+	<string>No sessions in the past seven days</string>
+	<key>No supported CLI found on this Mac. Install %@, then refresh.</key>
+	<string>No supported CLI found on this Mac. Install %@, then refresh.</string>
+	<key>Not Now</key>
+	<string>Not Now</string>
+	<key>Not allowed</key>
+	<string>Not allowed</string>
+	<key>Not asked yet</key>
+	<string>Not asked yet</string>
+	<key>Not found on %@: %@.</key>
+	<string>Not found on %@: %@.</string>
+	<key>Not linked yet</key>
+	<string>Not linked yet</string>
+	<key>Note</key>
+	<string>Note</string>
+	<key>Nothing on %@ listens on a port that localhost reaches.</key>
+	<string>Nothing on %@ listens on a port that localhost reaches.</string>
+	<key>Notifications</key>
+	<string>Notifications</string>
+	<key>Notifications for 流光 are turned off in System Settings &gt; Notifications.</key>
+	<string>Notifications for 流光 are turned off in System Settings &gt; Notifications.</string>
+	<key>Notify me when a session</key>
+	<string>Notify me when a session</string>
+	<key>OK</key>
+	<string>OK</string>
+	<key>Older match</key>
+	<string>Older match</string>
+	<key>Older match (⌘G or Return)</key>
+	<string>Older match (⌘G or Return)</string>
+	<key>On an SSH host, check that SSH works, or click **Connect…** on its heading, then check rsync and the CLI there. A host at a local address also needs **Local Network** in Permissions.</key>
+	<string>On an SSH host, check that SSH works, or click **Connect…** on its heading, then check rsync and the CLI there. A host at a local address also needs **Local Network** in Permissions.</string>
+	<key>Once Claude Code, Codex, or another supported CLI saves a conversation, it shows up here, grouped by project.</key>
+	<string>Once Claude Code, Codex, or another supported CLI saves a conversation, it shows up here, grouped by project.</string>
+	<key>Only renames it in 流光. Leave empty to use the folder name (%@).</key>
+	<string>Only renames it in 流光. Leave empty to use the folder name (%@).</string>
+	<key>Only your messages and the CLI's replies can be bookmarked.</key>
+	<string>Only your messages and the CLI's replies can be bookmarked.</string>
+	<key>Open</key>
+	<string>Open</string>
+	<key>Open Link</key>
+	<string>Open Link</string>
+	<key>Open Login Items Settings</key>
+	<string>Open Login Items Settings</string>
+	<key>Open System Settings</key>
+	<string>Open System Settings</string>
+	<key>Open a new issue on GitHub</key>
+	<string>Open a new issue on GitHub</string>
+	<key>Open a project in your editor straight from its right-click menu.</key>
+	<string>Open a project in your editor straight from its right-click menu.</string>
+	<key>Open in</key>
+	<string>Open in</string>
+	<key>Open in %@</key>
+	<string>Open in %@</string>
+	<key>Open in Finder</key>
+	<string>Open in Finder</string>
+	<key>Open in a separate reading window</key>
+	<string>Open in a separate reading window</string>
+	<key>Open in bottom view</key>
+	<string>Open in bottom view</string>
+	<key>Open in browser</key>
+	<string>Open in browser</string>
+	<key>Open in its default app</key>
+	<string>Open in its default app</string>
+	<key>Open in left view</key>
+	<string>Open in left view</string>
+	<key>Open in new window</key>
+	<string>Open in new window</string>
+	<key>Open in reading window</key>
+	<string>Open in reading window</string>
+	<key>Open in right view</key>
+	<string>Open in right view</string>
+	<key>Open in split below</key>
+	<string>Open in split below</string>
+	<key>Open in split on the right</key>
+	<string>Open in split on the right</string>
+	<key>Open in top view</key>
+	<string>Open in top view</string>
+	<key>Open project in</key>
+	<string>Open project in</string>
+	<key>Open project in Finder</key>
+	<string>Open project in Finder</string>
+	<key>Open tabs</key>
+	<string>Open tabs</string>
+	<key>Open terminal</key>
+	<string>Open terminal</string>
+	<key>Open the feedback form on the website</key>
+	<string>Open the feedback form on the website</string>
+	<key>Open the source code on GitHub</key>
+	<string>Open the source code on GitHub</string>
+	<key>Open the 流光 website</key>
+	<string>Open the 流光 website</string>
+	<key>Option key</key>
+	<string>Option key</string>
+	<key>Option with a key sends Esc and that key, which shells and CLIs read as Alt shortcuts. Turn it off to type the characters your keyboard layout keeps behind Option, such as brackets, braces, or the pipe. Open tabs follow the change.</key>
+	<string>Option with a key sends Esc and that key, which shells and CLIs read as Alt shortcuts. Turn it off to type the characters your keyboard layout keeps behind Option, such as brackets, braces, or the pipe. Open tabs follow the change.</string>
+	<key>Optional</key>
+	<string>Optional</string>
+	<key>Optional. Lets CLIs in terminals control apps, such as clicking a menu or typing keys through System Events with osascript. Every CLI in a terminal gets it, so allow it only if you want them to.</key>
+	<string>Optional. Lets CLIs in terminals control apps, such as clicking a menu or typing keys through System Events with osascript. Every CLI in a terminal gets it, so allow it only if you want them to.</string>
+	<key>Optional. Without it, macOS asks about each protected folder, such as Documents or an external drive, the first time a CLI in a terminal opens files there.</key>
+	<string>Optional. Without it, macOS asks about each protected folder, such as Documents or an external drive, the first time a CLI in a terminal opens files there.</string>
+	<key>Organize</key>
+	<string>Organize</string>
+	<key>Other CLIs</key>
+	<string>Other CLIs</string>
+	<key>Paste</key>
+	<string>Paste</string>
+	<key>Path on the host, such as ~/code/app</key>
+	<string>Path on the host, such as ~/code/app</string>
+	<key>Permissions</key>
+	<string>Permissions</string>
+	<key>Pick up where you left off</key>
+	<string>Pick up where you left off</string>
+	<key>Picks the light or dark version of color schemes that have both.</key>
+	<string>Picks the light or dark version of color schemes that have both.</string>
+	<key>Pin project</key>
+	<string>Pin project</string>
+	<key>Pin session</key>
+	<string>Pin session</string>
+	<key>Pin your most-used sessions and projects to the top from their right-click menu.</key>
+	<string>Pin your most-used sessions and projects to the top from their right-click menu.</string>
+	<key>Pinned</key>
+	<string>Pinned</string>
+	<key>Place Views Side by Side</key>
+	<string>Place Views Side by Side</string>
+	<key>Place views side by side</key>
+	<string>Place views side by side</string>
+	<key>Plain text (.txt)…</key>
+	<string>Plain text (.txt)…</string>
+	<key>Port on %@</key>
+	<string>Port on %@</string>
+	<key>Port on the host</key>
+	<string>Port on the host</string>
+	<key>Port on this Mac</key>
+	<string>Port on this Mac</string>
+	<key>Prefer Ghostty's renderer? Pick it in Settings → Appearance → Terminal → Engine. New tabs use it.</key>
+	<string>Prefer Ghostty's renderer? Pick it in Settings → Appearance → Terminal → Engine. New tabs use it.</string>
+	<key>Preview</key>
+	<string>Preview</string>
+	<key>Previous Bookmark</key>
+	<string>Previous Bookmark</string>
+	<key>Previous Tab</key>
+	<string>Previous Tab</string>
+	<key>Previous bookmark</key>
+	<string>Previous bookmark</string>
+	<key>Previous match</key>
+	<string>Previous match</string>
+	<key>Previous match (⇧⌘G or ⇧Return)</key>
+	<string>Previous match (⇧⌘G or ⇧Return)</string>
+	<key>Previous tab</key>
+	<string>Previous tab</string>
+	<key>Problem</key>
+	<string>Problem</string>
+	<key>Project filters are active</key>
+	<string>Project filters are active</string>
+	<key>Project folder</key>
+	<string>Project folder</string>
+	<key>Project folder on %@</key>
+	<string>Project folder on %@</string>
+	<key>Projects</key>
+	<string>Projects</string>
+	<key>Prompt</key>
+	<string>Prompt</string>
+	<key>Put two tabs side by side: right-click a tab for split view.</key>
+	<string>Put two tabs side by side: right-click a tab for split view.</string>
+	<key>Quit or restart your Mac: your tabs reopen, and CLIs still in tmux reattach.</key>
+	<string>Quit or restart your Mac: your tabs reopen, and CLIs still in tmux reattach.</string>
+	<key>Quit the app and your CLIs keep running: close tabs with **Keep running**.</key>
+	<string>Quit the app and your CLIs keep running: close tabs with **Keep running**.</string>
+	<key>Reach a port on %@ at localhost on this Mac. Only this Mac can use it, and it stops when 流光 quits.</key>
+	<string>Reach a port on %@ at localhost on this Mac. Only this Mac can use it, and it stops when 流光 quits.</string>
+	<key>Read a conversation in its own window with **Open in new window**.</key>
+	<string>Read a conversation in its own window with **Open in new window**.</string>
+	<key>Read a session</key>
+	<string>Read a session</string>
+	<key>Read first, then resume</key>
+	<string>Read first, then resume</string>
+	<key>Read only</key>
+	<string>Read only</string>
+	<key>Readable</key>
+	<string>Readable</string>
+	<key>Reading a session</key>
+	<string>Reading a session</string>
+	<key>Reading width</key>
+	<string>Reading width</string>
+	<key>Recent projects</key>
+	<string>Recent projects</string>
+	<key>Reconnect</key>
+	<string>Reconnect</string>
+	<key>Reconnecting…</key>
+	<string>Reconnecting…</string>
+	<key>Refresh</key>
+	<string>Refresh</string>
+	<key>Refresh sessions on %@</key>
+	<string>Refresh sessions on %@</string>
+	<key>Refresh sessions on this Mac</key>
+	<string>Refresh sessions on this Mac</string>
+	<key>Refreshing %@</key>
+	<string>Refreshing %@</string>
+	<key>Refreshing this Mac</key>
+	<string>Refreshing this Mac</string>
+	<key>Release history could not be loaded. Read the latest notes on the website.</key>
+	<string>Release history could not be loaded. Read the latest notes on the website.</string>
+	<key>Release notes</key>
+	<string>Release notes</string>
+	<key>Remove</key>
+	<string>Remove</string>
+	<key>Remove all</key>
+	<string>Remove all</string>
+	<key>Remove all bookmarks in this conversation?</key>
+	<string>Remove all bookmarks in this conversation?</string>
+	<key>Remove all bookmarks…</key>
+	<string>Remove all bookmarks…</string>
+	<key>Remove bookmark</key>
+	<string>Remove bookmark</string>
+	<key>Remove bookmark %@</key>
+	<string>Remove bookmark %@</string>
+	<key>Remove host</key>
+	<string>Remove host</string>
+	<key>Rename</key>
+	<string>Rename</string>
+	<key>Rename conversation</key>
+	<string>Rename conversation</string>
+	<key>Rename project</key>
+	<string>Rename project</string>
+	<key>Rename project…</key>
+	<string>Rename project…</string>
+	<key>Reopen Closed Tab</key>
+	<string>Reopen Closed Tab</string>
+	<key>Reopen the tab closed last</key>
+	<string>Reopen the tab closed last</string>
+	<key>Reopen the tabs that were open when 流光 quit</key>
+	<string>Reopen the tabs that were open when 流光 quit</string>
+	<key>Reopening tabs</key>
+	<string>Reopening tabs</string>
+	<key>Report an issue ↗</key>
+	<string>Report an issue ↗</string>
+	<key>Report by Email</key>
+	<string>Report by Email</string>
+	<key>Report on GitHub</key>
+	<string>Report on GitHub</string>
+	<key>Reporting the crash helps get it fixed. The report opens with the crash details filled in: add what you were doing, then send it. The crash report file shows in Finder, so you can attach it.</key>
+	<string>Reporting the crash helps get it fixed. The report opens with the crash details filled in: add what you were doing, then send it. The crash report file shows in Finder, so you can attach it.</string>
+	<key>Reset</key>
+	<string>Reset</string>
+	<key>Restore</key>
+	<string>Restore</string>
+	<key>Restore %@</key>
+	<string>Restore %@</string>
+	<key>Restore Defaults</key>
+	<string>Restore Defaults</string>
+	<key>Restores the terminal colors, font, and size.</key>
+	<string>Restores the terminal colors, font, and size.</string>
+	<key>Resume</key>
+	<string>Resume</string>
+	<key>Resume or branch</key>
+	<string>Resume or branch</string>
+	<key>Reveal in Finder</key>
+	<string>Reveal in Finder</string>
+	<key>Reveal session file in Finder</key>
+	<string>Reveal session file in Finder</string>
+	<key>Reverse Views</key>
+	<string>Reverse Views</string>
+	<key>Reverse views</key>
+	<string>Reverse views</string>
+	<key>Right view</key>
+	<string>Right view</string>
+	<key>Right-click a selected row in the sidebar to resume, branch, end, or delete them.</key>
+	<string>Right-click a selected row in the sidebar to resume, branch, end, or delete them.</string>
+	<key>Right-click a session to rename, pin, export, or delete it, and a project to rename, pin, or archive it. ⌘-click or ⇧-click selects several.</key>
+	<string>Right-click a session to rename, pin, export, or delete it, and a project to rename, pin, or archive it. ⌘-click or ⇧-click selects several.</string>
+	<key>Right-click a session to rename, pin, export, or delete it. ⌘-click or Shift-click to select several at once.</key>
+	<string>Right-click a session to rename, pin, export, or delete it. ⌘-click or Shift-click to select several at once.</string>
+	<key>Right-click another tab and choose **New split view with current tab**. Drag between the two views to resize them.</key>
+	<string>Right-click another tab and choose **New split view with current tab**. Drag between the two views to resize them.</string>
+	<key>Run it yourself in Terminal:</key>
+	<string>Run it yourself in Terminal:</string>
+	<key>Run it yourself: %@</key>
+	<string>Run it yourself: %@</string>
+	<key>Run on</key>
+	<string>Run on</string>
+	<key>Running</key>
+	<string>Running</string>
+	<key>Runs every 5 minutes. When it exits with anything but 0, you're asked to sign in.</key>
+	<string>Runs every 5 minutes. When it exits with anything but 0, you're asked to sign in.</string>
+	<key>Runs on %@ what 流光 runs there. When a command below fails the same way in your own Terminal, the problem is on %@.</key>
+	<string>Runs on %@ what 流光 runs there. When a command below fails the same way in your own Terminal, the problem is on %@.</string>
+	<key>Runs on the host in your login shell, as you'd type it there.</key>
+	<string>Runs on the host in your login shell, as you'd type it there.</string>
+	<key>SSH alias or user@hostname</key>
+	<string>SSH alias or user@hostname</string>
+	<key>SSH aliases come from `~/.ssh/config`.</key>
+	<string>SSH aliases come from `~/.ssh/config`.</string>
+	<key>SSH from this Mac. If it asks for a password or a code, click **Connect…** on the host's heading.</key>
+	<string>SSH from this Mac. If it asks for a password or a code, click **Connect…** on the host's heading.</string>
+	<key>SSH host</key>
+	<string>SSH host</string>
+	<key>SSH hosts</key>
+	<string>SSH hosts</string>
+	<key>SSH hosts don't tell when a session waits for you</key>
+	<string>SSH hosts don't tell when a session waits for you</string>
+	<key>SSH hosts have no Trash, so every session is permanently deleted.</key>
+	<string>SSH hosts have no Trash, so every session is permanently deleted.</string>
+	<key>SSH setup guide ↗</key>
+	<string>SSH setup guide ↗</string>
+	<key>SSH setup in the user guide ↗</key>
+	<string>SSH setup in the user guide ↗</string>
+	<key>Same as on the host</key>
+	<string>Same as on the host</string>
+	<key>Save</key>
+	<string>Save</string>
+	<key>Save messages and tool-call summaries to a file</key>
+	<string>Save messages and tool-call summaries to a file</string>
+	<key>Scanning conversations</key>
+	<string>Scanning conversations</string>
+	<key>Scanning sessions…</key>
+	<string>Scanning sessions…</string>
+	<key>Search bookmarks</key>
+	<string>Search bookmarks</string>
+	<key>Search covers the entries shown in this preview.</key>
+	<string>Search covers the entries shown in this preview.</string>
+	<key>Search in</key>
+	<string>Search in</string>
+	<key>Search labels, tags, and messages, or type #tag. Choose a bookmark to read it.</key>
+	<string>Search labels, tags, and messages, or type #tag. Choose a bookmark to read it.</string>
+	<key>Search open tabs</key>
+	<string>Search open tabs</string>
+	<key>Search open tabs by title, project, or host</key>
+	<string>Search open tabs by title, project, or host</string>
+	<key>Search project and session names</key>
+	<string>Search project and session names</string>
+	<key>Search projects and sessions</key>
+	<string>Search projects and sessions</string>
+	<key>Search projects by name or path and sessions by title or ID</key>
+	<string>Search projects by name or path and sessions by title or ID</string>
+	<key>Search projects by name or path and sessions by title, ID, or message text</key>
+	<string>Search projects by name or path and sessions by title, ID, or message text</string>
+	<key>Search projects by name or path, and sessions by title, ID, or message text.</key>
+	<string>Search projects by name or path, and sessions by title, ID, or message text.</string>
+	<key>Search the text of the conversation you are reading. ⌘F does the same.</key>
+	<string>Search the text of the conversation you are reading. ⌘F does the same.</string>
+	<key>Searching…</key>
+	<string>Searching…</string>
+	<key>See the sessions a session's subagents ran: turn them on in Settings → General.</key>
+	<string>See the sessions a session's subagents ran: turn them on in Settings → General.</string>
+	<key>See which sessions are waiting on you: filter by **Waiting for you**.</key>
+	<string>See which sessions are waiting on you: filter by **Waiting for you**.</string>
+	<key>Select All</key>
+	<string>Select All</string>
+	<key>Select a range</key>
+	<string>Select a range</string>
+	<key>Select several sessions or projects</key>
+	<string>Select several sessions or projects</string>
+	<key>Select the text in a CLI's prompt, to copy, delete, or replace it. Again, select all of the terminal.</key>
+	<string>Select the text in a CLI's prompt, to copy, delete, or replace it. Again, select all of the terminal.</string>
+	<key>Send Feedback</key>
+	<string>Send Feedback</string>
+	<key>Send feedback ↗</key>
+	<string>Send feedback ↗</string>
+	<key>Separate Views</key>
+	<string>Separate Views</string>
+	<key>Separate tags with spaces or commas. Search for #tag in the sidebar or in All Bookmarks.</key>
+	<string>Separate tags with spaces or commas. Search for #tag in the sidebar or in All Bookmarks.</string>
+	<key>Separate views</key>
+	<string>Separate views</string>
+	<key>Session %lld of %lld</key>
+	<string>Session %lld of %lld</string>
+	<key>Sessions failing on an SSH host? Right-click it and choose **Check this host…** to see why and fix it with an agent.</key>
+	<string>Sessions failing on an SSH host? Right-click it and choose **Check this host…** to see why and fix it with an agent.</string>
+	<key>Sessions of %@ are copied with python3 on %@, which isn't on its login shell's PATH.</key>
+	<string>Sessions of %@ are copied with python3 on %@, which isn't on its login shell's PATH.</string>
+	<key>Sessions on %@ can work, but see the warnings below.</key>
+	<string>Sessions on %@ can work, but see the warnings below.</string>
+	<key>Sessions on %@ open a shell instead of their CLI, because its shell startup starts another program first. Click for how to fix it.</key>
+	<string>Sessions on %@ open a shell instead of their CLI, because its shell startup starts another program first. Click for how to fix it.</string>
+	<key>Sessions on other machines</key>
+	<string>Sessions on other machines</string>
+	<key>Settings</key>
+	<string>Settings</string>
+	<key>Settings (⌘,)</key>
+	<string>Settings (⌘,)</string>
+	<key>Settings…</key>
+	<string>Settings…</string>
+	<key>Setup requirements</key>
+	<string>Setup requirements</string>
+	<key>Shell startup</key>
+	<string>Shell startup</string>
+	<key>Shell startup help</key>
+	<string>Shell startup help</string>
+	<key>Shell startup in the user guide ↗</key>
+	<string>Shell startup in the user guide ↗</string>
+	<key>Shell startup is fine</key>
+	<string>Shell startup is fine</string>
+	<key>Show</key>
+	<string>Show</string>
+	<key>Show %@</key>
+	<string>Show %@</string>
+	<key>Show %lld more</key>
+	<string>Show %lld more</string>
+	<key>Show %lld more sessions</key>
+	<string>Show %lld more sessions</string>
+	<key>Show All Bookmarks…</key>
+	<string>Show All Bookmarks…</string>
+	<key>Show Conversation Map</key>
+	<string>Show Conversation Map</string>
+	<key>Show Sidebar</key>
+	<string>Show Sidebar</string>
+	<key>Show a tip in the sidebar each time 流光 opens</key>
+	<string>Show a tip in the sidebar each time 流光 opens</string>
+	<key>Show all bookmarks, in every session</key>
+	<string>Show all bookmarks, in every session</string>
+	<key>Show archived</key>
+	<string>Show archived</string>
+	<key>Show explanation</key>
+	<string>Show explanation</string>
+	<key>Show in Other Window</key>
+	<string>Show in Other Window</string>
+	<key>Show sessions from</key>
+	<string>Show sessions from</string>
+	<key>Show sidebar</key>
+	<string>Show sidebar</string>
+	<key>Show sidebar (⌘B)</key>
+	<string>Show sidebar (⌘B)</string>
+	<key>Show subagent sessions of %@</key>
+	<string>Show subagent sessions of %@</string>
+	<key>Show subagents under the sessions that started them</key>
+	<string>Show subagents under the sessions that started them</string>
+	<key>Shows what the check found</key>
+	<string>Shows what the check found</string>
+	<key>Sidebar</key>
+	<string>Sidebar</string>
+	<key>Sidebar width</key>
+	<string>Sidebar width</string>
+	<key>Sign in again…</key>
+	<string>Sign in again…</string>
+	<key>Sign in on %@</key>
+	<string>Sign in on %@</string>
+	<key>Sign in…</key>
+	<string>Sign in…</string>
+	<key>Sign-in command</key>
+	<string>Sign-in command</string>
+	<key>Sign-in command…</key>
+	<string>Sign-in command…</string>
+	<key>Sign-in needed</key>
+	<string>Sign-in needed</string>
+	<key>Signing in on %@…</key>
+	<string>Signing in on %@…</string>
+	<key>Signing in…</key>
+	<string>Signing in…</string>
+	<key>Signs in again on %@ when a sign-in there expires. When the command asks for a PIN or a code, 流光 asks you in a dialog.</key>
+	<string>Signs in again on %@ when a sign-in there expires. When the command asks for a PIN or a code, 流光 asks you in a dialog.</string>
+	<key>Size</key>
+	<string>Size</string>
+	<key>Skip</key>
+	<string>Skip</string>
+	<key>Smaller reading text</key>
+	<string>Smaller reading text</string>
+	<key>Smaller text</key>
+	<string>Smaller text</string>
+	<key>Some colors are missing, such as the text or background color.</key>
+	<string>Some colors are missing, such as the text or background color.</string>
+	<key>Split View Resize Handle (draggable)</key>
+	<string>Split View Resize Handle (draggable)</string>
+	<key>Split down</key>
+	<string>Split down</string>
+	<key>Split right</key>
+	<string>Split right</string>
+	<key>Split view across projects</key>
+	<string>Split view across projects</string>
+	<key>Stack Views</key>
+	<string>Stack Views</string>
+	<key>Stack views</key>
+	<string>Stack views</string>
+	<key>Start</key>
+	<string>Start</string>
+	<key>Start %@</key>
+	<string>Start %@</string>
+	<key>Start a CLI that reads this report and fixes the problem with you</key>
+	<string>Start a CLI that reads this report and fixes the problem with you</string>
+	<key>Start a native CLI or a plain terminal in a project folder.</key>
+	<string>Start a native CLI or a plain terminal in a project folder.</string>
+	<key>Start a new session in %@</key>
+	<string>Start a new session in %@</string>
+	<key>Start a new session to show it here.</key>
+	<string>Start a new session to show it here.</string>
+	<key>Start a session in any installed CLI, or a plain terminal, with ⌘N.</key>
+	<string>Start a session in any installed CLI, or a plain terminal, with ⌘N.</string>
+	<key>Start a session in any installed CLI, or open a plain terminal, in a project folder. ⌘N does the same.</key>
+	<string>Start a session in any installed CLI, or open a plain terminal, in a project folder. ⌘N does the same.</string>
+	<key>Start command</key>
+	<string>Start command</string>
+	<key>Start or end of the line you're typing</key>
+	<string>Start or end of the line you're typing</string>
+	<key>Start session</key>
+	<string>Start session</string>
+	<key>Start something new</key>
+	<string>Start something new</string>
+	<key>Starts a CLI whose first message is this report, so it can find out why and fix it with you. It's told to ask you before it ends sessions or changes the host's setup.</key>
+	<string>Starts a CLI whose first message is this report, so it can find out why and fix it with you. It's told to ask you before it ends sessions or changes the host's setup.</string>
+	<key>Starts in your home folder on this Mac, outside tmux, and reaches %@ with ssh.</key>
+	<string>Starts in your home folder on this Mac, outside tmux, and reaches %@ with ssh.</string>
+	<key>Startup</key>
+	<string>Startup</string>
+	<key>Step %lld of %lld</key>
+	<string>Step %lld of %lld</string>
+	<key>Stop copying; nothing is typed</key>
+	<string>Stop copying; nothing is typed</string>
+	<key>Stop deleting after the current session; the rest stay listed</key>
+	<string>Stop deleting after the current session; the rest stay listed</string>
+	<key>Stop forwarding</key>
+	<string>Stop forwarding</string>
+	<key>Stop the running CLIs of the selected sessions; they can be resumed</key>
+	<string>Stop the running CLIs of the selected sessions; they can be resumed</string>
+	<key>Stopping deletion</key>
+	<string>Stopping deletion</string>
+	<key>Stopping…</key>
+	<string>Stopping…</string>
+	<key>Subagent</key>
+	<string>Subagent</string>
+	<key>Subagent of %@</key>
+	<string>Subagent of %@</string>
+	<key>Subagents</key>
+	<string>Subagents</string>
+	<key>Such as 3000</key>
+	<string>Such as 3000</string>
+	<key>Supports Claude Code, Codex, Antigravity, Pi, OpenCode, and Kiro CLI, on this Mac or an SSH host, including sessions running in tmux without an open tab. Sessions you are viewing do not notify you. Click a notification to open its session.</key>
+	<string>Supports Claude Code, Codex, Antigravity, Pi, OpenCode, and Kiro CLI, on this Mac or an SSH host, including sessions running in tmux without an open tab. Sessions you are viewing do not notify you. Click a notification to open its session.</string>
+	<key>Swap with bottom view</key>
+	<string>Swap with bottom view</string>
+	<key>Swap with left view</key>
+	<string>Swap with left view</string>
+	<key>Swap with right view</key>
+	<string>Swap with right view</string>
+	<key>Swap with top view</key>
+	<string>Swap with top view</string>
+	<key>Switch tabs with ⌘1 to ⌘9, even while typing in a CLI.</key>
+	<string>Switch tabs with ⌘1 to ⌘9, even while typing in a CLI.</string>
+	<key>Switches between a readable width and the full window width</key>
+	<string>Switches between a readable width and the full window width</string>
+	<key>System</key>
+	<string>System</string>
+	<key>System Monospaced</key>
+	<string>System Monospaced</string>
+	<key>System Monospaced can't show the included Nerd Font icons. To see them, as in shell prompts, choose another font, such as Menlo.</key>
+	<string>System Monospaced can't show the included Nerd Font icons. To see them, as in shell prompts, choose another font, such as Menlo.</string>
+	<key>Tab %lld</key>
+	<string>Tab %lld</string>
+	<key>Tabs</key>
+	<string>Tabs</string>
+	<key>Tabs and split view</key>
+	<string>Tabs and split view</string>
+	<key>Tabs and windows</key>
+	<string>Tabs and windows</string>
+	<key>Tabs grouped by project</key>
+	<string>Tabs grouped by project</string>
+	<key>Tags</key>
+	<string>Tags</string>
+	<key>Take the Tour</key>
+	<string>Take the Tour</string>
+	<key>Take the tour</key>
+	<string>Take the tour</string>
+	<key>Terminal</key>
+	<string>Terminal</string>
+	<key>Terminal appearance preview</key>
+	<string>Terminal appearance preview</string>
+	<key>Terminal colors</key>
+	<string>Terminal colors</string>
+	<key>Terminal engine</key>
+	<string>Terminal engine</string>
+	<key>Text and accents</key>
+	<string>Text and accents</string>
+	<key>Text can't stay readable on that color. Choose a darker one.</key>
+	<string>Text can't stay readable on that color. Choose a darker one.</string>
+	<key>Text can't stay readable on that color. Choose a lighter one.</key>
+	<string>Text can't stay readable on that color. Choose a lighter one.</string>
+	<key>Text size, in the terminals or the conversation shown</key>
+	<string>Text size, in the terminals or the conversation shown</string>
+	<key>That answer wasn't accepted. Try again.</key>
+	<string>That answer wasn't accepted. Try again.</string>
+	<key>The Antigravity session database, associated folder, and annotations will move to the macOS Trash. This also removes its entry from Antigravity's local index.</key>
+	<string>The Antigravity session database, associated folder, and annotations will move to the macOS Trash. This also removes its entry from Antigravity's local index.</string>
+	<key>The CLIs and shells running in them will stop.</key>
+	<string>The CLIs and shells running in them will stop.</string>
+	<key>The Claude Code session file and its associated folder will move to the macOS Trash. This also removes its entry from Claude Code's local index.</key>
+	<string>The Claude Code session file and its associated folder will move to the macOS Trash. This also removes its entry from Claude Code's local index.</string>
+	<key>The Pi session file and its associated folder will be permanently deleted on %@. SSH hosts have no Trash, so this cannot be undone.</key>
+	<string>The Pi session file and its associated folder will be permanently deleted on %@. SSH hosts have no Trash, so this cannot be undone.</string>
+	<key>The Pi session file and its associated folder will move to the macOS Trash.</key>
+	<string>The Pi session file and its associated folder will move to the macOS Trash.</string>
+	<key>The bottom of the sidebar shows a random tip about something you may not have tried. → shows another, and × hides it until 流光 opens again.</key>
+	<string>The bottom of the sidebar shows a random tip about something you may not have tried. → shows another, and × hides it until 流光 opens again.</string>
+	<key>The check of %@'s shell startup didn't finish.</key>
+	<string>The check of %@'s shell startup didn't finish.</string>
+	<key>The check's commands didn't run in %@'s login shell, so nothing else could be checked. The app's commands start the same way, so sessions there can't start either.</key>
+	<string>The check's commands didn't run in %@'s login shell, so nothing else could be checked. The app's commands start the same way, so sessions there can't start either.</string>
+	<key>The conversation itself isn't changed.</key>
+	<string>The conversation itself isn't changed.</string>
+	<key>The folder is listed under %@ in the sidebar, ready for new sessions.</key>
+	<string>The folder is listed under %@ in the sidebar, ready for new sessions.</string>
+	<key>The host needs:</key>
+	<string>The host needs:</string>
+	<key>The project folder is no longer at %@. Move it back there to resume this session.</key>
+	<string>The project folder is no longer at %@. Move it back there to resume this session.</string>
+	<key>The project folder is no longer present at %@. Refresh the project list.</key>
+	<string>The project folder is no longer present at %@. Refresh the project list.</string>
+	<key>The project folder no longer exists</key>
+	<string>The project folder no longer exists</string>
+	<key>The project folder on this Mac moves to the Trash with its session files. A session whose CLI still runs ends first.</key>
+	<string>The project folder on this Mac moves to the Trash with its session files. A session whose CLI still runs ends first.</string>
+	<key>The project will be archived; skipped sessions stay on disk and come back when it is restored.</key>
+	<string>The project will be archived; skipped sessions stay on disk and come back when it is restored.</string>
+	<key>The project will stay in the sidebar.</key>
+	<string>The project will stay in the sidebar.</string>
+	<key>The projects will be archived; skipped sessions stay on disk and come back when they are restored.</key>
+	<string>The projects will be archived; skipped sessions stay on disk and come back when they are restored.</string>
+	<key>The prompt ends with these sections of the 流光 guides:</key>
+	<string>The prompt ends with these sections of the 流光 guides:</string>
+	<key>The prompt is too long to send to %@. Leave out a guide section, or shorten the prompt.</key>
+	<string>The prompt is too long to send to %@. Leave out a guide section, or shorten the prompt.</string>
+	<key>The shell and anything still running in it will stop.</key>
+	<string>The shell and anything still running in it will stop.</string>
+	<key>The sidebar lists sessions from %@ by host and project. Search matches project names and paths, session titles and IDs, and message text.</key>
+	<string>The sidebar lists sessions from %@ by host and project. Search matches project names and paths, session titles and IDs, and message text.</string>
+	<key>The sign-in command ended with exit status %lld.</key>
+	<string>The sign-in command ended with exit status %lld.</string>
+	<key>The sign-in command took longer than 5 minutes, so it was stopped.</key>
+	<string>The sign-in command took longer than 5 minutes, so it was stopped.</string>
+	<key>The terminal process will stop. Sessions saved by the CLI will appear in the project list after refresh.</key>
+	<string>The terminal process will stop. Sessions saved by the CLI will appear in the project list after refresh.</string>
+	<key>The tmux sessions the app starts on a host have no prefix key, so every key reaches the CLI. To use your own tmux prefix there, point at the host's heading, click its **⋯**, and choose **Use this host's tmux prefix**.</key>
+	<string>The tmux sessions the app starts on a host have no prefix key, so every key reaches the CLI. To use your own tmux prefix there, point at the host's heading, click its **⋯**, and choose **Use this host's tmux prefix**.</string>
+	<key>The tour points at the main controls in the window. Afterwards, tips show again the first time you use each part, such as tabs or split view.</key>
+	<string>The tour points at the main controls in the window. Afterwards, tips show again the first time you use each part, such as tabs or split view.</string>
+	<key>Theme</key>
+	<string>Theme</string>
+	<key>There is no folder %@ on this Mac. Check the path, or create the folder.</key>
+	<string>There is no folder %@ on this Mac. Check the path, or create the folder.</string>
+	<key>This Mac</key>
+	<string>This Mac</string>
+	<key>This Mac hasn't connected to this host before. Trust it only if the fingerprint matches the host's.</key>
+	<string>This Mac hasn't connected to this host before. Trust it only if the fingerprint matches the host's.</string>
+	<key>This Mac: %@</key>
+	<string>This Mac: %@</string>
+	<key>This affects all tools in %@, including sessions hidden by the current filter.</key>
+	<string>This affects all tools in %@, including sessions hidden by the current filter.</string>
+	<key>This affects all tools in %lld projects, including sessions hidden by the current filter.</key>
+	<string>This affects all tools in %lld projects, including sessions hidden by the current filter.</string>
+	<key>This also deletes %lld subagent sessions.</key>
+	<string>This also deletes %lld subagent sessions.</string>
+	<key>This also deletes 1 subagent session.</key>
+	<string>This also deletes 1 subagent session.</string>
+	<key>This bookmark was removed in another window.</key>
+	<string>This bookmark was removed in another window.</string>
+	<key>This changes the display name in 流光.</key>
+	<string>This changes the display name in 流光.</string>
+	<key>This file isn't an iTerm2 color preset.</key>
+	<string>This file isn't an iTerm2 color preset.</string>
+	<key>This session is open in another window.</key>
+	<string>This session is open in another window.</string>
+	<key>This session will be permanently deleted on %@. SSH hosts have no Trash, so this cannot be undone.</key>
+	<string>This session will be permanently deleted on %@. SSH hosts have no Trash, so this cannot be undone.</string>
+	<key>This tab isn't linked to its session yet. Bookmarks work once it is.</key>
+	<string>This tab isn't linked to its session yet. Bookmarks work once it is.</string>
+	<key>Time range</key>
+	<string>Time range</string>
+	<key>Tip</key>
+	<string>Tip</string>
+	<key>Tips</key>
+	<string>Tips</string>
+	<key>Tool</key>
+	<string>Tool</string>
+	<key>Top view</key>
+	<string>Top view</string>
+	<key>Trust %@?</key>
+	<string>Trust %@?</string>
+	<key>Trust and connect</key>
+	<string>Trust and connect</string>
+	<key>Try Again</key>
+	<string>Try Again</string>
+	<key>Try again</key>
+	<string>Try again</string>
+	<key>Try another direction without touching the original: **Branch** a session.</key>
+	<string>Try another direction without touching the original: **Branch** a session.</string>
+	<key>Two tabs side by side</key>
+	<string>Two tabs side by side</string>
+	<key>Unarchive session</key>
+	<string>Unarchive session</string>
+	<key>Undo your last edit to the line, in Claude Code and shells</key>
+	<string>Undo your last edit to the line, in Claude Code and shells</string>
+	<key>Unknown</key>
+	<string>Unknown</string>
+	<key>Unknown error</key>
+	<string>Unknown error</string>
+	<key>Unpin project</key>
+	<string>Unpin project</string>
+	<key>Unpin session</key>
+	<string>Unpin session</string>
+	<key>Use Option as Meta</key>
+	<string>Use Option as Meta</string>
+	<key>Use a readable width</key>
+	<string>Use a readable width</string>
+	<key>Use default</key>
+	<string>Use default</string>
+	<key>Use the full window width</key>
+	<string>Use the full window width</string>
+	<key>Use the theme's own color</key>
+	<string>Use the theme's own color</string>
+	<key>Use this host's tmux prefix</key>
+	<string>Use this host's tmux prefix</string>
+	<key>User guide ↗</key>
+	<string>User guide ↗</string>
+	<key>Version</key>
+	<string>Version</string>
+	<key>Waiting</key>
+	<string>Waiting</string>
+	<key>Waiting for you</key>
+	<string>Waiting for you</string>
+	<key>Want computer use? Add a computer-use MCP server to your CLI, then allow Accessibility in Settings → Permissions.</key>
+	<string>Want computer use? Add a computer-use MCP server to your CLI, then allow Accessibility in Settings → Permissions.</string>
+	<key>Warning</key>
+	<string>Warning</string>
+	<key>Website ↗</key>
+	<string>Website ↗</string>
+	<key>What the tab showed when it ended:</key>
+	<string>What the tab showed when it ended:</string>
+	<key>When you close a CLI tab</key>
+	<string>When you close a CLI tab</string>
+	<key>When you close a terminal</key>
+	<string>When you close a terminal</string>
+	<key>When you close this tab, choose **Keep running**: the CLI carries on, even after you quit. Click its session to return.</key>
+	<string>When you close this tab, choose **Keep running**: the CLI carries on, even after you quit. Click its session to return.</string>
+	<key>When you ⌘-click a file</key>
+	<string>When you ⌘-click a file</string>
+	<key>Without a check command, sign in every</key>
+	<string>Without a check command, sign in every</string>
+	<key>Works with SSH keys, or with a password or code.</key>
+	<string>Works with SSH keys, or with a password or code.</string>
+	<key>Yes</key>
+	<string>Yes</string>
+	<key>You</key>
+	<string>You</string>
+	<key>Your login shell, with no CLI</key>
+	<string>Your login shell, with no CLI</string>
+	<key>Your messages</key>
+	<string>Your messages</string>
+	<key>Your sessions will appear here</key>
+	<string>Your sessions will appear here</string>
+	<key>Your sessions, already here</key>
+	<string>Your sessions, already here</string>
+	<key>Your shell startup keeps CLIs from starting!</key>
+	<string>Your shell startup keeps CLIs from starting!</string>
+	<key>Your sign-in command asks this on %@. 流光 keeps nothing you type.</key>
+	<string>Your sign-in command asks this on %@. 流光 keeps nothing you type.</string>
+	<key>Your sign-in command on %@ is due</key>
+	<string>Your sign-in command on %@ is due</string>
+	<key>Your sign-in command on this host is due. Click to sign in.</key>
+	<string>Your sign-in command on this host is due. Click to sign in.</string>
+	<key>Your start command's program, found at %@.</key>
+	<string>Your start command's program, found at %@.</string>
+	<key>Zoom In</key>
+	<string>Zoom In</string>
+	<key>Zoom Out</key>
+	<string>Zoom Out</string>
+	<key>`python3`, for Antigravity and OpenCode</key>
+	<string>`python3`, for Antigravity and OpenCode</string>
+	<key>`rsync`, and the CLIs you use</key>
+	<string>`rsync`, and the CLIs you use</string>
+	<key>`ssh` asks this to log in. 流光 keeps nothing you type.</key>
+	<string>`ssh` asks this to log in. 流光 keeps nothing you type.</string>
+	<key>`tmux`, so a CLI keeps running when the connection drops</key>
+	<string>`tmux`, so a CLI keeps running when the connection drops</string>
+	<key>iTerm2 Color Preset File…</key>
+	<string>iTerm2 Color Preset File…</string>
+	<key>iTerm2 Default Profile</key>
+	<string>iTerm2 Default Profile</string>
+	<key>iTerm2 has no saved settings on this Mac.</key>
+	<string>iTerm2 has no saved settings on this Mac.</string>
+	<key>macOS asks for these on behalf of 流光, also when a CLI in one of its terminals needs one. Checking here never shows a prompt.</key>
+	<string>macOS asks for these on behalf of 流光, also when a CLI in one of its terminals needs one. Checking here never shows a prompt.</string>
+	<key>macOS asks the first time 流光 needs it.</key>
+	<string>macOS asks the first time 流光 needs it.</string>
+	<key>macOS doesn't let apps check this. Look for 流光 in System Settings.</key>
+	<string>macOS doesn't let apps check this. Look for 流光 in System Settings.</string>
+	<key>python3 on %@ can't load its sqlite3 module, so sessions of %@ can't be copied.</key>
+	<string>python3 on %@ can't load its sqlite3 module, so sessions of %@ can't be copied.</string>
+	<key>rsync isn't installed on %@, or isn't on the PATH of commands run over ssh, so its sessions can't be copied to this Mac.</key>
+	<string>rsync isn't installed on %@, or isn't on the PATH of commands run over ssh, so its sessions can't be copied to this Mac.</string>
+	<key>ssh couldn't forward the port: %@</key>
+	<string>ssh couldn't forward the port: %@</string>
+	<key>tmux isn't installed on %@, so CLIs there run without it: closing a tab or losing the connection ends them.</key>
+	<string>tmux isn't installed on %@, so CLIs there run without it: closing a tab or losing the connection ends them.</string>
+	<key>tmux on %@ answered with an error.</key>
+	<string>tmux on %@ answered with an error.</string>
+	<key>·</key>
+	<string>·</string>
+	<key>⇧-click</key>
+	<string>⇧-click</string>
+	<key>⌘-click</key>
+	<string>⌘-click</string>
+	<key>⌘-click to select several sessions, then resume or delete them together.</key>
+	<string>⌘-click to select several sessions, then resume or delete them together.</string>
+	<key>流光</key>
+	<string>流光</string>
+	<key>流光 Help</key>
+	<string>流光 Help</string>
+	<key>流光 Website</key>
+	<string>流光 Website</string>
+	<key>流光 and the CLIs in its terminals need it to reach a device on your network, such as an SSH host at a local address. macOS doesn't let apps check it, so look for 流光 in Privacy &amp; Security &gt; Local Network.</key>
+	<string>流光 and the CLIs in its terminals need it to reach a device on your network, such as an SSH host at a local address. macOS doesn't let apps check it, so look for 流光 in Privacy &amp; Security &gt; Local Network.</string>
+	<key>流光 host check: %@</key>
+	<string>流光 host check: %@</string>
+	<key>流光 quit unexpectedly</key>
+	<string>流光 quit unexpectedly</string>
+	<key>流光 read the history your CLIs keep and grouped it by project. Nothing was imported or uploaded.</key>
+	<string>流光 read the history your CLIs keep and grouped it by project. Nothing was imported or uploaded.</string>
+</dict>
+</plist>

@@ -1,0 +1,40 @@
+import Foundation
+import Testing
+
+@testable import Liuguang
+
+struct FeedbackLinksTests {
+    private let environment = FeedbackEnvironment(appVersion: "0.45.0 (45)", macOSVersion: "26.0.1")
+
+    private func queryValue(_ name: String, in url: URL) -> String? {
+        URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first { $0.name == name }?.value
+    }
+
+    @Test func gitHubIssueStartsWithTheVersionsBelowRoomToWrite() throws {
+        let url = FeedbackLinks.gitHubIssueURL(for: environment)
+        #expect(url.absoluteString.hasPrefix("https://github.com/yangzichao/Liuguang/issues/new?body="))
+        #expect(queryValue("body", in: url) == "\n\nLiuguang 0.45.0 (45) · macOS 26.0.1")
+    }
+
+    @Test func feedbackFormOpensTheGuidesFormWithTheVersions() throws {
+        let url = FeedbackLinks.formURL(for: environment)
+        #expect(url.absoluteString.hasPrefix("https://yangzichao.github.io/Liuguang/guide.html?"))
+        #expect(url.fragment == "feedback")
+        #expect(queryValue("appVersion", in: url) == "0.45.0 (45)")
+        #expect(queryValue("macOSVersion", in: url) == "26.0.1")
+        // The page's URLSearchParams would read a literal + as a space, so spaces must arrive as %20.
+        #expect(url.absoluteString.contains("0.45.0%20(45)"))
+    }
+
+    @Test func userGuideSectionLinksPointAtSectionsTheGuideHas() throws {
+        let guide = try RepositoryFiles.contents(of: "website/guide.html")
+        for url in [
+            AppLinks.userGuideSSHHostsURL, AppLinks.userGuideSSHShellStartupURL, AppLinks.userGuideTroubleshootingURL,
+            AppLinks.userGuideFeedbackURL,
+        ] {
+            #expect(url.absoluteString.hasPrefix(AppLinks.userGuideURL.absoluteString + "#"))
+            let sectionID = try #require(url.fragment)
+            #expect(guide.contains("id=\"\(sectionID)\""))
+        }
+    }
+}

@@ -1,0 +1,37 @@
+import SwiftUI
+import Testing
+
+@testable import Liuguang
+
+struct BindingIsPresentingTests {
+    @Test func presentsWhileTheValueIsSetAndClearsItWhenDismissed() {
+        let storage = BindingStorage<String?>("draft")
+        let isPresented = Binding(isPresenting: storage.binding)
+        #expect(isPresented.wrappedValue)
+
+        isPresented.wrappedValue = false
+        #expect(storage.value == nil)
+        #expect(!isPresented.wrappedValue)
+    }
+
+    @Test func presentingNeverInventsAValue() {
+        let storage = BindingStorage<String?>(nil)
+        let isPresented = Binding(isPresenting: storage.binding)
+        #expect(!isPresented.wrappedValue)
+
+        isPresented.wrappedValue = true
+        #expect(storage.value == nil)
+    }
+}
+
+private final class BindingStorage<Value: Sendable>: @unchecked Sendable {
+    var value: Value
+
+    init(_ value: Value) {
+        self.value = value
+    }
+
+    var binding: Binding<Value> {
+        Binding(get: { self.value }, set: { self.value = $0 })
+    }
+}

@@ -1,0 +1,125 @@
+.DEFAULT_GOAL := build
+
+# Swift and tmux targets share build directories, including when multiple goals use -j.
+.NOTPARALLEL:
+
+APP_BUNDLE_PATH ?= dist/Liuguang.app
+INSTALLER_PATH ?= dist/Liuguang.dmg
+# swift format reads .swift-format and only touches .swift files under these paths.
+SWIFT_FORMAT_PATHS := Package.swift Sources Tests Scripts
+
+.PHONY: build dev run check test verify format lint dead-code-check tracked-files-check release-notes-check release-check dmg website website-check website-traffic-test website-traffic-deploy website-traffic feedback-test feedback-deploy feedback localization localization-check update-feed-test update-feed-deploy update-checks help
+
+build: lint
+	./Scripts/build-app.sh "$(APP_BUNDLE_PATH)"
+
+dev run: build
+	./Scripts/open-dev-app.sh "$(APP_BUNDLE_PATH)"
+
+check: lint
+	swift build
+
+format:
+	swift format format --recursive --parallel --in-place $(SWIFT_FORMAT_PATHS)
+
+lint:
+	@swift format lint --strict --recursive --parallel $(SWIFT_FORMAT_PATHS) || \
+		{ echo 'Swift formatting or lint failed. Run make format, then fix what it cannot.' >&2; exit 1; }
+
+test:
+	@runtime_directory="$$(./Scripts/Tmux/build-runtime.sh)" && \
+	JUSTSESSIONS_TEST_TMUX_RUNTIME="$$runtime_directory" swift test
+
+# Website deployment checks do not replace local app verification before delivering or tagging.
+verify: tracked-files-check lint dead-code-check release-notes-check website-check update-feed-test test localization-check build
+	./Scripts/Release/check-app-launches.sh "$(APP_BUNDLE_PATH)"
+
+dead-code-check:
+	./Scripts/check-dead-code.sh
+
+tracked-files-check:
+	python3 Scripts/TrackedFiles/check_tracked_files.py
+	python3 -m unittest discover -s Scripts/TrackedFiles/tests
+
+release-notes-check:
+	python3 Scripts/ReleaseNotes/check_release_notes.py $(if $(RELEASE_TAG),--tag "$(RELEASE_TAG)")
+
+release-check:
+	@test -n "$(RELEASE_TAG)" || { echo 'Use make release-check RELEASE_TAG=vX.Y.Z' >&2; exit 1; }
+	$(MAKE) release-notes-check RELEASE_TAG="$(RELEASE_TAG)"
+	$(MAKE) verify
+
+dmg: build
+	./Scripts/build-dmg.sh "$(APP_BUNDLE_PATH)" "$(INSTALLER_PATH)"
+
+website:
+	python3 Scripts/Website/build_site.py
+
+website-check: website-traffic-test feedback-test
+	python3 -m unittest discover -s Scripts/Website/tests -v
+	node --test Scripts/Website/tests/*.test.mjs
+	$(MAKE) website
+
+website-traffic-test:
+	node --test Cloudflare/WebsiteTraffic/tests/*.test.js
+
+website-traffic-deploy: website-traffic-test
+	cd Cloudflare/WebsiteTraffic && wrangler d1 migrations apply liuguang-website-traffic --remote && wrangler deploy
+
+website-traffic:
+	@./Cloudflare/WebsiteTraffic/show-website-traffic.sh
+
+feedback-test:
+	node --test Cloudflare/Feedback/tests/*.test.js
+
+feedback-deploy: feedback-test
+	cd Cloudflare/Feedback && wrangler d1 migrations apply liuguang-feedback --remote && wrangler deploy
+
+feedback:
+	@./Cloudflare/Feedback/show-feedback.sh
+
+localization:
+	python3 Scripts/Localization/sync_catalog.py
+
+localization-check:
+	python3 Scripts/Localization/sync_catalog.py --check
+	python3 -m unittest discover -s Scripts/Localization/tests
+
+update-feed-test:
+	node --test Cloudflare/UpdateFeed/tests/*.test.js
+
+update-feed-deploy: update-feed-test
+	cd Cloudflare/UpdateFeed && wrangler d1 migrations apply liuguang-update-checks --remote && wrangler deploy
+
+update-checks:
+	./Cloudflare/UpdateFeed/show-daily-update-checks.sh
+
+help:
+	@printf '%s\n' \
+		'make           Build dist/Liuguang.app with bundled tmux' \
+		'make dev       Build the app, quit its running copy, and open it' \
+		'make run       Alias for make dev' \
+		'make check     Lint and compile the Swift development build' \
+		'make format    Format all Swift files in place with swift format' \
+		'make lint      Fail on Swift that is not formatted or breaks a lint rule' \
+		'make test      Build bundled tmux and run the Swift tests' \
+		'make verify    Check the website, tests, localization, and packaged app launch' \
+		'make dead-code-check  Fail on unused Swift found by Periphery (brew install periphery)' \
+		'make tracked-files-check  Fail if git tracks agent skills or machine-local files' \
+		'make release-notes-check RELEASE_TAG=vX.Y.Z  Check and preview candidate release notes' \
+		'make release-check RELEASE_TAG=vX.Y.Z        Check candidate notes and run make verify before tagging' \
+		'make dmg       Build the app and dist/Liuguang.dmg' \
+		'make website   Build and validate the product website' \
+		'make website-check  Run the website tests and build' \
+		'make website-traffic         Show daily website traffic, sources, countries, and devices' \
+		'make website-traffic-test    Test the website traffic Worker' \
+		'make website-traffic-deploy  Apply its database migrations and deploy it' \
+		'make feedback          Show the newest feedback sent from the Guide and the app' \
+		'make feedback-test     Test the feedback Worker, also included in make website-check' \
+		'make feedback-deploy   Apply its database migrations and deploy it' \
+		'make localization        Extract UI strings and compile translations' \
+		'make localization-check  Check UI strings, translations, and resources' \
+		'make update-feed-test    Test the Cloudflare Worker that counts update checks' \
+		'make update-feed-deploy  Apply its database migrations and deploy it' \
+		'make update-checks       Show update checks per day for the last 30 days' \
+		'Override output paths with APP_BUNDLE_PATH=... and INSTALLER_PATH=...'

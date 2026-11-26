@@ -1,0 +1,17 @@
+import Foundation
+
+enum ConversationExportError: LocalizedError {
+    case emptySelection
+    case noMessages(ConversationExportSelection)
+    case unreadable(ConversationExportSelection, reason: String)
+    case clipboardUnavailable
+
+    var errorDescription: String? {
+        switch self {
+        case .emptySelection: "Choose a conversation to copy or export."
+        case .noMessages(let selection): "“\(selection.title)” has no saved messages yet."
+        case .unreadable(let selection, let reason): "Could not read “\(selection.title)”: \(reason)"
+        case .clipboardUnavailable: "Could not write the conversation to the clipboard."
+        }
+    }
+}

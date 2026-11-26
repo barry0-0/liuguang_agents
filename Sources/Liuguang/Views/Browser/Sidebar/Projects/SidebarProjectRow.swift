@@ -1,0 +1,125 @@
+import SwiftUI
+
+struct SidebarProjectRow: View {
+    let store: ConversationStore
+    let project: ProjectConversationGroup
+    let parentLabel: String?
+    let isExpanded: Bool
+    let projectSelection: ProjectMultiSelection
+    let onToggleExpansion: () -> Void
+    let onClick: () -> Void
+    let onNewSession: (ConversationProvider) -> Void
+    let onRename: () -> Void
+    let onRemoveProjectAndDeleteSessions: () -> Void
+    let onRemoveSelectedProjectsAndDeleteSessions: () -> Void
+
+    @State private var isHovered = false
+    var isHoveredForTests: Bool? = nil
+    private var hovered: Bool { isHoveredForTests ?? isHovered }
+
+    private var isSelected: Bool { projectSelection.contains(project.id) }
+    private var rowHeight: CGFloat { Self.height(withParentLabel: parentLabel != nil) }
+
+    static var chevronWidth: CGFloat { InterfaceScale.points(27) }
+
+    static func height(withParentLabel: Bool) -> CGFloat {
+        InterfaceScale.points(withParentLabel ? 40 : 30)
+    }
+
+    var body: some View {
+        let activitySummary = store.activitySummary(forProjectDirectoryKey: project.id)
+
+        HStack(spacing: 0) {
+            Button(action: onToggleExpansion) {
+                Image(systemName: "chevron.right")
+                    .font(ThemeFont.glyph(.small, weight: .bold))
+                    .foregroundStyle(ThemePalette.tertiaryText)
+                    .rotationEffect(.degrees(isExpanded ? 90 : 0))
+                    .animation(ThemeMotion.disclosure, value: isExpanded)
+                    .frame(width: Self.chevronWidth, height: rowHeight)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(ThemePlainButtonStyle(showsHover: false))
+            .help(isExpanded ? "Collapse project" : "Expand project")
+            .accessibilityLabel("\(isExpanded ? "Collapse" : "Expand") \(project.displayName)")
+
+            Button(action: onClick) {
+                HStack(spacing: 7) {
+                    SidebarProjectLabel(project: project, parentLabel: parentLabel)
+                    Spacer(minLength: 4)
+                    if let status = activitySummary.mostPressingStatus {
+                        SessionStatusIndicator(status: status, description: activitySummary.summary)
+                    }
+                }
+                .padding(.trailing, 6)
+                .frame(height: rowHeight)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(ThemePlainButtonStyle(showsHover: false))
+            .frame(maxWidth: .infinity)
+            .help("\(project.location.copyablePath) · ⌘-click to select multiple projects; Shift-click to select a range")
+            .accessibilityLabel(
+                "\(project.displayName)\(project.isPinned ? ", pinned" : ""), \(CountedNoun.phrase(count: project.sessionCount, singular: "session")), \(activitySummary.runningCount == 0 ? "none running" : activitySummary.summary)"
+            )
+            .accessibilityAddTraits(isSelected ? .isSelected : [])
+
+            sessionCountOrHoverActions
+                .padding(.trailing, 8)
+        }
+        .background(SidebarRowBackground(isSelected: isSelected, isHovered: hovered))
+        .onHover { isHovered = $0 }
+        .contextMenu { menuItems }
+    }
+
+    @ViewBuilder
+    private var menuItems: some View {
+        if isSelected && projectSelection.hasMultipleSelected {
+            let selectedLocations = projectSelection.selectedProjectIDs.map(ProjectLocation.init(key:))
+            SelectedProjectsContextMenu(
+                store: store,
+                selectedProjectIDs: projectSelection.selectedProjectIDs,
+                onRemoveAndDeleteSessions: onRemoveSelectedProjectsAndDeleteSessions,
+                canDeleteFolders: !selectedLocations.isEmpty && selectedLocations.allSatisfy {
+                    $0.host == .thisMac && $0.folderExistsOnThisMac
+                }
+            )
+        } else {
+            ProjectContextMenu(
+                store: store,
+                project: project,
+                onNewSession: onNewSession,
+                onRename: onRename,
+                onRemoveProjectAndDeleteSessions: onRemoveProjectAndDeleteSessions
+            )
+        }
+    }
+
+    /// The session count gives way to the ⋯ and + menus while the pointer is over the row. The menus are in the view
+    /// tree only then: each is an AppKit pop-up button underneath, and one per row for every row re-laid out on
+    /// every change costs more than the rows themselves; see item 21 in docs/development/performance.md. Their room
+    /// is kept while they are not, so nothing in the row moves as the pointer passes over it.
+    private var sessionCountOrHoverActions: some View {
+        ZStack(alignment: .trailing) {
+            Text(project.sessionCount.formatted())
+                .font(ThemeFont.detail.monospacedDigit())
+                .foregroundStyle(ThemePalette.secondaryText)
+                .opacity(hovered ? 0 : 1)
+            ProjectHoverActions<EmptyView>.placeholder
+        }
+        // Over the room the placeholder keeps rather than in the stack, so the menus never take part in the row's
+        // layout: their width varies by a point between Macs (41 points on the release workflow's virtual machine,
+        // 40 on a developer's Mac with the same macOS), which would otherwise shift the row.
+        .overlay(alignment: .trailing) {
+            if hovered {
+                ProjectHoverActions(
+                    store: store,
+                    location: project.location,
+                    projectDisplayName: project.displayName,
+                    onNewSession: onNewSession
+                ) {
+                    menuItems
+                }
+            }
+        }
+    }
+}

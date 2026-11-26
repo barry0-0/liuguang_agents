@@ -1,0 +1,22 @@
+/* Matches justSessionsLight in Models/Appearance/Themes/ThemeColors/LiuguangThemeColors.swift. */
+:root {
+  color-scheme: light;
+  --paper: #fcfbf8;
+  --sidebar-surface: #f3f1ec;
+  --surface: #ffffff;
+  --message-surface: #f1ede6;
+  --ink: #15171c;
+  --ink-foreground: #ffffff;
+  --secondary: #303139;
+  --muted: #68686e;
+  --line: rgb(21 23 28 / 9%);
+  --button-hover: #303139;
+  --shadow: rgb(21 23 28 / 6%);
+  /* ConversationProvider+TintColor.swift, light appearance. */
+  --provider-claude: #ff8a1f;
+  --provider-codex: #2f6bff;
+  --provider-antigravity: #a64df0;
+  --provider-kiro: #e0408a;
+  --provider-opencode: #12a08f;
+  --provider-pi: #3f9f2f;
+}

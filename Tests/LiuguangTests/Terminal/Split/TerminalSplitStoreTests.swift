@@ -1,0 +1,674 @@
+import Foundation
+import Testing
+
+@testable import Liuguang
+
+@MainActor
+struct TerminalSplitStoreTests {
+    @Test func splittingLinksTheTabBesideTheSelectedTab() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+        store.selectTerminal(first.id)
+
+        store.splitSelectedTerminal(with: third.id)
+
+        let split = try #require(store.shownSplit)
+        #expect(split.tabIDs == [first.id, third.id])
+        #expect(store.terminalSplits == [split])
+        #expect(ids(store) == [first.id, third.id, second.id])
+        #expect(store.sides(of: split) == TerminalSplit.Sides(left: first.id, right: third.id))
+        #expect(store.selectedTerminalID == first.id)
+        expectSplitRules(store)
+    }
+
+    @Test func aTabFromBeforeTheSelectedTabBecomesTheLeftPane() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+
+        store.splitSelectedTerminal(with: first.id)
+
+        let split = try #require(store.shownSplit)
+        #expect(ids(store) == [second.id, first.id, third.id])
+        #expect(store.sides(of: split) == TerminalSplit.Sides(left: first.id, right: third.id))
+        #expect(store.selectedTerminalID == third.id)
+        expectSplitRules(store)
+    }
+
+    @Test func splittingNeedsAnotherOpenTab() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let onlyTab = open(store, makeTab())
+
+        store.splitSelectedTerminal(with: onlyTab.id)
+        #expect(store.terminalSplits.isEmpty)
+
+        store.splitSelectedTerminal(with: UUID())
+        #expect(store.terminalSplits.isEmpty)
+        expectSplitRules(store)
+    }
+
+    @Test func splittingNeedsBothTabsOutOfEverySplit() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+        let split = try #require(store.shownSplit)
+        let orderBefore = ids(store)
+
+        store.splitSelectedTerminal(with: third.id)
+        #expect(store.terminalSplits == [split])
+
+        store.selectTerminal(third.id)
+        store.splitSelectedTerminal(with: first.id)
+        #expect(store.terminalSplits == [split])
+        #expect(ids(store) == orderBefore)
+        expectSplitRules(store)
+    }
+
+    @Test func selectingATabOutsideTheSplitHidesItButKeepsItLinked() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+        let split = try #require(store.shownSplit)
+
+        store.selectTerminal(third.id)
+        #expect(store.shownSplit == nil)
+        #expect(store.terminalSplits == [split])
+
+        store.selectTerminal(second.id)
+        #expect(store.shownSplit == split)
+        expectSplitRules(store)
+    }
+
+    @Test func aTabFromAnotherProjectMakesASplitOfItsOwnAndGoesBackOnSeparating() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let secondApp = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        let secondTools = open(store, makeTab(projectPath: "/tmp/tools"))
+        store.selectTerminal(app.id)
+
+        store.splitSelectedTerminal(with: secondTools.id)
+
+        let split = try #require(store.shownSplit)
+        #expect(split.spansProjects)
+        #expect(ids(store) == [secondApp.id, app.id, secondTools.id, tools.id])
+        #expect(store.tabGroupKey(of: app) == split.groupKey)
+        #expect(store.tabGroupKey(of: secondTools) == split.groupKey)
+        #expect(store.tabGroupKeys == [app.projectDirectoryKey, split.groupKey, split.groupKey, tools.projectDirectoryKey])
+        #expect(store.tabProjectKeysInOrder == [app, tools].map(\.projectDirectoryKey))
+        expectSplitRules(store)
+
+        store.separateSplit(split.id)
+
+        #expect(store.terminalSplits.isEmpty)
+        #expect(ids(store) == [secondApp.id, app.id, tools.id, secondTools.id])
+        #expect(store.tabGroupKey(of: app) == app.projectDirectoryKey)
+        #expect(store.tabGroupKey(of: secondTools) == tools.projectDirectoryKey)
+        #expect(store.selectedTerminalID == app.id)
+        expectSplitRules(store)
+    }
+
+    @Test func twoSplitsCanBeLinkedAtOnce() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let secondApp = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        let secondTools = open(store, makeTab(projectPath: "/tmp/tools"))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: secondApp.id)
+        let appSplit = try #require(store.shownSplit)
+        store.selectTerminal(tools.id)
+        store.splitSelectedTerminal(with: secondTools.id)
+        let toolsSplit = try #require(store.shownSplit)
+
+        #expect(store.terminalSplits == [appSplit, toolsSplit])
+        #expect(store.split(containing: app.id) == appSplit)
+        #expect(store.split(containing: secondTools.id) == toolsSplit)
+        expectSplitRules(store)
+
+        store.selectTerminal(secondApp.id)
+        #expect(store.shownSplit == appSplit)
+    }
+
+    @Test func aNewTabOfTheSplitsGroupOpensAfterTheSplit() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: tools.id)
+        #expect(ids(store) == [app.id, tools.id])
+
+        let newApp = open(store, makeTab(projectPath: "/tmp/app"))
+        let newTools = open(store, makeTab(projectPath: "/tmp/tools"))
+
+        #expect(ids(store) == [app.id, tools.id, newApp.id, newTools.id])
+        expectSplitRules(store)
+    }
+
+    @Test func aReopenedTabWaitingToBeShownStartsAsItJoinsTheSplit() throws {
+        let sandbox = try TabReopeningSandbox()
+        defer { sandbox.tearDown() }
+        let store = sandbox.makeStore()
+        defer { store.closeAllTerminals() }
+        let conversation = sandbox.conversation()
+        store.replaceConversations(on: .thisMac, with: [conversation])
+        let selectedTab = makeTab()
+        store.openTerminal(selectedTab)
+        let waitingTab = try #require(try store.makeTerminal(for: conversation, action: .resume, startsOnceShown: true))
+        store.insertReopenedTerminal(waitingTab, at: 0, selecting: false)
+        #expect(waitingTab.isWaitingToBeShown)
+
+        store.splitSelectedTerminal(with: waitingTab.id)
+
+        #expect(store.selectedTerminalID == selectedTab.id)
+        #expect(!waitingTab.isWaitingToBeShown)
+        #expect(waitingTab.isRunning)
+        #expect(waitingTab.processID > 0)
+        expectSplitRules(store)
+    }
+
+    @Test func reversingTradesTheTabsPlacesAndSoThePanesSides() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+        let split = try #require(store.shownSplit)
+
+        store.reverseSplit(split.id)
+
+        #expect(ids(store) == [second.id, first.id])
+        #expect(store.sides(of: split) == TerminalSplit.Sides(left: second.id, right: first.id))
+        #expect(store.terminalSplits == [split])
+        #expect(store.selectedTerminalID == first.id)
+        expectSplitRules(store)
+    }
+
+    @Test func separatingUnlinksTheSplitAndKeepsTheTabsOpen() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+
+        store.separateSplit(try #require(store.shownSplit).id)
+
+        #expect(store.terminalSplits.isEmpty)
+        #expect(ids(store) == [first.id, second.id])
+        #expect(store.selectedTerminalID == first.id)
+        expectSplitRules(store)
+    }
+
+    @Test func aTabMovedIntoTheRightPaneTradesPlacesWithItsTab() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+        let split = try #require(store.shownSplit)
+
+        store.moveIntoShownSplit(third.id, swappingWith: .right)
+
+        #expect(ids(store) == [first.id, third.id, second.id])
+        let swapped = try #require(store.shownSplit)
+        #expect(swapped.id == split.id)
+        #expect(store.sides(of: swapped) == TerminalSplit.Sides(left: first.id, right: third.id))
+        #expect(store.split(containing: second.id) == nil)
+        #expect(store.selectedTerminalID == first.id)
+        expectSplitRules(store)
+    }
+
+    @Test func aTabMovedInPlaceOfTheSelectedTabIsSelected() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+
+        store.moveIntoShownSplit(third.id, swappingWith: .left)
+
+        #expect(ids(store) == [third.id, second.id, first.id])
+        #expect(store.selectedTerminalID == third.id)
+        #expect(store.sides(of: try #require(store.shownSplit)) == TerminalSplit.Sides(left: third.id, right: second.id))
+        #expect(store.split(containing: first.id) == nil)
+        expectSplitRules(store)
+    }
+
+    @Test func aTabMovedInPlaceOfTheOtherPaneLeavesTheSelectionAlone() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+        store.selectTerminal(second.id)
+        store.splitSelectedTerminal(with: first.id)
+        #expect(ids(store) == [first.id, second.id, third.id])
+
+        store.moveIntoShownSplit(third.id, swappingWith: .left)
+
+        #expect(ids(store) == [third.id, second.id, first.id])
+        #expect(store.selectedTerminalID == second.id)
+        expectSplitRules(store)
+    }
+
+    @Test func aTabSwappedOutAmongAnotherProjectsTabsGoesBackToItsProject() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        let docs = open(store, makeTab(projectPath: "/tmp/docs"))
+        let secondTools = open(store, makeTab(projectPath: "/tmp/tools"))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: tools.id)
+        #expect(ids(store) == [app.id, tools.id, secondTools.id, docs.id])
+
+        store.moveIntoShownSplit(docs.id, swappingWith: .right)
+
+        #expect(ids(store) == [app.id, docs.id, secondTools.id, tools.id])
+        let split = try #require(store.shownSplit)
+        #expect(split.spansProjects)
+        #expect(store.tabGroupKey(of: docs) == split.groupKey)
+        #expect(store.tabGroupKey(of: tools) == tools.projectDirectoryKey)
+        expectSplitRules(store)
+    }
+
+    @Test func movingIntoASplitNeedsTheSelectedTabInOneAndTheTabInNone() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+        let fourth = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.moveIntoShownSplit(second.id, swappingWith: .left)
+        #expect(store.terminalSplits.isEmpty)
+
+        store.splitSelectedTerminal(with: second.id)
+        store.selectTerminal(third.id)
+        store.splitSelectedTerminal(with: fourth.id)
+        let splitsBefore = store.terminalSplits
+        let orderBefore = ids(store)
+
+        store.moveIntoShownSplit(first.id, swappingWith: .left)
+
+        #expect(store.terminalSplits == splitsBefore)
+        #expect(ids(store) == orderBefore)
+        expectSplitRules(store)
+    }
+
+    @Test func aWaitingTabStartsAsItMovesIntoTheSplit() throws {
+        let sandbox = try TabReopeningSandbox()
+        defer { sandbox.tearDown() }
+        let store = sandbox.makeStore()
+        defer { store.closeAllTerminals() }
+        let conversation = sandbox.conversation()
+        store.replaceConversations(on: .thisMac, with: [conversation])
+        let first = makeTab()
+        let second = makeTab()
+        store.openTerminal(first)
+        store.openTerminal(second)
+        store.splitSelectedTerminal(with: first.id)
+        let waitingTab = try #require(try store.makeTerminal(for: conversation, action: .resume, startsOnceShown: true))
+        store.insertReopenedTerminal(waitingTab, at: 2, selecting: false)
+        #expect(waitingTab.isWaitingToBeShown)
+
+        store.moveIntoShownSplit(waitingTab.id, swappingWith: .left)
+
+        #expect(store.shownSplit?.contains(waitingTab.id) == true)
+        #expect(!waitingTab.isWaitingToBeShown)
+        #expect(waitingTab.isRunning)
+        expectSplitRules(store)
+    }
+
+    @Test func closingTheSelectedTabOfASplitLeavesTheOtherInFront() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let other = open(store, makeTab())
+        let second = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+        #expect(ids(store) == [first.id, second.id, other.id])
+
+        store.closeTerminal(first.id)
+
+        #expect(store.terminalSplits.isEmpty)
+        #expect(store.selectedTerminalID == second.id)
+        expectSplitRules(store)
+    }
+
+    @Test func closingTheOtherTabOfASplitKeepsTheSelectionAndUnlinks() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+
+        store.closeTerminal(second.id)
+
+        #expect(store.terminalSplits.isEmpty)
+        #expect(store.selectedTerminalID == first.id)
+        expectSplitRules(store)
+    }
+
+    @Test func aTabFromAnotherProjectGoesBackToItsProjectWhenItsPartnerCloses() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let secondApp = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        let secondTools = open(store, makeTab(projectPath: "/tmp/tools"))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: tools.id)
+        #expect(ids(store) == [secondApp.id, app.id, tools.id, secondTools.id])
+
+        store.closeTerminal(app.id)
+
+        #expect(ids(store) == [secondApp.id, secondTools.id, tools.id])
+        #expect(store.selectedTerminalID == tools.id)
+        #expect(store.tabGroupKey(of: tools) == tools.projectDirectoryKey)
+        expectSplitRules(store)
+    }
+
+    @Test func closingATabOutsideTheSplitKeepsIt() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        let third = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+        let split = try #require(store.shownSplit)
+
+        store.closeTerminal(third.id)
+
+        #expect(store.terminalSplits == [split])
+        expectSplitRules(store)
+    }
+
+    @Test func closingTheSelectedTabBesideASplitAcrossProjectsShowsTheSplit() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        let lastApp = open(store, makeTab(projectPath: "/tmp/app"))
+        let docs = open(store, makeTab(projectPath: "/tmp/docs"))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: tools.id)
+        #expect(ids(store) == [lastApp.id, app.id, tools.id, docs.id])
+        store.selectTerminal(lastApp.id)
+
+        store.closeTerminal(lastApp.id)
+
+        #expect(store.selectedTerminalID == app.id)
+        #expect(store.shownSplit != nil)
+        expectSplitRules(store)
+    }
+
+    @Test func closingAllTabsUnlinksEverySplit() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+
+        store.closeAllTerminals()
+
+        #expect(store.terminalSplits.isEmpty)
+    }
+
+    @Test func aSplitAcrossProjectsKeepsItsOwnGroupWhenTheTabSwappedOutOfItCloses() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        let docs = open(store, makeTab(projectPath: "/tmp/docs"))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: tools.id)
+        store.moveIntoShownSplit(docs.id, swappingWith: .left)
+        let split = try #require(store.split(containing: docs.id))
+        #expect(ids(store) == [docs.id, tools.id, app.id])
+        #expect(store.tabGroupKeys == [split.groupKey, split.groupKey, app.projectDirectoryKey])
+
+        store.closeTerminal(app.id)
+
+        #expect(ids(store) == [docs.id, tools.id])
+        #expect(store.split(containing: docs.id) == split)
+        #expect(store.tabGroupKeys == [split.groupKey, split.groupKey])
+        expectSplitRules(store)
+    }
+
+    @Test func aSelectedTabLeavingAnotherProjectsGroupChangesItsGroupKey() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        let secondTools = open(store, makeTab(projectPath: "/tmp/tools"))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: secondTools.id)
+        store.selectTerminal(secondTools.id)
+        let split = try #require(store.shownSplit)
+        #expect(try store.tabGroupKey(of: #require(store.selectedTerminal)) == split.groupKey)
+        #expect(split.spansProjects)
+
+        store.separateSplit(split.id)
+
+        #expect(store.selectedTerminalID == secondTools.id)
+        #expect(try store.tabGroupKey(of: #require(store.selectedTerminal)) == tools.projectDirectoryKey)
+        expectSplitRules(store)
+    }
+
+    @Test func aTabReplacedInPlaceKeepsItsPlaceInTheSplit() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+        let split = try #require(store.shownSplit)
+
+        let replacement = makeTab()
+        let index = try #require(store.terminalSessions.firstIndex { $0.id == second.id })
+        store.replaceTerminal(at: index, with: replacement)
+
+        let replaced = try #require(store.split(containing: replacement.id))
+        #expect(replaced.id == split.id)
+        #expect(ids(store) == [first.id, replacement.id])
+        #expect(store.sides(of: replaced) == TerminalSplit.Sides(left: first.id, right: replacement.id))
+        expectSplitRules(store)
+    }
+
+    @Test func replacingTheSelectedTabOfASplitKeepsTheSplitItsSideAndTheSelection() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let first = open(store, makeTab())
+        let second = open(store, makeTab())
+        store.selectTerminal(first.id)
+        store.splitSelectedTerminal(with: second.id)
+
+        let replacement = makeTab()
+        let index = try #require(store.terminalSessions.firstIndex { $0.id == first.id })
+        store.replaceTerminal(at: index, with: replacement)
+
+        let split = try #require(store.shownSplit)
+        #expect(store.sides(of: split) == TerminalSplit.Sides(left: replacement.id, right: second.id))
+        #expect(store.selectedTerminalID == replacement.id)
+        expectSplitRules(store)
+    }
+
+    @Test func movingBetweenThePanesOfAShownSplitRefreshesNoHost() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let newSessionTab = open(store, makeTab(action: .new))
+        let other = open(store, makeTab())
+        store.selectTerminal(newSessionTab.id)
+        store.splitSelectedTerminal(with: other.id)
+
+        store.selectTerminal(other.id)
+        store.selectTerminal(newSessionTab.id)
+
+        #expect(store.hostRefreshStatuses[.thisMac] == nil)
+    }
+
+    @Test func aNewSessionTabLeavingTheScreenWithItsSplitRefreshesItsHost() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let newSessionTab = open(store, makeTab(action: .new))
+        let other = open(store, makeTab())
+        let outside = open(store, makeTab())
+        store.selectTerminal(other.id)
+        store.splitSelectedTerminal(with: newSessionTab.id)
+        #expect(store.hostRefreshStatuses[.thisMac] == nil)
+
+        store.selectTerminal(outside.id)
+
+        #expect(store.hostRefreshStatuses[.thisMac] == .refreshing)
+    }
+
+    @Test func separatingAShownSplitRefreshesTheHostOfANewSessionTabGoingOffScreen() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let newSessionTab = open(store, makeTab(action: .new))
+        let other = open(store, makeTab())
+        store.selectTerminal(other.id)
+        store.splitSelectedTerminal(with: newSessionTab.id)
+        #expect(store.hostRefreshStatuses[.thisMac] == nil)
+
+        store.separateSplit(try #require(store.shownSplit).id)
+
+        #expect(store.hostRefreshStatuses[.thisMac] == .refreshing)
+    }
+
+    @Test func separatingAShownSplitRefreshesNoHostWhileTheNewSessionTabStaysSelected() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let newSessionTab = open(store, makeTab(action: .new))
+        let other = open(store, makeTab())
+        store.selectTerminal(newSessionTab.id)
+        store.splitSelectedTerminal(with: other.id)
+
+        store.separateSplit(try #require(store.shownSplit).id)
+
+        #expect(store.hostRefreshStatuses[.thisMac] == nil)
+    }
+
+    @Test func aNewSessionTabSwappedOutOfTheShownSplitRefreshesItsHost() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let newSessionTab = open(store, makeTab(action: .new))
+        let other = open(store, makeTab())
+        let incoming = open(store, makeTab())
+        store.selectTerminal(other.id)
+        store.splitSelectedTerminal(with: newSessionTab.id)
+        let shownSplit = try #require(store.shownSplit)
+        let side = try #require(store.sides(of: shownSplit)?.side(of: newSessionTab.id))
+
+        store.moveIntoShownSplit(incoming.id, swappingWith: side)
+
+        #expect(store.selectedTerminalID == other.id)
+        #expect(store.hostRefreshStatuses[.thisMac] == .refreshing)
+    }
+
+    @Test func tabsAreSavedInTheOrderTheyWouldTakeWithEverySplitSeparated() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app", isPlainTerminal: true))
+        let secondApp = open(store, makeTab(projectPath: "/tmp/app", isPlainTerminal: true))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools", isPlainTerminal: true))
+        let secondTools = open(store, makeTab(projectPath: "/tmp/tools", isPlainTerminal: true))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: tools.id)
+        #expect(ids(store) == [secondApp.id, app.id, tools.id, secondTools.id])
+
+        let saved = store.reopenableTabs
+
+        #expect(saved.map(\.projectDirectoryKey) == [secondApp, app, secondTools, tools].map(\.projectDirectoryKey))
+        #expect(saved.map(\.wasSelected) == [false, true, false, false])
+        #expect(ids(store) == [secondApp.id, app.id, tools.id, secondTools.id])
+        #expect(store.shownSplit != nil)
+    }
+
+    @Test func aReopenedTabNeverLandsBetweenASplitsTabs() throws {
+        let (store, cleanUp) = try makeStore()
+        defer { cleanUp() }
+        let app = open(store, makeTab(projectPath: "/tmp/app"))
+        let secondApp = open(store, makeTab(projectPath: "/tmp/app"))
+        let tools = open(store, makeTab(projectPath: "/tmp/tools"))
+        store.selectTerminal(app.id)
+        store.splitSelectedTerminal(with: secondApp.id)
+
+        let reopenedApp = makeTab(projectPath: "/tmp/app")
+        store.insertReopenedTerminal(reopenedApp, at: 1, selecting: false)
+        #expect(ids(store) == [app.id, secondApp.id, reopenedApp.id, tools.id])
+        expectSplitRules(store)
+
+        let reopenedDocs = makeTab(projectPath: "/tmp/docs")
+        store.insertReopenedTerminal(reopenedDocs, at: 1, selecting: false)
+        #expect(ids(store) == [app.id, secondApp.id, reopenedApp.id, tools.id, reopenedDocs.id])
+        #expect(store.selectedTerminalID == app.id)
+        expectSplitRules(store)
+    }
+
+    private func makeStore() throws -> (ConversationStore, () -> Void) {
+        let isolatedUserDefaults = try IsolatedUserDefaults()
+        let store = ConversationStore(adapters: [], userDefaults: isolatedUserDefaults.userDefaults)
+        return (
+            store,
+            {
+                store.closeAllTerminals()
+                isolatedUserDefaults.removeSuite()
+            }
+        )
+    }
+
+    private func open(_ store: ConversationStore, _ tab: TerminalSession) -> TerminalSession {
+        store.openTerminal(tab)
+        expectSplitRules(store)
+        return tab
+    }
+
+    private func ids(_ store: ConversationStore) -> [UUID] {
+        store.terminalSessions.map(\.id)
+    }
+
+    private func makeTab(
+        projectPath: String = "/tmp/app",
+        action: ConversationAction = .resume,
+        isPlainTerminal: Bool = false
+    ) -> TerminalSession {
+        TerminalSession(
+            engine: .swiftTerm,
+            conversation: nil,
+            provider: isPlainTerminal ? nil : .claude,
+            projectPath: projectPath,
+            action: isPlainTerminal ? nil : action,
+            displayTitle: "Tab in \(projectPath)",
+            command: NativeCLICommand(executablePath: "/usr/bin/true", arguments: [], workingDirectory: projectPath, environment: [])
+        )
+    }
+}

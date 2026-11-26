@@ -1,0 +1,105 @@
+import SwiftUI
+
+struct TerminalTabSplitMenuItems: View {
+    let splitMenu: TerminalTabSplitMenu?
+    let onSplitAction: (TerminalTabSplitAction) -> Void
+
+    var body: some View {
+        switch splitMenu {
+        case .newSplitWithSelectedTab:
+            Button("New split view with current tab", systemImage: "rectangle.split.2x1") {
+                onSplitAction(.newSplitWithSelectedTab(.sideBySide))
+            }
+            Button("New split view below current tab", systemImage: "rectangle.split.1x2") {
+                onSplitAction(.newSplitWithSelectedTab(.stacked))
+            }
+            Divider()
+        case .addTabToNewSplit(let candidates, let providers, let host, let canStartNewTabs):
+            newSplitMenu(.sideBySide, candidates: candidates, providers: providers, host: host, canStartNewTabs: canStartNewTabs)
+            newSplitMenu(.stacked, candidates: candidates, providers: providers, host: host, canStartNewTabs: canStartNewTabs)
+            Divider()
+        case .moveIntoShownSplit(let orientation):
+            Menu {
+                swapButton(orientation, .left)
+                swapButton(orientation, .right)
+            } label: {
+                Label("Move tab into split view", systemImage: orientation.systemImage)
+            }
+            Divider()
+        case .arrangeSplit(let orientation):
+            Menu {
+                Button("Separate views", systemImage: "arrow.up.left.and.arrow.down.right") {
+                    onSplitAction(.separateViews)
+                }
+                Divider()
+                if orientation == .sideBySide {
+                    Button("Close left view", systemImage: "xmark") { onSplitAction(.closeView(.left)) }
+                    Button("Close right view", systemImage: "xmark") { onSplitAction(.closeView(.right)) }
+                } else {
+                    Button("Close top view", systemImage: "xmark") { onSplitAction(.closeView(.left)) }
+                    Button("Close bottom view", systemImage: "xmark") { onSplitAction(.closeView(.right)) }
+                }
+                Divider()
+                Button("Reverse views", systemImage: orientation == .sideBySide ? "arrow.left.arrow.right" : "arrow.up.arrow.down") {
+                    onSplitAction(.reverseViews)
+                }
+                if orientation == .sideBySide {
+                    Button("Stack views", systemImage: "rectangle.split.1x2") { onSplitAction(.setOrientation(.stacked)) }
+                } else {
+                    Button("Place views side by side", systemImage: "rectangle.split.2x1") {
+                        onSplitAction(.setOrientation(.sideBySide))
+                    }
+                }
+            } label: {
+                Label("Arrange split view", systemImage: orientation.systemImage)
+            }
+            Divider()
+        case nil:
+            EmptyView()
+        }
+    }
+
+    private func newSplitMenu(
+        _ orientation: TerminalSplit.Orientation,
+        candidates: [TerminalTabSplitCandidate],
+        providers: [ConversationProvider],
+        host: SessionHost,
+        canStartNewTabs: Bool
+    ) -> some View {
+        Menu {
+            Group {
+                NewSessionProviderMenuItems(providers: providers, host: host) { provider in
+                    onSplitAction(.openInNewSplit(.session(provider), orientation))
+                }
+                Button("Terminal", systemImage: "apple.terminal") {
+                    onSplitAction(.openInNewSplit(.terminal, orientation))
+                }
+            }
+            .disabled(!canStartNewTabs)
+            if !candidates.isEmpty {
+                Divider()
+                ForEach(candidates) { candidate in
+                    Button(candidate.menuTitle) { onSplitAction(.addToNewSplit(candidate.id, orientation)) }
+                }
+            }
+        } label: {
+            if orientation == .sideBySide {
+                Label("Split right", systemImage: orientation.systemImage)
+            } else {
+                Label("Split down", systemImage: orientation.systemImage)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func swapButton(_ orientation: TerminalSplit.Orientation, _ side: TerminalSplit.Side) -> some View {
+        let systemImage = orientation.swapWithViewSystemImage(side)
+        let action = { onSplitAction(.moveIntoShownSplit(swappingWith: side)) }
+        switch (orientation, side) {
+        case (.sideBySide, .left): Button("Swap with left view", systemImage: systemImage, action: action)
+        case (.sideBySide, .right): Button("Swap with right view", systemImage: systemImage, action: action)
+        case (.stacked, .left): Button("Swap with top view", systemImage: systemImage, action: action)
+        case (.stacked, .right): Button("Swap with bottom view", systemImage: systemImage, action: action)
+        }
+    }
+}

@@ -1,0 +1,10 @@
+@media (max-width: 850px) {
+  .page-width { width: calc(100% - 48px); }
+}
+
+@media (max-width: 600px) {
+  .page-width { width: calc(100% - 36px); }
+  .section-space { padding-block: 48px; }
+  .eyebrow { font-size: 11px; }
+  h2 { font-size: 31px; letter-spacing: -.025em; }
+}

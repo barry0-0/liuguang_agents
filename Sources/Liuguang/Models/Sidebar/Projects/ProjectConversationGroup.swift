@@ -1,0 +1,81 @@
+import Foundation
+
+struct ProjectConversationGroup: Identifiable {
+    let projectPath: String
+    let displayName: String
+    let pinnedPlace: Int?
+    let conversations: [Conversation]
+    let pendingNewSessions: [PendingNewSession]
+    let latestActivity: Date
+
+    init(
+        projectPath: String,
+        displayName: String,
+        pinnedPlace: Int?,
+        conversations: [Conversation],
+        pendingNewSessions: [PendingNewSession]
+    ) {
+        self.projectPath = projectPath
+        self.displayName = displayName
+        self.pinnedPlace = pinnedPlace
+        self.conversations = conversations
+        self.pendingNewSessions = pendingNewSessions
+        latestActivity = max(
+            conversations.map(\.updatedAt).max() ?? .distantPast,
+            pendingNewSessions.map(\.startedAt).max() ?? .distantPast
+        )
+    }
+
+    var id: String { projectPath }
+    var isPinned: Bool { pinnedPlace != nil }
+    var location: ProjectLocation { ProjectLocation(key: projectPath) }
+    var host: SessionHost { location.host }
+    var folderName: String { ProjectDisplayNames.folderName(forProjectPath: projectPath) }
+    var sessionCount: Int { conversations.count + pendingNewSessions.count }
+
+    var canStartNewSession: Bool { location.canStartSessions }
+
+    static func grouped(
+        _ conversations: [Conversation],
+        pendingNewSessions: [PendingNewSession] = [],
+        retainedProjectPaths: Set<String> = [],
+        displayNames: ProjectDisplayNames = ProjectDisplayNames(),
+        pinnedItems: PinnedItems = PinnedItems()
+    ) -> [ProjectConversationGroup] {
+        let conversationsByProject = Dictionary(grouping: conversations, by: \.projectDirectoryKey)
+        let pendingNewSessionsByProject = Dictionary(grouping: pendingNewSessions, by: \.projectDirectoryKey)
+        let projects = Set(conversationsByProject.keys).union(pendingNewSessionsByProject.keys)
+            .union(retainedProjectPaths)
+            .map { projectPath in
+                ProjectConversationGroup(
+                    projectPath: projectPath,
+                    displayName: displayNames.displayName(forProjectPath: projectPath),
+                    pinnedPlace: pinnedItems.pinnedPlace(ofProjectPath: projectPath),
+                    conversations: pinnedItems.pinnedConversationsFirst(
+                        (conversationsByProject[projectPath] ?? []).sorted { first, second in
+                            if first.updatedAt != second.updatedAt { return first.updatedAt > second.updatedAt }
+                            return first.id < second.id
+                        }
+                    ),
+                    pendingNewSessions: (pendingNewSessionsByProject[projectPath] ?? []).sorted { first, second in
+                        if first.startedAt != second.startedAt { return first.startedAt > second.startedAt }
+                        return first.terminalID.uuidString < second.terminalID.uuidString
+                    }
+                )
+            }
+        return orderedForSidebar(projects)
+    }
+
+    static func orderedForSidebar(_ projects: [ProjectConversationGroup]) -> [ProjectConversationGroup] {
+        projects.sorted { first, second in
+            switch (first.pinnedPlace, second.pinnedPlace) {
+            case (let firstPlace?, let secondPlace?): return firstPlace < secondPlace
+            case (.some, nil): return true
+            case (nil, .some): return false
+            case (nil, nil): break
+            }
+            if first.latestActivity != second.latestActivity { return first.latestActivity > second.latestActivity }
+            return first.projectPath.localizedStandardCompare(second.projectPath) == .orderedAscending
+        }
+    }
+}

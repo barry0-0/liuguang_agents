@@ -1,0 +1,172 @@
+import Testing
+
+@testable import Liuguang
+
+@MainActor
+struct TmuxHistoryFinderTests {
+    @Test func aSearchCountsInTmuxAndSelectsTheNewestMatch() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: [ScriptedTmuxHistory.countLine(3)])
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findText("needle")
+
+        try await expectEventually { outcomes.count == 1 }
+        #expect(outcomes == [.searched(TerminalFindMatchCount(total: 3, selectedNumber: 1, exceedsCountLimit: false))])
+        #expect(tmux.commands == [TmuxHistorySearchCommands.startingSearch(for: "needle", inSession: tmux.sessionName)])
+    }
+
+    @Test func movesNumberTheSelectedMatchAndWrapAround() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: Array(repeating: ScriptedTmuxHistory.countLine(3), count: 5))
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var selectedNumbers: [Int?] = []
+        finder.onStepFinished = { selectedNumbers.append($0.count?.selectedNumber) }
+
+        finder.findText("needle")
+        for direction in [TerminalFindDirection.towardOlder, .towardOlder, .towardOlder, .towardNewer] {
+            finder.findTextAgain("needle", direction: direction)
+        }
+
+        try await expectEventually { selectedNumbers.count == 5 }
+        #expect(selectedNumbers == [1, 2, 3, 1, 3])
+        #expect(tmux.commands.last == TmuxHistorySearchCommands.movingSearch(.towardNewer, for: "needle", inSession: tmux.sessionName))
+    }
+
+    /// As after a key pressed in copy mode, which takes tmux's count away.
+    @Test func aMoveWithoutACountKeepsTheTotalBeforeIt() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: [ScriptedTmuxHistory.countLine(4), ScriptedTmuxHistory.countLine(nil, foundAny: true)])
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findText("needle")
+        finder.findTextAgain("needle", direction: .towardOlder)
+
+        try await expectEventually { outcomes.count == 2 }
+        #expect(outcomes.last == .searched(TerminalFindMatchCount(total: 4, selectedNumber: 2, exceedsCountLimit: false)))
+    }
+
+    /// As when the shell printed more matches since: tmux doesn't say which match it selected.
+    @Test func aTotalThatChangedUnderAMoveSelectsNoNumber() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: [ScriptedTmuxHistory.countLine(4), ScriptedTmuxHistory.countLine(6)])
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findText("needle")
+        finder.findTextAgain("needle", direction: .towardOlder)
+
+        try await expectEventually { outcomes.count == 2 }
+        #expect(outcomes.last == .searched(TerminalFindMatchCount(total: 6, selectedNumber: nil, exceedsCountLimit: false)))
+    }
+
+    /// tmux 3.4 counts nothing, and only says whether the search found any.
+    @Test func aSearchThatFoundNoneInATmuxThatDoesntCountHasNoMatches() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: Array(repeating: ScriptedTmuxHistory.countLine(nil, foundAny: false), count: 2))
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findText("absent")
+        finder.findTextAgain("absent", direction: .towardOlder)
+
+        try await expectEventually { outcomes.count == 2 }
+        #expect(outcomes == [.searched(TerminalFindMatchCount.none), .searched(TerminalFindMatchCount.none)])
+    }
+
+    @Test func aSearchThatFoundSomeInATmuxThatDoesntCountShowsNoCount() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: Array(repeating: ScriptedTmuxHistory.countLine(nil, foundAny: true), count: 2))
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findText("needle")
+        finder.findTextAgain("needle", direction: .towardOlder)
+
+        try await expectEventually { outcomes.count == 2 }
+        #expect(outcomes == [.searched(nil), .searched(nil)])
+    }
+
+    @Test func aCountTmuxStoppedShortOfSelectsNoNumber() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: [ScriptedTmuxHistory.countLine(1000, partial: true)])
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findText("e")
+
+        try await expectEventually { outcomes.count == 1 }
+        #expect(outcomes == [.searched(TerminalFindMatchCount(total: 1000, selectedNumber: nil, exceedsCountLimit: true))])
+    }
+
+    @Test func aSearchTmuxCouldNotRunReportsNoCount() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: [nil])
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findText("needle")
+
+        try await expectEventually { outcomes.count == 1 }
+        #expect(outcomes == [.couldNotSearch])
+    }
+
+    @Test func aSearchTypedWhileTmuxWasBusySkipsTheSearchesItReplaced() async throws {
+        let tmux = ScriptedTmuxHistory(
+            countOutputs: [ScriptedTmuxHistory.countLine(9), ScriptedTmuxHistory.countLine(2)],
+            holdsFirstCommand: true
+        )
+        defer { tmux.releaseFirstCommand() }
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findText("n")
+        try await expectEventually { tmux.commands.count == 1 }
+        finder.findText("ne")
+        finder.findText("nee")
+        tmux.releaseFirstCommand()
+
+        try await expectEventually { outcomes.count == 1 }
+        #expect(tmux.searchedTexts == ["n", "nee"])
+        #expect(outcomes == [.searched(TerminalFindMatchCount(total: 2, selectedNumber: 1, exceedsCountLimit: false))])
+    }
+
+    @Test func endingLeavesCopyModeOnlyAfterASearchAndReportsNothing() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: [ScriptedTmuxHistory.countLine(1)])
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.endTextFind()
+        finder.findText("needle")
+        try await expectEventually { outcomes.count == 1 }
+        finder.endTextFind()
+        finder.endTextFind()
+
+        try await expectEventually { tmux.commands.count == 2 }
+        #expect(tmux.commands.last == TmuxHistorySearchCommands.endingSearch(inSession: tmux.sessionName))
+        #expect(outcomes.count == 1)
+    }
+
+    @Test func aMoveBeforeASearchStartsOne() async throws {
+        let tmux = ScriptedTmuxHistory(countOutputs: [ScriptedTmuxHistory.countLine(2)])
+        let finder = TmuxHistoryFinder(history: tmux.history)
+        var outcomes: [TmuxHistorySearchOutcome] = []
+        finder.onStepFinished = { outcomes.append($0) }
+
+        finder.findTextAgain("needle", direction: .towardOlder)
+
+        try await expectEventually { outcomes.count == 1 }
+        #expect(tmux.commands == [TmuxHistorySearchCommands.startingSearch(for: "needle", inSession: tmux.sessionName)])
+    }
+
+    @Test func numbersWrapAroundInBothDirections() {
+        #expect(TmuxHistoryFinder.number(after: 1, moving: .towardOlder, of: 3) == 2)
+        #expect(TmuxHistoryFinder.number(after: 3, moving: .towardOlder, of: 3) == 1)
+        #expect(TmuxHistoryFinder.number(after: 2, moving: .towardNewer, of: 3) == 1)
+        #expect(TmuxHistoryFinder.number(after: 1, moving: .towardNewer, of: 3) == 3)
+        #expect(TmuxHistoryFinder.number(after: 1, moving: .towardOlder, of: 1) == 1)
+    }
+}

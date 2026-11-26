@@ -1,0 +1,34 @@
+enum RandomTip: String, CaseIterable {
+    case resumeSession = "resumeSession"
+    case newSessionAnyCLI = "newSessionAnyCLI"
+    case readWithoutRunning = "readWithoutRunning"
+    case keepRunning = "keepRunning"
+    case reopenTabs = "reopenTabs"
+    case unseenTurn = "unseenTurn"
+    case sshHosts = "sshHosts"
+    case checkSSHHost = "checkSSHHost"
+    case splitView = "splitView"
+    case dragIntoSplitView = "dragIntoSplitView"
+    case selectSeveralSessions = "selectSeveralSessions"
+    case branch = "branch"
+    case waitingForYouFilter = "waitingForYouFilter"
+    case notifications = "notifications"
+    case readingWindow = "readingWindow"
+    case pin = "pin"
+    case openProjectInEditor = "openProjectInEditor"
+    case archiveProject = "archiveProject"
+    case showSubagents = "showSubagents"
+    case dragTabToNewWindow = "dragTabToNewWindow"
+    case collapseTabGroup = "collapseTabGroup"
+    case backAndForward = "backAndForward"
+    case tabByPosition = "tabByPosition"
+    case hideSidebar = "hideSidebar"
+    case textSize = "textSize"
+    case dropFiles = "dropFiles"
+    case ghosttyEngine = "ghosttyEngine"
+    case computerUse = "computerUse"
+
+    static var visibleCases: [RandomTip] {
+        allCases.filter { $0 != .sshHosts && $0 != .checkSSHHost }
+    }
+}

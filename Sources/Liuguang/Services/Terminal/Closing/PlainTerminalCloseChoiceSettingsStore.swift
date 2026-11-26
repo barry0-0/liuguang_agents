@@ -1,0 +1,24 @@
+import Combine
+import Foundation
+
+@MainActor
+final class PlainTerminalCloseChoiceSettingsStore: ObservableObject {
+    static let shared = PlainTerminalCloseChoiceSettingsStore()
+    static let userDefaultsKey = "plainTerminalCloseChoice"
+
+    @Published private(set) var choice: PlainTerminalCloseChoice
+    private let userDefaults: UserDefaults
+
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+        choice =
+            userDefaults.string(forKey: Self.userDefaultsKey).flatMap(PlainTerminalCloseChoice.init(rawValue:))
+            ?? .askEachTime
+    }
+
+    func setChoice(_ newChoice: PlainTerminalCloseChoice) {
+        guard newChoice != choice else { return }
+        userDefaults.set(newChoice.rawValue, forKey: Self.userDefaultsKey)
+        choice = newChoice
+    }
+}

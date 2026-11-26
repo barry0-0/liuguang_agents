@@ -1,0 +1,36 @@
+import Foundation
+import Testing
+
+@testable import Liuguang
+
+struct CodexThreadTitleTests {
+    private static let threadID = "01a10846-4c77-75e2-bec8-ab638c1d2e3f"
+
+    @Test func readsTheStartOfTheThreadIDThatCodexCutsWithAnEllipsis() {
+        #expect(CodexThreadTitle.threadIDPrefix(inTerminalTitle: "01a10846-4c77-75e2-bec8-ab638...") == "01a10846-4c77-75e2-bec8-ab638")
+        #expect(CodexThreadTitle.threadIDPrefix(inTerminalTitle: "01A10846-4C77-75E2-BEC8-AB638…") == "01a10846-4c77-75e2-bec8-ab638")
+    }
+
+    @Test func readsAWholeThreadID() {
+        #expect(CodexThreadTitle.threadIDPrefix(inTerminalTitle: Self.threadID) == Self.threadID)
+    }
+
+    @Test func otherTitlesNameNoThread() {
+        for title in [
+            "",
+            "增强按钮点击反馈 | Liuguang",
+            "Zichaos-MacBook-Pro.local",
+            "01a10846-4c77-75e2-bec8-ab638... | Liuguang",
+            "01a10846-4c77-75e2...",
+            "01a10846-4c77-75e2-bec8-ab638",
+            "01a10846x4c77-75e2-bec8-ab638...",
+            "01a10846-4c77-75e2-bec8-zz638...",
+        ] {
+            #expect(CodexThreadTitle.threadIDPrefix(inTerminalTitle: title) == nil, "\(title)")
+        }
+    }
+
+    @Test func launchArgumentsAskCodexForWhatItDoesAndTheThreadIDInTheTitle() {
+        #expect(CodexThreadTitle.launchArguments == ["-c", #"tui.terminal_title=["activity","run-state","thread-id"]"#])
+    }
+}
