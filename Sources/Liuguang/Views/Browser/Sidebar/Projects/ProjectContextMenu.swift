@@ -20,11 +20,11 @@ struct ProjectContextMenu: View {
         }
         Divider()
         Button(
-            "Delete project folder…",
+            "Remove project…",
             systemImage: "trash",
             role: .destructive,
             action: onRemoveProjectAndDeleteSessions
         )
-        .disabled(project.location.host != .thisMac || !project.location.folderExistsOnThisMac)
+        .disabled(!project.location.canDeleteProjectFolder)
     }
 }

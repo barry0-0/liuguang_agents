@@ -54,16 +54,6 @@ struct SidebarProjectSection: View {
         projectRow
 
         if isExpanded {
-            if project.sessionCount == 0 {
-                Text("No sessions")
-                    .font(ThemeFont.detail)
-                    .foregroundStyle(ThemePalette.tertiaryText)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 40)
-                    .padding(.vertical, 5)
-                    .sidebarIndentGuide(isFirstRow: true, isLastRow: true)
-                    .reportsSidebarRowFrame(.emptyProject(path: project.id), inProject: project.id, to: pinDragging.rowFrames)
-            }
             ForEach(rows) { row in
                 let isFirstRow = row.id == rows.first?.id
                 let isLastRow = hiddenSessionCount == 0 && row.id == rows.last?.id

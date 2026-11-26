@@ -28,17 +28,21 @@ private struct SessionDeletionDialog: ViewModifier {
                 }
             case .projectFolderDeletion(let projectPath):
                 let plan = store.deletionPlan(for: projectPath)
-                deleteButton(title: SessionDeletionConfirmationText.projectRemovalButtonTitle(for: plan, language: language)) {
-                    store.deleteProjectFolders([projectPath])
+                deleteButton(
+                    title: SessionDeletionConfirmationText.projectRemovalButtonTitle(for: plan, language: language),
+                    enabled: true
+                ) {
+                    store.deleteSessionsAndRemoveProjects([projectPath])
                 }
             case .selectedProjectFolderDeletion(let projectPaths):
                 let plan = store.deletionPlan(forProjects: projectPaths)
                 deleteButton(
                     title: SessionDeletionConfirmationText.selectedProjectsRemovalButtonTitle(
                         projectCount: projectPaths.count, plan: plan, language: language
-                    )
+                    ),
+                    enabled: true
                 ) {
-                    store.deleteProjectFolders(projectPaths)
+                    store.deleteSessionsAndRemoveProjects(projectPaths)
                 }
             case nil:
                 EmptyView()
@@ -52,11 +56,12 @@ private struct SessionDeletionDialog: ViewModifier {
         .dismissesOnClickOutside(item: $request)
     }
 
-    private func deleteButton(title: String, delete: @escaping () -> Void) -> some View {
+    private func deleteButton(title: String, enabled: Bool = true, delete: @escaping () -> Void) -> some View {
         Button(title, role: .destructive) {
             delete()
             request = nil
         }
+        .disabled(!enabled)
     }
 
     private func deleteButton(for plan: SessionDeletionPlan, delete: @escaping () -> Void) -> some View {

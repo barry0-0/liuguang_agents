@@ -50,4 +50,22 @@ struct SidebarSubagentRowsTests {
 
         #expect(shown.map(\.id) == [first.id, second.id])
     }
+
+    @Test func numericSubagentTitlesStayHidden() {
+        let numeric = Conversation.fixture(provider: .claude, sessionID: "numeric", parentSessionID: "parent", title: "1")
+        let numericPrefix = Conversation.fixture(
+            provider: .claude,
+            sessionID: "numeric-prefix",
+            parentSessionID: "parent",
+            title: "1: Build login page"
+        )
+        var rows = SidebarSubagentRows()
+        rows.toggle(parent.id)
+
+        let shown = rows.rows(under: parent) { conversation in
+            conversation.id == parent.id ? [numeric, numericPrefix, second] : []
+        }
+
+        #expect(shown.map(\.id) == [second.id])
+    }
 }

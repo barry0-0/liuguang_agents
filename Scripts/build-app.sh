@@ -38,6 +38,7 @@ rm -rf "$app_directory"
 mkdir -p "$app_directory/Contents/MacOS" "$app_directory/Contents/Resources" "$app_directory/Contents/Frameworks"
 cp "$build_directory/Liuguang" "$app_directory/Contents/MacOS/流光"
 install_name_tool -add_rpath @executable_path/../Frameworks "$app_directory/Contents/MacOS/流光"
+ditto "$build_directory/Sparkle.framework" "$app_directory/Contents/Frameworks/Sparkle.framework"
 localization_resources="$build_directory/Liuguang_Liuguang.bundle"
 ditto "$localization_resources" "$app_directory/Contents/Resources/Liuguang_Liuguang.bundle"
 # SwiftUI's standard controls look in Bundle.main; AppKit strings use the SwiftPM resource bundle.

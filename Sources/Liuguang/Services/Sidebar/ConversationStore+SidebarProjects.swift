@@ -132,36 +132,26 @@ extension ConversationStore {
         updateSidebarProjectList(updatedList)
     }
 
+    func forgetProjectsInSidebar(_ projectPaths: Set<String>) {
+        var updatedList = sidebarProjectList
+        updatedList.forget(projectPaths)
+        updateSidebarProjectList(updatedList)
+    }
+
     func deleteSessionsAndRemoveProject(_ projectPath: String) {
         deleteSessionsAndRemoveProjects([projectPath])
     }
 
     func deleteSessionsAndRemoveProjects(_ projectPaths: Set<String>) {
         let plan = deletionPlan(forProjects: projectPaths)
-        guard plan.hasDeletableConversations else { return }
-        closeAndDeleteConversations(plan.deletableConversations)
-        removeProjectsFromSidebar(projectPaths)
+        if plan.hasDeletableConversations {
+            closeAndDeleteConversations(plan.deletableConversations)
+        }
+        forgetProjectsInSidebar(projectPaths)
     }
 
     func deleteProjectFolders(_ projectPaths: Set<String>) {
-        guard !projectPaths.isEmpty else { return }
-        let deletablePaths = projectPaths.filter { !deletionPlan(forProjects: [$0]).deletableConversations.isEmpty }
-        guard !deletablePaths.isEmpty else { return }
-        let pathsToRemove = Set(deletablePaths.map { ProjectLocation(key: $0).key })
-        let runningConversations = deletionPlan(forProjects: deletablePaths).deletableConversations.filter {
-            cliEndingBeforeDeletion(of: $0) != nil
-        }
-        let closeThenMove = { [self] in
-            do {
-                let moved = try ProjectFolderDeletion().moveToTrash(pathsToRemove)
-                removeProjectsFromSidebar(Set(moved))
-            } catch { showError(error.localizedDescription) }
-        }
-        guard !runningConversations.isEmpty else {
-            closeThenMove()
-            return
-        }
-        endCLIsBeforeDeleting(runningConversations) { _ in closeThenMove() }
+        deleteSessionsAndRemoveProjects(projectPaths)
     }
 
     private func updateSidebarProjectList(_ updatedList: SidebarProjectList) {

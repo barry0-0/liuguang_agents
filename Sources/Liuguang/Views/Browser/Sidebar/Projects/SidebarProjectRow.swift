@@ -80,7 +80,7 @@ struct SidebarProjectRow: View {
                 selectedProjectIDs: projectSelection.selectedProjectIDs,
                 onRemoveAndDeleteSessions: onRemoveSelectedProjectsAndDeleteSessions,
                 canDeleteFolders: !selectedLocations.isEmpty && selectedLocations.allSatisfy {
-                    $0.host == .thisMac && $0.folderExistsOnThisMac
+                    $0.canDeleteProjectFolder
                 }
             )
         } else {

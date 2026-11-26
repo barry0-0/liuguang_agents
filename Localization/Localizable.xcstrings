@@ -10226,13 +10226,13 @@
         }
       }
     },
-    "Delete project folder…": {
+    "Remove project…": {
       "extractionState": "manual",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除项目文件夹…"
+            "value": "移除项目…"
           }
         }
       }
@@ -10248,13 +10248,13 @@
         }
       }
     },
-    "Delete project folders…": {
+    "Remove projects…": {
       "extractionState": "manual",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "删除项目文件夹…"
+            "value": "移除项目…"
           }
         }
       }
@@ -10354,6 +10354,134 @@
           "stringUnit": {
             "state": "translated",
             "value": "项目文件夹已不在 %@。请刷新项目列表。"
+          }
+        }
+      }
+    },
+    "Delete project folder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete project folder"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除项目文件夹"
+          }
+        }
+      }
+    },
+    "Remove project": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove project"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除项目"
+          }
+        }
+      }
+    },
+    "Remove project and delete 1 session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove project and delete 1 session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除项目并删除 1 个会话"
+          }
+        }
+      }
+    },
+    "Remove %lld projects and delete 1 session": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove %lld projects and delete 1 session"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除 %lld 个项目并删除 1 个会话"
+          }
+        }
+      }
+    },
+    "Remove %lld projects and delete %lld sessions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove %lld projects and delete %lld sessions"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除 %lld 个项目并删除 %lld 个会话"
+          }
+        }
+      }
+    },
+    "Remove %lld projects…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove %lld projects…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除 %lld 个项目…"
+          }
+        }
+      }
+    },
+    "Remove selected projects": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove selected projects"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除所选项目"
+          }
+        }
+      }
+    },
+    "The projects are removed from 流光. Their saved sessions are deleted from their CLI storage. Folders on disk are not changed.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The projects are removed from 流光. Their saved sessions are deleted from their CLI storage. Folders on disk are not changed."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "项目会从流光中移除，各 CLI 保存的会话会被删除，磁盘上的文件夹不会改变。"
           }
         }
       }

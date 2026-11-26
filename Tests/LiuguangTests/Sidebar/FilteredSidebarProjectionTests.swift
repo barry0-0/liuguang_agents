@@ -95,6 +95,20 @@ struct FilteredSidebarProjectionTests {
         #expect(matched.projects.flatMap(\.conversations).map(\.id).contains(numericTitle.id) == true)
     }
 
+    @Test func hidesNumericPrefixTitlesFromClaudeSessionIDs() throws {
+        let isolatedUserDefaults = try IsolatedUserDefaults()
+        defer { isolatedUserDefaults.removeSuite() }
+        let numericPrefix = Conversation.fixture(sessionID: "numeric-prefix", title: "1: Build login page")
+        let store = makeStore(listing: [numericPrefix], userDefaults: isolatedUserDefaults.userDefaults)
+
+        let listed = store.filteredSidebarProjection(
+            providerFilter: .all,
+            recencyFilter: .all,
+            searchText: ""
+        )
+        #expect(listed.projects.flatMap(\.conversations).map(\.id).isEmpty)
+    }
+
     private func makeStore(listing conversations: [Conversation], userDefaults: UserDefaults) -> ConversationStore {
         let store = ConversationStore(
             adapters: [],

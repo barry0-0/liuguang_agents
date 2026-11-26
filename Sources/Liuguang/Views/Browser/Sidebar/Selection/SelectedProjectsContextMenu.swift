@@ -9,7 +9,7 @@ struct SelectedProjectsContextMenu: View {
     var body: some View {
         Text("\(selectedProjectIDs.count) projects selected")
         Button(
-            "Delete \(selectedProjectIDs.count) project folders…",
+            "Remove \(selectedProjectIDs.count) projects…",
             systemImage: "trash",
             role: .destructive,
             action: onRemoveAndDeleteSessions

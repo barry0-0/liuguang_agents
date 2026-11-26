@@ -101,7 +101,7 @@ struct SessionDeletionConfirmationTextTests {
                 + "SSH hosts have no Trash, so every session is permanently deleted.")
     }
 
-    @Test func projectFolderDeletionSaysTheFolderMovesToTheTrash() {
+    @Test func projectRemovalDoesNotMoveFolderToTrash() {
         let plan = SessionDeletionPlan(deletableConversations: [.fixture(), .fixture()], openTerminalCount: 1)
         let message = SessionDeletionConfirmationText.message(
             forDeletingProjectAt: ProjectLocation(host: .thisMac, path: "/Users/me/app"),
@@ -110,9 +110,9 @@ struct SessionDeletionConfirmationTextTests {
         )
         #expect(
             message == "This affects all tools in /Users/me/app, including sessions hidden by the current filter. "
-                + "The project folder on this Mac moves to the Trash with its session files. "
+                + "The project is removed from 流光. Its saved sessions are deleted from their CLI storage. The folder on disk is not changed. "
                 + "1 session is still running: its tab closes and its CLI ends first.")
-        #expect(SessionDeletionConfirmationText.projectRemovalButtonTitle(for: plan) == "Delete project folder and 2 sessions")
+        #expect(SessionDeletionConfirmationText.projectRemovalButtonTitle(for: plan) == "Remove project and delete 2 sessions")
     }
 
     @Test func selectionMentionsSkippedSessionsOnlyWhenThereAreSome() {

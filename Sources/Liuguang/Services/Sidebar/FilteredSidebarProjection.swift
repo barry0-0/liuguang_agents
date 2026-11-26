@@ -31,10 +31,16 @@ struct FilteredSidebarProjection {
 
     init(inputs: Inputs, projection: SidebarProjection, title: (Conversation) -> String) {
         self.inputs = inputs
+        let originallyEmptyProjectPaths = Set(
+            projection.projectGroups
+                .filter { $0.conversations.isEmpty && $0.pendingNewSessions.isEmpty }
+                .map(\.projectPath)
+        )
         let meaningfulConversations = projection.conversations.filter { conversation in
             let trimmedTitle = title(conversation).trimmingCharacters(in: .whitespacesAndNewlines)
             let titleIsNumeric = !trimmedTitle.isEmpty && trimmedTitle.allSatisfy(\.isNumber)
-            guard trimmedTitle.isEmpty || titleIsNumeric || trimmedTitle == ConversationMetadata.untitledConversationTitle else { return true }
+            let titleIsNumericPrefix = trimmedTitle.split(separator: ":", maxSplits: 1).first.map { !$0.isEmpty && $0.allSatisfy(\.isNumber) } ?? false
+            guard trimmedTitle.isEmpty || titleIsNumeric || titleIsNumericPrefix || trimmedTitle == ConversationMetadata.untitledConversationTitle else { return true }
             return !inputs.messageMatchConversationIDs.contains(conversation.id)
         }
         let toolConversations = meaningfulConversations.filter { inputs.providerFilter.includes($0.provider) }
@@ -64,7 +70,9 @@ struct FilteredSidebarProjection {
                 return true
             }
             let pending = project.pendingNewSessions.filter { !$0.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-            guard !conversations.isEmpty || !pending.isEmpty else { return nil }
+            let isListedEmptyProject = originallyEmptyProjectPaths.contains(project.projectPath)
+                && inputs.projectionInputs.sidebarProjectList.projectPaths.contains(project.projectPath)
+            guard !conversations.isEmpty || !pending.isEmpty || isListedEmptyProject else { return nil }
             return ProjectConversationGroup(
                 projectPath: project.projectPath,
                 displayName: project.displayName,

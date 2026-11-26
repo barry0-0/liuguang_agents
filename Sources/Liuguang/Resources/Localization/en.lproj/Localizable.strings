@@ -612,14 +612,12 @@
 	<string>Delete all deletable sessions (%lld)…</string>
 	<key>Delete back to the start of the line</key>
 	<string>Delete back to the start of the line</string>
+	<key>Delete project folder</key>
+	<string>Delete project folder</string>
 	<key>Delete project folder and %lld sessions</key>
 	<string>Delete project folder and %lld sessions</string>
 	<key>Delete project folder and 1 session</key>
 	<string>Delete project folder and 1 session</string>
-	<key>Delete project folders…</key>
-	<string>Delete project folders…</string>
-	<key>Delete project folder…</key>
-	<string>Delete project folder…</string>
 	<key>Delete selected project folders</key>
 	<string>Delete selected project folders</string>
 	<key>Delete session</key>
@@ -1292,6 +1290,12 @@
 	<string>Release notes</string>
 	<key>Remove</key>
 	<string>Remove</string>
+	<key>Remove %lld projects and delete %lld sessions</key>
+	<string>Remove %lld projects and delete %lld sessions</string>
+	<key>Remove %lld projects and delete 1 session</key>
+	<string>Remove %lld projects and delete 1 session</string>
+	<key>Remove %lld projects…</key>
+	<string>Remove %lld projects…</string>
 	<key>Remove all</key>
 	<string>Remove all</string>
 	<key>Remove all bookmarks in this conversation?</key>
@@ -1304,6 +1308,16 @@
 	<string>Remove bookmark %@</string>
 	<key>Remove host</key>
 	<string>Remove host</string>
+	<key>Remove project</key>
+	<string>Remove project</string>
+	<key>Remove project and delete 1 session</key>
+	<string>Remove project and delete 1 session</string>
+	<key>Remove projects…</key>
+	<string>Remove projects…</string>
+	<key>Remove project…</key>
+	<string>Remove project…</string>
+	<key>Remove selected projects</key>
+	<string>Remove selected projects</string>
 	<key>Rename</key>
 	<string>Rename</string>
 	<key>Rename conversation</key>
@@ -1698,6 +1712,8 @@
 	<string>The project will be archived; skipped sessions stay on disk and come back when it is restored.</string>
 	<key>The project will stay in the sidebar.</key>
 	<string>The project will stay in the sidebar.</string>
+	<key>The projects are removed from 流光. Their saved sessions are deleted from their CLI storage. Folders on disk are not changed.</key>
+	<string>The projects are removed from 流光. Their saved sessions are deleted from their CLI storage. Folders on disk are not changed.</string>
 	<key>The projects will be archived; skipped sessions stay on disk and come back when they are restored.</key>
 	<string>The projects will be archived; skipped sessions stay on disk and come back when they are restored.</string>
 	<key>The prompt ends with these sections of the 流光 guides:</key>

@@ -9,8 +9,8 @@ extension SessionDeletionConfirmationText {
         let count = plan.deletableConversations.count
         return AppLocalization.string(
             count == 1
-                ? "Delete \(projectCount) project folders and 1 session"
-                : "Delete \(projectCount) project folders and \(count) sessions",
+                ? "Remove \(projectCount) projects and delete 1 session"
+                : "Remove \(projectCount) projects and delete \(count) sessions",
             language: language
         )
     }
@@ -27,7 +27,7 @@ extension SessionDeletionConfirmationText {
                     language: language),
                 cliEndingSentence(for: plan, language: language),
                 AppLocalization.string(
-                    "Each project folder on this Mac moves to the Trash with its session files. A session whose CLI still runs ends first.",
+                    "The projects are removed from 流光. Their saved sessions are deleted from their CLI storage. Folders on disk are not changed.",
                     language: language
                 ),
             ]

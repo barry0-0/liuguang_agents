@@ -5,7 +5,7 @@ import Testing
 
 @MainActor
 struct RecentProjectsForNewSessionTests {
-    @Test func projectWithoutSessionsIsOfferedForNewSessionButNotListedInTheSidebar() throws {
+    @Test func projectWithoutSessionsIsOfferedForNewSessionAndListedInTheSidebar() throws {
         let isolatedUserDefaults = try IsolatedUserDefaults()
         defer { isolatedUserDefaults.removeSuite() }
         let listed = Conversation.fixture(projectPath: "/tmp/liuguang-tests/listed")
@@ -28,7 +28,7 @@ struct RecentProjectsForNewSessionTests {
 
         #expect(recentProjects.map(\.projectPath) == [listed.projectDirectoryKey, emptyProjectPath])
         #expect(recentProjects.last?.sessionCount == 0)
-        #expect(filtered.projects.map(\.projectPath) == [listed.projectDirectoryKey])
+        #expect(filtered.projects.map(\.projectPath) == [listed.projectDirectoryKey, emptyProjectPath])
     }
 
     @Test func renamedEmptyProjectUsesItsSavedDisplayName() throws {

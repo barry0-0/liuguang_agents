@@ -650,14 +650,12 @@
 	<string>删除所有可删除的会话（%lld）…</string>
 	<key>Delete back to the start of the line</key>
 	<string>删除到这一行的开头</string>
+	<key>Delete project folder</key>
+	<string>删除项目文件夹</string>
 	<key>Delete project folder and %lld sessions</key>
 	<string>删除项目文件夹和 %lld 个会话</string>
 	<key>Delete project folder and 1 session</key>
 	<string>删除项目文件夹和 1 个会话</string>
-	<key>Delete project folders…</key>
-	<string>删除项目文件夹…</string>
-	<key>Delete project folder…</key>
-	<string>删除项目文件夹…</string>
 	<key>Delete selected project folders</key>
 	<string>删除所选项目文件夹</string>
 	<key>Delete session</key>
@@ -1336,6 +1334,12 @@
 	<string>更新说明</string>
 	<key>Remove</key>
 	<string>移除</string>
+	<key>Remove %lld projects and delete %lld sessions</key>
+	<string>移除 %lld 个项目并删除 %lld 个会话</string>
+	<key>Remove %lld projects and delete 1 session</key>
+	<string>移除 %lld 个项目并删除 1 个会话</string>
+	<key>Remove %lld projects…</key>
+	<string>移除 %lld 个项目…</string>
 	<key>Remove all</key>
 	<string>全部移除</string>
 	<key>Remove all bookmarks in this conversation?</key>
@@ -1348,6 +1352,16 @@
 	<string>移除书签 %@</string>
 	<key>Remove host</key>
 	<string>移除主机</string>
+	<key>Remove project</key>
+	<string>移除项目</string>
+	<key>Remove project and delete 1 session</key>
+	<string>移除项目并删除 1 个会话</string>
+	<key>Remove projects…</key>
+	<string>移除项目…</string>
+	<key>Remove project…</key>
+	<string>移除项目…</string>
+	<key>Remove selected projects</key>
+	<string>移除所选项目</string>
 	<key>Rename</key>
 	<string>重命名</string>
 	<key>Rename conversation</key>
@@ -1754,6 +1768,8 @@
 	<string>项目将被归档；被跳过的会话仍保留在磁盘上，恢复项目后会重新显示。</string>
 	<key>The project will stay in the sidebar.</key>
 	<string>项目仍会保留在侧栏中。</string>
+	<key>The projects are removed from 流光. Their saved sessions are deleted from their CLI storage. Folders on disk are not changed.</key>
+	<string>项目会从流光中移除，各 CLI 保存的会话会被删除，磁盘上的文件夹不会改变。</string>
 	<key>The projects will be archived; skipped sessions stay on disk and come back when they are restored.</key>
 	<string>项目将被归档；被跳过的会话仍保留在磁盘上，恢复项目后会重新显示。</string>
 	<key>The prompt ends with these sections of the 流光 guides:</key>

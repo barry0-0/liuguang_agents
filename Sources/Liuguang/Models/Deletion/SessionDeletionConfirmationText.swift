@@ -16,8 +16,9 @@ enum SessionDeletionConfirmationText {
         for plan: SessionDeletionPlan, language: AppInterfaceLanguage = AppLocalization.developmentLanguage
     ) -> String {
         let count = plan.deletableConversations.count
+        if count == 0 { return AppLocalization.string("Remove project", language: language) }
         return AppLocalization.string(
-            count == 1 ? "Delete project folder and 1 session" : "Delete project folder and \(count) sessions",
+            count == 1 ? "Remove project and delete 1 session" : "Remove project and delete \(count) sessions",
             language: language
         )
     }
@@ -113,7 +114,7 @@ enum SessionDeletionConfirmationText {
                 cliEndingSentence(for: plan, language: language),
                 deletingProjectFolder
                     ? AppLocalization.string(
-                        "The project folder on this Mac moves to the Trash with its session files. A session whose CLI still runs ends first.",
+                        "The project is removed from 流光. Its saved sessions are deleted from their CLI storage. The folder on disk is not changed.",
                         language: language
                     )
                     : AppLocalization.string("The project will stay in the sidebar.", language: language),

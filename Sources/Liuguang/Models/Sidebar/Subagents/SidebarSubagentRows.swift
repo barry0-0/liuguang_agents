@@ -38,6 +38,11 @@ struct SidebarSubagentRows {
     ) {
         guard isExpanded(conversation.id) else { return }
         for subagent in subagents(conversation) where shownIDs.insert(subagent.id).inserted {
+            let title = subagent.suggestedTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+            let hasUsableTitle = !title.isEmpty && title != ConversationMetadata.untitledConversationTitle
+                && !(title.allSatisfy(\.isNumber))
+                && !(title.split(separator: ":", maxSplits: 1).first.map { !$0.isEmpty && $0.allSatisfy(\.isNumber) } ?? false)
+            guard hasUsableTitle else { continue }
             let subagentsOfSubagent = subagents(subagent)
             rows.append(Row(conversation: subagent, depth: depth, subagentCount: subagentsOfSubagent.count))
             appendRows(under: subagent, depth: depth + 1, subagents: subagents, shownIDs: &shownIDs, to: &rows)

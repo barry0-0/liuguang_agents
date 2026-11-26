@@ -14,13 +14,13 @@ struct SidebarProjectSelectionActionBar: View {
                 Spacer(minLength: 4)
             }
             Button(role: .destructive, action: onRemoveAndDeleteSessions) {
-                Label("Delete project folders…", systemImage: "trash")
+                Label("Remove projects…", systemImage: "trash")
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(QuietBorderedButtonStyle())
             .controlSize(.small)
             .help("Move the selected project folders on this Mac to the Trash, ending sessions that still run first")
-            .accessibilityLabel("Delete selected project folders")
+            .accessibilityLabel("Remove selected projects")
             .disabled(!canDeleteFolders)
         }
         .padding(.horizontal, 18)

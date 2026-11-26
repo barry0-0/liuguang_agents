@@ -377,7 +377,7 @@ struct ConversationSidebarView: View {
             .intersection(listedProjectIDs)
             .map(ProjectLocation.init(key:))
         return !selectedLocations.isEmpty && selectedLocations.allSatisfy {
-            $0.host == .thisMac && $0.folderExistsOnThisMac
+            $0.canDeleteProjectFolder
         }
     }
 

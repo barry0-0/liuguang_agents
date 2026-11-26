@@ -39,6 +39,8 @@ struct ProjectLocation: Hashable, Sendable {
         }
     }
 
+    var canDeleteProjectFolder: Bool { true }
+
     var folderExistsOnThisMac: Bool {
         guard host == .thisMac else { return false }
         var isDirectory: ObjCBool = false

@@ -1,2 +1,2 @@
-e550b92c649fbfe5134e53a1738774305e8e837d3cb31805952ae09f220fd217  dist/Liuguang.dmg
-e550b92c649fbfe5134e53a1738774305e8e837d3cb31805952ae09f220fd217  Releases/v1.0.0/Liuguang.dmg
+ef132dc0c7f31dffaffe48d753b6044c5db07e636894a1b2f1a4206cb0173184  /Users/barry/Desktop/Obsidian/cli_agent/Liuguang/dist/Liuguang.dmg
+ef132dc0c7f31dffaffe48d753b6044c5db07e636894a1b2f1a4206cb0173184  /Users/barry/Desktop/Obsidian/cli_agent/Liuguang/Releases/v1.0.0/Liuguang.dmg
